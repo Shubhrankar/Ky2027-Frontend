@@ -89,16 +89,16 @@ export function DetailedInfo({ userData, user, progress }: DetailedInfoProps) {
             icon={Shield}
             label="Aadhaar (Last 4)"
             value={
-              userData?.aadhaarLast4
-                ? `XXXX XXXX ${userData.aadhaarLast4}`
+              userData?.aadhaarNumber
+                ? `XXXX XXXX ${userData.aadhaarNumber.slice(-4)}`
                 : null
             }
-            isVerified={progress?.steps.aadhaar}
+            isVerified={progress?.steps.aadhaarVerified}
           />
           <InfoCard
             icon={Calendar}
             label="Member Since"
-            value={formatDate(userData?.createdAt || null)}
+            value={formatDate(userData?.joinedAt || null)}
           />
           <InfoCard
             icon={User}
@@ -162,9 +162,9 @@ export function DetailedInfo({ userData, user, progress }: DetailedInfoProps) {
             <VerificationStep
               icon={Shield}
               label="Aadhaar Verified"
-              isCompleted={progress?.steps.aadhaar || false}
+              isCompleted={progress?.steps.aadhaarVerified || false}
               description={
-                progress?.steps.aadhaar
+                progress?.steps.aadhaarVerified
                   ? "Identity confirmed"
                   : "Upload your Aadhaar"
               }

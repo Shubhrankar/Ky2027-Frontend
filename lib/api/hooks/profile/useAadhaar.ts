@@ -11,7 +11,7 @@ import { BACKEND_URL, sharedFeatureConfig } from "../../constants";
 // ═══════════════════════════════════════════════════════════════════
 
 /** Response from /aadhaar/upload-url endpoint */
-export interface AadhaarUploadUrlData {
+interface AadhaarUploadUrlData {
   uploadUrl: string;
   s3Key: string;
   expiresAt: string;
@@ -29,29 +29,26 @@ export interface AadhaarExtractedData {
 // SCHEMAS
 // ═══════════════════════════════════════════════════════════════════
 
-// Note: Browsers report JPEG as "image/jpeg", not "image/jpg"
 const AadhaarUploadUrlSchema = z.object({
   fileType: z.enum(["image/jpeg", "image/png"]),
 });
 
+const ConfirmUploadSchema = z.object({
+  s3Key: z.string(),
+});
+
 // ═══════════════════════════════════════════════════════════════════
-// HELPER - Extract error message from Axios error
+// HELPER
 // ═══════════════════════════════════════════════════════════════════
 
-/**
- * Extracts a user-friendly error message from an Axios error.
- * Checks response.data.info, response.data.message, then falls back to error.message
- */
 function extractErrorMessage(error: unknown, fallback: string): string {
   if (!error) return fallback;
 
-  // Check for Axios error structure
   const axiosError = error as {
     response?: { data?: { info?: string; message?: string } };
     message?: string;
   };
 
-  // Priority: info > message > error.message > fallback
   if (axiosError.response?.data?.info) {
     return axiosError.response.data.info;
   }
@@ -66,15 +63,18 @@ function extractErrorMessage(error: unknown, fallback: string): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// INDIVIDUAL HOOKS
+// HOOK 1: useAadhaarUpload
+// Handles: Get presigned URL → Upload to S3 → Confirm upload
 // ═══════════════════════════════════════════════════════════════════
 
-/**
- * Hook for getting pre-signed S3 upload URL.
- * Returns a promisified mutate function for async/await usage.
- */
-function useAadhaarUploadUrl() {
-  const { mutate, data, isPending, isSuccess, isError, error, reset } =
+export function useAadhaarUpload(userId?: string) {
+  const queryClient = useQueryClient();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Get presigned URL mutation
+  const { mutate: mutateUploadUrl, reset: resetUploadUrl } =
     useApiMutation<AadhaarUploadUrlData>({
       url: "/aadhaar/upload-url",
       method: "post",
@@ -84,14 +84,23 @@ function useAadhaarUploadUrl() {
       mutationOptions: { retry: false },
     });
 
-  /**
-   * Promisified wrapper around mutate.
-   * Allows using async/await: const data = await getUploadUrl("image/jpeg")
-   */
+  // Confirm upload mutation
+  const { mutate: mutateConfirm, reset: resetConfirm } = useApiMutation<{
+    success: boolean;
+  }>({
+    url: "/aadhaar/confirm-upload",
+    method: "patch",
+    baseURL: BACKEND_URL,
+    featureConfig: sharedFeatureConfig,
+    bodyValidator: { bodySchema: ConfirmUploadSchema },
+    mutationOptions: { retry: 3 },
+  });
+
+  // Promisified get upload URL
   const getUploadUrl = useCallback(
     (fileType: "image/jpeg" | "image/png"): Promise<AadhaarUploadUrlData> => {
       return new Promise((resolve, reject) => {
-        mutate(
+        mutateUploadUrl(
           { fileType },
           {
             onSuccess: (response) => resolve(response.data),
@@ -100,135 +109,55 @@ function useAadhaarUploadUrl() {
         );
       });
     },
-    [mutate],
+    [mutateUploadUrl],
   );
 
-  return {
-    getUploadUrl,
-    uploadUrlData: data,
-    isPending,
-    isSuccess,
-    isError,
-    error,
-    reset,
-  };
-}
-
-/**
- * Hook for verifying Aadhaar after S3 upload.
- * Calls Textract to extract details from the uploaded image.
- */
-function useAadhaarVerify() {
-  const { mutate, data, isPending, isSuccess, isError, error, reset } =
-    useApiMutation<AadhaarExtractedData>({
-      url: "/aadhaar/extract-details",
-      method: "post",
-      baseURL: BACKEND_URL,
-      featureConfig: sharedFeatureConfig,
-      bodyValidator: { bodySchema: z.object({}) },
-      mutationOptions: { retry: false },
-    });
+  // Promisified confirm upload
+  const confirmUpload = useCallback(
+    (s3Key: string): Promise<{ success: boolean }> => {
+      return new Promise((resolve, reject) => {
+        mutateConfirm(
+          { s3Key },
+          {
+            onSuccess: (response) => resolve(response.data),
+            onError: (err) => reject(err),
+          },
+        );
+      });
+    },
+    [mutateConfirm],
+  );
 
   /**
-   * Promisified wrapper around mutate.
-   * Allows using async/await: const data = await verifyAadhaar()
+   * Upload Aadhaar file:
+   * 1. Get presigned URL
+   * 2. Upload to S3
+   * 3. Confirm upload to backend
    */
-  const verifyAadhaar = useCallback((): Promise<AadhaarExtractedData> => {
-    return new Promise((resolve, reject) => {
-      mutate(
-        {},
-        {
-          onSuccess: (response) => resolve(response.data),
-          onError: (err) => reject(err),
-        },
-      );
-    });
-  }, [mutate]);
-
-  return {
-    verifyAadhaar,
-    extractedData: data,
-    isPending,
-    isSuccess,
-    isError,
-    error,
-    reset,
-  };
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// MAIN FLOW HOOK
-// ═══════════════════════════════════════════════════════════════════
-
-/**
- * Orchestrates the complete Aadhaar verification flow:
- *
- * 1. Get pre-signed URL from backend
- * 2. Upload image directly to S3 using the pre-signed URL
- * 3. Call extract-details endpoint to verify via Textract
- * 4. Invalidate cache on success
- *
- * Each step must complete before the next begins (sequential flow).
- * Uses promisified mutations to enable async/await.
- */
-export function useAadhaarFlow(userId?: string) {
-  const queryClient = useQueryClient();
-
-  // Local error state - aggregates errors from all steps
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  // Step 1: Get upload URL hook
-  const { getUploadUrl, isPending: isGettingUrl, reset: resetUploadUrl } = useAadhaarUploadUrl();
-
-  // Step 3: Verify Aadhaar hook
-  const { verifyAadhaar, extractedData, isPending: isVerifying, isSuccess : adhaarVerified ,reset: resetVerify } =
-    useAadhaarVerify();
-
-  // Combined loading state
-  const isLoading = isGettingUrl || isVerifying;
-
-  /**
-   * Main process function - executes the full Aadhaar verification flow.
-   *
-   * Flow:
-   * 1. Validate file type (must be JPEG or PNG)
-   * 2. Get pre-signed S3 URL from backend
-   * 3. Upload file to S3 using PUT request
-   * 4. Call verify endpoint to extract details via Textract
-   * 5. Invalidate account-progress cache on success
-   *
-   * Any error at any step stops the flow and sets errorMessage.
-   */
-  const processAadhaar = useCallback(
-    async (file: File) => {
-      // Reset error state before starting
+  const uploadAadhaar = useCallback(
+    async (file: File): Promise<boolean> => {
       setErrorMessage(null);
+      setIsUploaded(false);
 
-      // ─── Validation ────────────────────────────────────────────────
       if (!file) {
         setErrorMessage("No file provided");
-        return;
+        return false;
       }
 
       const validTypes = ["image/jpeg", "image/png"];
       if (!validTypes.includes(file.type)) {
-        setErrorMessage(
-          `Invalid file type (${file.type}). Please upload a JPG or PNG image.`,
-        );
-        return;
+        setErrorMessage("Invalid file type. Please upload a JPG or PNG image.");
+        return false;
       }
 
       try {
-        // ─── Step 1: Get pre-signed URL ──────────────────────────────
-        // Backend generates a URL that allows direct upload to S3
+        setIsLoading(true);
+        // Step 1: Get presigned URL
         const uploadUrlData = await getUploadUrl(
           file.type as "image/jpeg" | "image/png",
         );
 
-        // ─── Step 2: Upload to S3 ────────────────────────────────────
-        // Direct upload to S3 using the pre-signed URL
-        // This bypasses the backend for large file transfers
-        console.log("Uploading to S3 with URL:", uploadUrlData);
+        // Step 2: Upload to S3
         const s3Response = await fetch(uploadUrlData.uploadUrl, {
           method: "PUT",
           body: file,
@@ -237,47 +166,112 @@ export function useAadhaarFlow(userId?: string) {
 
         if (!s3Response.ok) {
           setErrorMessage("Failed to upload image. Please try again.");
-          return;
+          return false;
         }
 
-        // ─── Step 3: Extract & verify details ────────────────────────
-        // Backend uses AWS Textract to extract Aadhaar details
-        // The s3Key was stored in user record during Step 1
-        await verifyAadhaar();
+        // Step 3: Confirm upload
+        await confirmUpload(uploadUrlData.s3Key);
 
-        // ─── Step 4: Invalidate cache ────────────────────────────────
-        // Refresh account progress to reflect verified status
+        setIsUploaded(true);
+
+        // Invalidate cache
         if (userId) {
           queryClient.invalidateQueries({
             queryKey: ["account-progress", userId],
           });
         }
+
+        return true;
       } catch (error) {
-        // Extract meaningful error message from the error object
-        const message = extractErrorMessage(error, "Aadhaar verification failed");
+        const message = extractErrorMessage(error, "Upload failed");
         setErrorMessage(message);
+        return false;
+      } finally {
+        setIsLoading(false);
       }
     },
-    [getUploadUrl, verifyAadhaar, queryClient, userId],
+    [getUploadUrl, confirmUpload, queryClient, userId],
   );
 
-  /**
-   * Resets all state - error message and mutation data.
-   * Call this when user wants to retry or upload a different image.
-   */
   const reset = useCallback(() => {
     setErrorMessage(null);
+    setIsUploaded(false);
     resetUploadUrl();
-    resetVerify();
-  }, [resetUploadUrl, resetVerify]);
+    resetConfirm();
+  }, [resetUploadUrl, resetConfirm]);
 
   return {
-    // Actions
-    processAadhaar,
+    uploadAadhaar,
     reset,
-    // State
-    adhaarVerified,
     isLoading,
+    isUploaded,
+    errorMessage,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// HOOK 2: useAadhaarVerify
+// Handles: Extract details via Textract and update profile
+// ═══════════════════════════════════════════════════════════════════
+
+export function useAadhaarVerify(userId?: string) {
+  const queryClient = useQueryClient();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const {
+    mutate,
+    data: extractedData,
+    isPending: isLoading,
+    isSuccess: isVerified,
+    reset: resetMutation,
+  } = useApiMutation<AadhaarExtractedData>({
+    url: "/aadhaar/extract-details-and-update-profile",
+    method: "post",
+    baseURL: BACKEND_URL,
+    featureConfig: sharedFeatureConfig,
+    bodyValidator: { bodySchema: z.object({}) },
+    mutationOptions: { retry: false },
+  });
+
+  /**
+   * Verify Aadhaar - calls Textract to extract details
+   */
+  const verifyAadhaar = useCallback(async (): Promise<boolean> => {
+    setErrorMessage(null);
+
+    return new Promise((resolve) => {
+      mutate(
+        {},
+        {
+          onSuccess: () => {
+            // Invalidate cache
+            if (userId) {
+              queryClient.invalidateQueries({
+                queryKey: ["account-progress", userId],
+              });
+            }
+            resolve(true);
+          },
+          onError: (error) => {
+            const message = extractErrorMessage(error, "Verification failed");
+            setErrorMessage(message);
+            resolve(false);
+          },
+        },
+      );
+    });
+  }, [mutate, queryClient, userId]);
+
+  const reset = useCallback(() => {
+    setErrorMessage(null);
+    resetMutation();
+  }, [resetMutation]);
+
+  return {
+    verifyAadhaar,
+    reset,
+    isLoading,
+    isVerified,
     errorMessage,
     extractedData,
   };

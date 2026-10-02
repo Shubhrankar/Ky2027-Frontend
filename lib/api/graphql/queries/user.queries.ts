@@ -23,9 +23,8 @@ const myProfileWithAccountProgressQuery = query("GetMyAccount", {
       ),
       college: optional(types.string),
       dob: optional(types.string),
-      createdAt: types.string,
-      updatedAt: types.string,
-      aadhaarLast4: optional(types.string),
+      joinedAt: types.string,
+      aadhaarNumber: optional(types.string),
       role: optional({
         id: types.string,
         level: types.constant<"SUPER_ADMIN" | "ADMIN" | "USER">("USER"),
@@ -33,12 +32,11 @@ const myProfileWithAccountProgressQuery = query("GetMyAccount", {
     },
     progress: {
       steps: {
-        aadhaar: types.boolean,
+        aadhaarUploaded: types.boolean,
+        aadhaarVerified: types.boolean,
         college: types.boolean,
         phone: types.boolean,
       },
-      completedSteps: types.number,
-      totalSteps: types.number,
       completionPercentage: types.number,
       isProfileComplete: types.boolean,
       accountStatus: types.constant<"ACTIVE" | "SUSPENDED">("ACTIVE"),
@@ -50,7 +48,8 @@ const myAccountProgressQuery = query("GetMyAccountProgress", {
   myAccount: optional({
     progress: {
       steps: {
-        aadhaar: types.boolean,
+        aadhaarUploaded: types.boolean,
+        aadhaarVerified: types.boolean,
         college: types.boolean,
         phone: types.boolean,
       },

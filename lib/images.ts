@@ -75,9 +75,7 @@ export const IMAGES = {
   // ============================================
   highlights: {
     // Common
-    durgaTemple: `${IMAGEKIT_BASE}/highlights/common/durga-temple.svg`,
-    // Desktop-only
-    durga: `${IMAGEKIT_BASE}/highlights/desktop/durga.svg`,
+    background: `${IMAGEKIT_BASE}/festival-vibes/common/festive-vibes-bg.png`,
   },
 
   // ============================================

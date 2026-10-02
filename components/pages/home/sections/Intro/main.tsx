@@ -3,15 +3,15 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useIntro } from "./context/IntroContext";
 import {
-  EnterButton,
-  BlastEffect,
-  VideoPlayer,
   StageBackground,
   FloatingElements,
   CursorTrail,
-  MuteButton,
+  EnterButton,
+  BlastEffect,
+  VideoPlayer,
   NavigationDrawer,
-} from "./components";
+  MuteButton,
+} from "./sections";
 import "./styles/cursor.css";
 
 export function IntroSection() {

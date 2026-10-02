@@ -1,1 +1,1 @@
-export { PassesSection } from "./main";
+export { PassesSection } from "./sections/main";

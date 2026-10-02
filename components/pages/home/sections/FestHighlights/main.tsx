@@ -2,20 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import Image from "next/image";
-import {
-  LotusSVG,
-  Trishul,
-  FestSparkles,
-  TempleBell,
-  BackgroundMandala,
-} from "./common";
 import { MerchIcon, FoodIcon, AccommodationIcon, CulturalAccessIcon } from "./icons";
 import { IMAGES } from "@/lib/images";
-import { MotionZone, useMotionZone } from "@/lib/motion";
+import { MotionZone } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/hooks";
-import { FestHighlightsMobile } from "./mobile";
-import { FloatingParticles, GoddessDurga } from "./desktop";
 
 const highlights = [
   {
@@ -42,12 +32,9 @@ const highlights = [
 
 // Inner component that can access MotionZone context
 function FestHighlightsContent() {
-  const { isAnimating } = useMotionZone();
   const prefersReducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const templeRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const decorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (prefersReducedMotion) return;
@@ -55,24 +42,6 @@ function FestHighlightsContent() {
     if (typeof window !== "undefined" && window.innerWidth < 640) return;
 
     const ctx = gsap.context(() => {
-      // Temple reveal
-      gsap.fromTo(
-        templeRef.current,
-        { x: -150, opacity: 0, scale: 0.85 },
-        {
-          x: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 1.5,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
       // Content reveal
       gsap.fromTo(
         contentRef.current,
@@ -89,29 +58,6 @@ function FestHighlightsContent() {
           },
         },
       );
-
-      // Decorative elements float
-      const decorItems = decorRef.current?.querySelectorAll(".decor-item");
-      decorItems?.forEach((item, i) => {
-        gsap.to(item, {
-          y: -15 + Math.random() * 30,
-          rotation: -5 + Math.random() * 10,
-          duration: 3 + Math.random() * 2,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: i * 0.3,
-        });
-      });
-
-      // Temple glow pulse
-      gsap.to(templeRef.current, {
-        filter: "drop-shadow(0 0 60px rgba(176,63,35,0.7))",
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
 
       // Highlight cards stagger
       const cards = contentRef.current?.querySelectorAll(".highlight-card");
@@ -139,108 +85,21 @@ function FestHighlightsContent() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[auto] sm:min-h-screen py-6 sm:py-12 md:py-16 overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, 
-          #1A1A2E 0%, 
-          #2D1810 30%,
-          #4A1A10 50%,
-          #2D1810 70%,
-          #1A1A2E 100%
-        )`,
-      }}
+      className="relative min-h-[auto] sm:min-h-screen py-6 pt-44 sm:py-12 sm:pt-26 overflow-hidden"
     >
-      {/* Background Mandala - smaller on mobile */}
-      <BackgroundMandala isAnimating={isAnimating} />
-
-      {/* Floating Decorative Elements - hidden on mobile, reduced count */}
+      {/* Animated background with Ken Burns effect */}
       <div
-        ref={decorRef}
-        className="hidden sm:block absolute inset-0 pointer-events-none overflow-hidden z-30"
-      >
-        {/* Single Trishul - top left */}
-        <div className="decor-item hidden lg:block absolute top-[12%] left-[6%] w-10 h-20 text-[#FFD700] opacity-25">
-          <Trishul className="w-full h-full" />
-        </div>
-
-        {/* Single Lotus - bottom right */}
-        <div className="decor-item hidden lg:block absolute bottom-[10%] right-[10%] w-16 h-10 opacity-40">
-          <LotusSVG className="w-full h-full" />
-        </div>
-      </div>
-
-      {/* Floating particles - Desktop only */}
-      <FloatingParticles />
-
-      {/* TEMPLE BELLS - Desktop only */}
-      <TempleBell
-        className="hidden lg:flex absolute top-0 right-[12%] z-40"
-        chainLength={180}
-        size="md"
+        className="absolute inset-0 motion-safe:animate-ken-burns"
+        style={{
+          backgroundImage: `url(${IMAGES.highlights.background})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
       />
-      <TempleBell
-        className="hidden xl:flex absolute top-0 left-[8%] z-40"
-        chainLength={120}
-        size="sm"
-        delayed
-      />
-
-      {/* GODDESS DURGA - Divine presence - BEHIND content on desktop */}
-      <GoddessDurga />
-
-      {/* TEMPLE - Absolute positioned, large, on left */}
-      <div
-        ref={templeRef}
-        className="absolute left-[-15%] top-1/2 -translate-y-1/2 w-[55%] lg:w-[52%] xl:w-[50%] pointer-events-none hidden lg:block"
-        style={{ zIndex: 1 }}
-      >
-        {/* Glow behind temple */}
-        <div
-          className="absolute inset-0 blur-3xl opacity-50"
-          style={{
-            background:
-              "radial-gradient(circle at center, #B03F23 0%, transparent 60%)",
-          }}
-        />
-
-        {/* Energy rings behind temple - reduced to 2 */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-          {[...Array(2)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full border"
-              style={{
-                width: 500 + i * 200,
-                height: 500 + i * 200,
-                left: -(250 + i * 100),
-                top: -(250 + i * 100),
-                borderColor: `rgba(255,107,0,${0.2 - i * 0.08})`,
-                animation: `pulseRing ${3 + i * 1.5}s ease-out infinite`,
-                animationDelay: `${i * 0.5}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Temple Image - LARGE */}
-        <Image
-          src={IMAGES.highlights.durgaTemple}
-          alt="Kashi Yatra Festival Venue"
-          width={1400}
-          height={850}
-          className="w-full h-auto relative"
-          style={{
-            filter: "drop-shadow(0 0 40px rgba(176,63,35,0.5))",
-          }}
-          priority
-        />
-      </div>
-
-      {/* Mobile Temple - Shows only on mobile/tablet */}
-      <FestHighlightsMobile />
-
-      {/* CONTENT - Centered on desktop with temple on left as backdrop */}
-      <div className="relative z-10 min-h-[auto] sm:min-h-[45vh] lg:min-h-[85vh] flex items-start sm:items-center pt-0 sm:pt-10 lg:pt-8">
+      
+      {/* CONTENT - Centered on desktop */}
+      <div className="relative z-10 min-h-[auto] sm:min-h-[45vh]flex items-start sm:items-center pt-0 sm:pt-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center lg:justify-center">
             <div
@@ -288,15 +147,12 @@ function FestHighlightsContent() {
                 to make your Kashi Yatra truly memorable.
               </p>
 
-              {/* Highlight Cards - Royal ornate design - First 2 on mobile, all 4 on desktop */}
+              {/* Highlight Cards - Royal ornate design - All 4 on all screens */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {highlights.map((item, i) => (
                   <div
                     key={i}
-                    className={
-                      "highlight-card relative p-3 sm:p-5 rounded-xl transition-all duration-300 sm:hover:scale-[1.02] cursor-pointer overflow-hidden group" +
-                      (i >= 2 ? " hidden sm:block" : "")
-                    }
+                    className="highlight-card relative p-3 sm:p-5 rounded-xl transition-all duration-300 sm:hover:scale-[1.02] cursor-pointer overflow-hidden group"
                     style={{
                       background:
                         "linear-gradient(145deg, rgba(139,21,56,0.35), rgba(92,10,31,0.4), rgba(45,24,16,0.35))",
@@ -362,18 +218,6 @@ function FestHighlightsContent() {
           </div>
         </div>
       </div>
-
-      {/* Bottom decorative border */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-1"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, #B03F23, #FF4500, #B03F23, transparent)",
-        }}
-      />
-
-      {/* FEST VIBES - Colorful sparkles and confetti */}
-      <FestSparkles />
     </section>
   );
 }

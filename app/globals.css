@@ -1621,3 +1621,29 @@ body {
   50% { transform: translateY(-10px) translateX(25px); }
   75% { transform: translateY(-40px) translateX(10px); }
 }
+
+
+/* ── Ken Burns Effect for background images ── */
+@keyframes ken-burns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.1) translate(-1%, -1%);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+.animate-ken-burns {
+  animation: ken-burns 20s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Disable Ken Burns on mobile for performance */
+@media (max-width: 639px) {
+  .animate-ken-burns {
+    animation: none;
+  }
+}

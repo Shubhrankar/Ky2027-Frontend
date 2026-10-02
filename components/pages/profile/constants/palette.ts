@@ -25,16 +25,17 @@ export interface UserData {
   phone?: string | null;
   college?: string | null;
   gender?: string | null;
-  aadhaarLast4?: string | null;
+  aadhaarNumber?: string | null;
   avatarUrl?: string | null;
-  createdAt?: string | null;
+  joinedAt?: string | null;
 }
 
 export interface ProgressData {
   isProfileComplete: boolean;
   completionPercentage: number;
   steps: {
-    aadhaar: boolean;
+    aadhaarUploaded: boolean;
+    aadhaarVerified: boolean;
     college: boolean;
     phone: boolean;
   };

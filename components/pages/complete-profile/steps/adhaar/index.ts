@@ -1,4 +1,5 @@
-export { AadhaarStep } from "./AadhaarStep";
-export { SuccessState } from "./success/SuccessState";
-export { InfoCard, type InfoCardProps } from "./InfoCard";
-export { VerificationError, UploadError } from "./error";
+// Upload step
+export { AadhaarUploadStep, UploadSuccessState, UploadErrorState } from "./upload";
+
+// Verify step
+export { AadhaarVerifyStep, VerifySuccessState, VerifyErrorState } from "./verify";

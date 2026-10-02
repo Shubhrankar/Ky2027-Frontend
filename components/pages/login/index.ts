@@ -1,5 +1,4 @@
 export { LoginContent } from "./LoginContent";
-export { LoginCard } from "./LoginCard";
-export { MysticGateSection } from "./MysticGateSection";
-export { BackgroundEffects } from "./BackgroundEffects";
+export { LoginCard, MysticGateSection } from "./sections";
+export { BackgroundEffects } from "./decors";
 export { ROYAL_COLORS } from "./constants";

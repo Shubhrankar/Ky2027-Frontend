@@ -61,6 +61,7 @@ export const IMAGES_TO_UPLOAD: ImageToUpload[] = [
   // ============================================
   // FESTIVAL VIBES / THE EXPERIENCE
   // ============================================
+  { localFile: "home/FestiveVibesBg.png", remoteName: "festive-vibes-bg.png", folder: "/festival-vibes/common" },
   { localFile: "home/theExperience/common/baddie.png", remoteName: "dj.png", folder: "/festival-vibes/common" },
   { localFile: "home/theExperience/common/sareeDrape.png", remoteName: "saree-drape.png", folder: "/festival-vibes/common" },
 

@@ -4,7 +4,7 @@ import {
   getCategoryBySlug,
   getAllCategorySlugs,
 } from "@/components/pages/events/config/events.config";
-import { CategoryPageContent } from "@/components/pages/events/CategoryPageContent";
+import { CategoryPageContent } from "@/components/pages/events";
 
 interface PageProps {
   params: Promise<{ category: string }>;

@@ -1,7 +1,7 @@
 "use client";
 
 import { NavbarDesign as Navbar } from "@/components/navbar/Design";
-import { ProfileLoader } from "@/components/loader";
+import { ProfileLoader } from "./loader";
 import { useMyAccount, useSignOut } from "@/lib/api/hooks";
 import { ProfileHero, DetailedInfo, ProfileFooter } from "./sections";
 import { ErrorState } from "./error";

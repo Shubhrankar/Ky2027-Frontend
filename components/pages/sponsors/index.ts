@@ -1,1 +1,1 @@
-export { SponsorsPageContent } from "./SponsorsPageContent";
+export { SponsorsPageContent } from "./sections";

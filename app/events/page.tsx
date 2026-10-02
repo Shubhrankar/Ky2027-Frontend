@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { EventsPageContent } from "@/components/pages/events/EventsPageContent";
+import { EventsPageContent } from "@/components/pages/events";
 
 export const metadata: Metadata = {
   title: "Events | Kashi Yatra 2027",

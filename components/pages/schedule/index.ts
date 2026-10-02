@@ -1,3 +1,3 @@
-export { MysticDivider } from "./MysticDivider";
-export { ScheduleHero } from "./ScheduleHero";
-export { SchedulePlaceholder } from "./SchedulePlaceholder";
+export { MysticDivider } from "./decors";
+export { ScheduleHero, SchedulePlaceholder } from "./sections";
+export { SchedulePageContent } from "./SchedulePageContent";

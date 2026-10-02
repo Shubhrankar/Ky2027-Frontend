@@ -7,9 +7,8 @@ import { NavbarDesign as Navbar } from "@/components/navbar/Design";
 import { PageLoader } from "@/components/loader";
 import { useSignIn } from "@/lib/api/hooks";
 import { ROYAL_COLORS } from "./constants";
-import { BackgroundEffects } from "./BackgroundEffects";
-import { MysticGateSection } from "./MysticGateSection";
-import { LoginCard } from "./LoginCard";
+import { BackgroundEffects } from "./decors";
+import { MysticGateSection, LoginCard } from "./sections";
 
 export function LoginContent() {
   const { data: session, status } = useSession();

@@ -9,7 +9,6 @@ import {
   type College,
 } from "@/lib/api/hooks";
 import { COLORS } from "@/components/pages/complete-profile/constants/palette";
-import { useDebounce } from "./hooks";
 import {
   ModeToggle,
   CollegeSearchInput,
@@ -17,6 +16,9 @@ import {
   SelectedCollegeCard,
   ManualInput,
 } from "./sections";
+import { useDebounce } from "@/lib/api/hooks/useDebounce";
+import { CollegeLoader } from "./loader";
+import { CollegeErrorState } from "./error";
 
 // ═══════════════════════════════════════════════════════════════════
 // TYPES
@@ -56,9 +58,13 @@ export function CollegeDetailsStep({
   );
 
   // Update college hook
-  const { updateCollege, isPending: isUpdating } = useUpdateCollege(
+  const { updateCollege, isPending: isUpdating, isError, error } = useUpdateCollege(
     session?.user?.id,
   );
+
+  // Error state
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -109,10 +115,16 @@ export function CollegeDetailsStep({
     if (!collegeName.trim()) return;
 
     updateCollege(
-      { body: { college: collegeName } },
+      { college: collegeName },
       {
         onSuccess: () => {
+          setShowError(false);
           refetchProgress();
+        },
+        onError: (err) => {
+          // Always show user-friendly message, never raw technical errors
+          setErrorMessage("Something went wrong. Please try again.");
+          setShowError(true);
         },
       },
     );
@@ -125,9 +137,37 @@ export function CollegeDetailsStep({
     refetchProgress,
   ]);
 
+  const handleRetry = useCallback(() => {
+    setShowError(false);
+    handleSubmit();
+  }, [handleSubmit]);
+
+  const handleSearchAgain = useCallback(() => {
+    setShowError(false);
+    setSearchQuery("");
+    setSelectedCollege(null);
+    setManualCollege("");
+  }, []);
+
   const isValid = isManualMode
     ? manualCollege.trim().length >= 3
     : selectedCollege !== null || searchQuery.trim().length >= 3;
+
+  // Show loader when updating
+  if (isUpdating) {
+    return <CollegeLoader />;
+  }
+
+  // Show error state
+  if (showError) {
+    return (
+      <CollegeErrorState
+        message={errorMessage}
+        onRetry={handleRetry}
+        onSearchAgain={handleSearchAgain}
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">

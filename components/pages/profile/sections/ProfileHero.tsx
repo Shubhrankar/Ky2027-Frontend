@@ -301,7 +301,7 @@ function AvatarSection({
       {/* Pending steps chips (when incomplete) */}
       {progress && !progress.isProfileComplete && (
         <div className="flex flex-wrap justify-center gap-1.5 mt-3 max-w-[200px]">
-          {!progress.steps.aadhaar && (
+          {!progress.steps.aadhaarVerified && (
             <span
               className="px-2.5 py-1 rounded-full text-[10px] font-medium"
               style={{
