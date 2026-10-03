@@ -26,6 +26,7 @@ interface IntroContextType {
   isIntroComplete: boolean;
   hasSeenIntro: boolean; // Tracks if user has completed intro this session
   isMuted: boolean;
+  audioRef: React.RefObject<HTMLAudioElement | null>; // Exposed for audio analysis (FirePot)
   startLoading: () => void;
   cancelLoading: () => void;
   startBlast: () => void;
@@ -148,6 +149,7 @@ export function IntroProvider({ children }: { children: ReactNode }) {
         isIntroComplete,
         hasSeenIntro,
         isMuted,
+        audioRef,
         startLoading,
         cancelLoading,
         startBlast,

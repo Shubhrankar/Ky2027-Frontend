@@ -1,10 +1,29 @@
 "use client";
 
-import { NavbarDesign } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Light";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
 
 /**
- * Navbar
+ * Navbar Exports
+ * 
+ * Usage:
+ *   import { Navbar, LightNavbar } from "@/components/navbar/Navbar";
+ *   
+ *   // Default scroll-aware navbar
+ *   <Navbar />
+ *   
+ *   // Or use directly
+ *   <LightNavbar position="fixed" topOffset={18} />
+ */
+
+// Re-export themed navbar
+export { LightNavbar } from "@/components/navbar/Light";
+
+// Also export from Design for backwards compatibility
+export { NavbarDesign } from "@/components/navbar/Design";
+
+/**
+ * Navbar (Default)
  *
  * A single, page-level fixed navbar that:
  * 1. Is hidden while Hero, ProNites, and FestivalVibes sections are on screen
@@ -35,7 +54,7 @@ export function Navbar() {
       }}
       aria-hidden={!visible}
     >
-      <NavbarDesign position="relative" topOffset={18} />
+      <LightNavbar position="relative" topOffset={18} />
     </div>
   );
 }

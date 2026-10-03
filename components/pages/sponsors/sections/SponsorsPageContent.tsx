@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { NavbarDesign as Navbar } from "@/components/navbar/Design";
 import { IMAGES } from "@/lib/images";
 import {
@@ -12,33 +13,513 @@ import {
   type SponsorTier,
 } from "../config/sponsors.config";
 
-// Theme colors
+// Gen-Z Concert Theme Colors - Greenish White Theme
 const COLORS = {
-  BG_DEEP: "#0a0a12",
-  BG_WINE: "#1a0a12",
-  GOLD: "#FFD700",
-  GOLD_DARK: "#B8860B",
-  CREAM: "#FDF6E3",
+  BG_DEEP: "#030308",
+  BG_PURPLE: "#050a08",
+  NEON_CYAN: "#00FFAA",      // Mint/Teal green
+  NEON_PINK: "#00FF88",      // Bright green (replacing pink)
+  NEON_PURPLE: "#88FFCC",    // Light mint
+  NEON_LIME: "#BFFF00",      // Lime green
+  NEON_GREEN: "#00FF66",     // Pure neon green
+  GOLD: "#CCFFCC",           // Pale green-white
+  WHITE: "#FFFFFF",
 };
 
-// Sponsor Card Component
+// ═══════════════════════════════════════════════════════════════════
+// SIDE DECORATIONS - Stage/Theatrical Concert Theme (Unique to Sponsors)
+// ═══════════════════════════════════════════════════════════════════
+
+function LeftSideDecor() {
+  return (
+    <div className="fixed left-0 top-0 h-full w-48 lg:w-64 pointer-events-none hidden lg:block z-10 overflow-hidden">
+      {/* Stage curtain effect - dark green */}
+      <div 
+        className="absolute inset-y-0 left-0 w-full"
+        style={{
+          background: `linear-gradient(90deg, 
+            rgba(0, 50, 30, 0.5) 0%, 
+            rgba(0, 40, 25, 0.3) 30%,
+            transparent 100%
+          )`,
+        }}
+      />
+      
+      {/* Curtain drape SVG */}
+      <svg className="absolute left-0 top-0 h-full w-20 opacity-30" viewBox="0 0 50 400" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="curtainGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#004d33" />
+            <stop offset="50%" stopColor="#002d1a" />
+            <stop offset="100%" stopColor="#001a0d" />
+          </linearGradient>
+        </defs>
+        <path 
+          d="M0 0 Q25 50 15 100 Q5 150 20 200 Q35 250 10 300 Q-5 350 25 400 L0 400 Z" 
+          fill="url(#curtainGrad)"
+        />
+      </svg>
+      
+      {/* Spotlight beams from top */}
+      <motion.div
+        className="absolute -top-20 left-10 w-[150px] h-[400px] origin-top"
+        style={{
+          background: `linear-gradient(180deg, ${COLORS.NEON_PINK}25 0%, ${COLORS.NEON_PINK}05 50%, transparent 100%)`,
+          clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
+        }}
+        animate={{
+          rotate: [-15, 5, -15],
+          opacity: [0.6, 0.9, 0.6],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      
+      {/* Stage rope/rigging */}
+      <div className="absolute left-12 top-0 h-full">
+        <svg width="4" height="100%" className="opacity-40">
+          <line x1="2" y1="0" x2="2" y2="100%" stroke={COLORS.GOLD} strokeWidth="2" strokeDasharray="8 4" />
+        </svg>
+      </div>
+      
+      {/* Stage lights */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.div
+          key={`light-l-${i}`}
+          className="absolute"
+          style={{
+            left: 8,
+            top: `${15 + i * 22}%`,
+          }}
+        >
+          {/* Light fixture */}
+          <div 
+            className="w-8 h-6 rounded-b-lg"
+            style={{
+              background: `linear-gradient(180deg, #1a1a1a 0%, #333 100%)`,
+              boxShadow: `0 4px 15px rgba(0,0,0,0.5)`,
+            }}
+          />
+          {/* Light glow */}
+          <motion.div
+            className="absolute top-6 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full"
+            style={{
+              background: [COLORS.NEON_PINK, COLORS.NEON_CYAN, COLORS.NEON_PURPLE, COLORS.NEON_LIME][i],
+              boxShadow: `0 0 20px ${[COLORS.NEON_PINK, COLORS.NEON_CYAN, COLORS.NEON_PURPLE, COLORS.NEON_LIME][i]}, 0 0 40px ${[COLORS.NEON_PINK, COLORS.NEON_CYAN, COLORS.NEON_PURPLE, COLORS.NEON_LIME][i]}50`,
+            }}
+            animate={{
+              opacity: [0.7, 1, 0.7],
+              scale: [0.9, 1.1, 0.9],
+            }}
+            transition={{
+              duration: 2 + i * 0.5,
+              repeat: Infinity,
+              delay: i * 0.3,
+            }}
+          />
+        </motion.div>
+      ))}
+      
+      {/* "LIVE" sign */}
+      <motion.div
+        className="absolute left-4 top-[85%] px-3 py-1 rounded"
+        style={{
+          background: COLORS.NEON_LIME,
+          boxShadow: `0 0 20px ${COLORS.NEON_LIME}, 0 0 40px ${COLORS.NEON_LIME}50`,
+        }}
+        animate={{
+          opacity: [1, 0.5, 1],
+        }}
+        transition={{
+          duration: 1,
+          repeat: Infinity,
+        }}
+      >
+        <span className="text-black text-xs font-bold tracking-widest">LIVE</span>
+      </motion.div>
+      
+      {/* Decorative stars scattered */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={`star-l-${i}`}
+          className="absolute text-lg"
+          style={{
+            left: 30 + (i % 3) * 15,
+            top: `${20 + i * 15}%`,
+            color: COLORS.GOLD,
+            filter: `drop-shadow(0 0 5px ${COLORS.GOLD})`,
+          }}
+          animate={{
+            opacity: [0.3, 0.8, 0.3],
+            scale: [0.8, 1, 0.8],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            delay: i * 0.4,
+          }}
+        >
+          ★
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function RightSideDecor() {
+  return (
+    <div className="fixed right-0 top-0 h-full w-48 lg:w-64 pointer-events-none hidden lg:block z-10 overflow-hidden">
+      {/* Stage curtain effect - dark green mirrored */}
+      <div 
+        className="absolute inset-y-0 right-0 w-full"
+        style={{
+          background: `linear-gradient(-90deg, 
+            rgba(0, 50, 30, 0.5) 0%, 
+            rgba(0, 40, 25, 0.3) 30%,
+            transparent 100%
+          )`,
+        }}
+      />
+      
+      {/* Curtain drape SVG - mirrored */}
+      <svg className="absolute right-0 top-0 h-full w-20 opacity-30" viewBox="0 0 50 400" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="curtainGradR" x1="100%" y1="0%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor="#004d33" />
+            <stop offset="50%" stopColor="#002d1a" />
+            <stop offset="100%" stopColor="#001a0d" />
+          </linearGradient>
+        </defs>
+        <path 
+          d="M50 0 Q25 50 35 100 Q45 150 30 200 Q15 250 40 300 Q55 350 25 400 L50 400 Z" 
+          fill="url(#curtainGradR)"
+        />
+      </svg>
+      
+      {/* Spotlight beams from top */}
+      <motion.div
+        className="absolute -top-20 right-10 w-[150px] h-[400px] origin-top"
+        style={{
+          background: `linear-gradient(180deg, ${COLORS.NEON_CYAN}25 0%, ${COLORS.NEON_CYAN}05 50%, transparent 100%)`,
+          clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
+        }}
+        animate={{
+          rotate: [15, -5, 15],
+          opacity: [0.6, 0.9, 0.6],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5,
+        }}
+      />
+      
+      {/* Stage rope/rigging */}
+      <div className="absolute right-12 top-0 h-full">
+        <svg width="4" height="100%" className="opacity-40">
+          <line x1="2" y1="0" x2="2" y2="100%" stroke={COLORS.GOLD} strokeWidth="2" strokeDasharray="8 4" />
+        </svg>
+      </div>
+      
+      {/* Stage lights */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.div
+          key={`light-r-${i}`}
+          className="absolute"
+          style={{
+            right: 8,
+            top: `${18 + i * 20}%`,
+          }}
+        >
+          {/* Light fixture */}
+          <div 
+            className="w-8 h-6 rounded-b-lg"
+            style={{
+              background: `linear-gradient(180deg, #1a1a1a 0%, #333 100%)`,
+              boxShadow: `0 4px 15px rgba(0,0,0,0.5)`,
+            }}
+          />
+          {/* Light glow */}
+          <motion.div
+            className="absolute top-6 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full"
+            style={{
+              background: [COLORS.NEON_CYAN, COLORS.NEON_LIME, COLORS.NEON_PINK, COLORS.NEON_PURPLE][i],
+              boxShadow: `0 0 20px ${[COLORS.NEON_CYAN, COLORS.NEON_LIME, COLORS.NEON_PINK, COLORS.NEON_PURPLE][i]}, 0 0 40px ${[COLORS.NEON_CYAN, COLORS.NEON_LIME, COLORS.NEON_PINK, COLORS.NEON_PURPLE][i]}50`,
+            }}
+            animate={{
+              opacity: [0.7, 1, 0.7],
+              scale: [0.9, 1.1, 0.9],
+            }}
+            transition={{
+              duration: 2.5 + i * 0.3,
+              repeat: Infinity,
+              delay: i * 0.4,
+            }}
+          />
+        </motion.div>
+      ))}
+      
+      {/* "ON AIR" sign */}
+      <motion.div
+        className="absolute right-4 top-[85%] px-3 py-1 rounded"
+        style={{
+          background: COLORS.NEON_CYAN,
+          boxShadow: `0 0 20px ${COLORS.NEON_CYAN}, 0 0 40px ${COLORS.NEON_CYAN}50`,
+        }}
+        animate={{
+          opacity: [1, 0.6, 1],
+        }}
+        transition={{
+          duration: 1.2,
+          repeat: Infinity,
+        }}
+      >
+        <span className="text-black text-xs font-bold tracking-widest">ON AIR</span>
+      </motion.div>
+      
+      {/* VIP badge */}
+      <motion.div
+        className="absolute right-6 top-[10%]"
+        animate={{
+          y: [0, -5, 0],
+          rotate: [-3, 3, -3],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+        }}
+      >
+        <div 
+          className="px-4 py-2 rounded-lg border-2"
+          style={{
+            borderColor: COLORS.NEON_GREEN,
+            background: `linear-gradient(135deg, rgba(0,255,102,0.2) 0%, rgba(0,255,102,0.05) 100%)`,
+            boxShadow: `0 0 15px ${COLORS.NEON_GREEN}40`,
+          }}
+        >
+          <span 
+            className="text-sm font-black tracking-[0.2em]"
+            style={{ color: COLORS.NEON_GREEN }}
+          >
+            VIP
+          </span>
+        </div>
+      </motion.div>
+      
+      {/* Ticket stub decoration */}
+      <div 
+        className="absolute right-8 top-[50%] w-12 h-20 rounded-lg opacity-60"
+        style={{
+          background: `linear-gradient(135deg, ${COLORS.NEON_CYAN}30 0%, ${COLORS.NEON_GREEN}20 100%)`,
+          border: `1px dashed ${COLORS.NEON_CYAN}50`,
+        }}
+      >
+        <div className="h-full flex flex-col items-center justify-center gap-1">
+          <span className="text-[8px] text-white/60 tracking-wider">ADMIT</span>
+          <span className="text-lg font-bold" style={{ color: COLORS.NEON_CYAN }}>1</span>
+        </div>
+      </div>
+      
+      {/* Decorative stars scattered */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={`star-r-${i}`}
+          className="absolute text-lg"
+          style={{
+            right: 35 + (i % 3) * 12,
+            top: `${25 + i * 14}%`,
+            color: COLORS.GOLD,
+            filter: `drop-shadow(0 0 5px ${COLORS.GOLD})`,
+          }}
+          animate={{
+            opacity: [0.3, 0.8, 0.3],
+            scale: [0.8, 1, 0.8],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            delay: i * 0.3 + 0.5,
+          }}
+        >
+          ★
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// BACKGROUND EFFECTS
+// ═══════════════════════════════════════════════════════════════════
+
+function BackgroundEffects() {
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      {/* Gradient orbs - green theme */}
+      <div 
+        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-15"
+        style={{ background: COLORS.NEON_GREEN }}
+      />
+      <div 
+        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[100px] opacity-10"
+        style={{ background: COLORS.NEON_CYAN }}
+      />
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[150px] opacity-8"
+        style={{ background: COLORS.NEON_LIME }}
+      />
+      
+      {/* Grid overlay - green tint */}
+      <div 
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `
+            linear-gradient(${COLORS.NEON_GREEN}20 1px, transparent 1px),
+            linear-gradient(90deg, ${COLORS.NEON_GREEN}20 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }}
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FLOATING ELEMENTS - Scattered across the page
+// ═══════════════════════════════════════════════════════════════════
+
+function FloatingElements() {
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[5]">
+      {/* Floating geometric shapes - minimal */}
+      <motion.div
+        className="absolute left-[8%] top-[25%] w-10 h-10 border-2 rounded-lg"
+        style={{ borderColor: `${COLORS.NEON_GREEN}40` }}
+        animate={{ 
+          rotate: [0, 360],
+        }}
+        transition={{ 
+          duration: 20, repeat: Infinity, ease: "linear",
+        }}
+      />
+      
+      <motion.div
+        className="absolute right-[10%] top-[35%] w-6 h-6 border-2"
+        style={{ 
+          borderColor: `${COLORS.NEON_CYAN}40`,
+          transform: "rotate(45deg)",
+        }}
+        animate={{ 
+          scale: [1, 1.3, 1],
+          opacity: [0.4, 0.8, 0.4],
+        }}
+        transition={{ duration: 4, repeat: Infinity }}
+      />
+      
+      <motion.div
+        className="absolute left-[6%] top-[65%] w-8 h-8 rounded-full border-2"
+        style={{ borderColor: `${COLORS.NEON_LIME}35` }}
+        animate={{ 
+          scale: [1, 1.3, 1],
+        }}
+        transition={{ duration: 5, repeat: Infinity }}
+      />
+      
+      <motion.div
+        className="absolute right-[8%] top-[70%] w-7 h-7 border-2 rounded-lg"
+        style={{ borderColor: `${COLORS.NEON_GREEN}40` }}
+        animate={{ 
+          rotate: [0, -360],
+        }}
+        transition={{ 
+          duration: 18, repeat: Infinity, ease: "linear",
+        }}
+      />
+      
+      {/* Floating plus signs - reduced */}
+      {[
+        { x: "15%", y: "45%" },
+        { x: "85%", y: "55%" },
+      ].map((pos, i) => (
+        <motion.div
+          key={`plus-${i}`}
+          className="absolute text-xl font-light"
+          style={{
+            left: pos.x,
+            top: pos.y,
+            color: `${COLORS.NEON_GREEN}30`,
+          }}
+          animate={{
+            rotate: [0, 90, 0],
+            opacity: [0.2, 0.5, 0.2],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            delay: i * 1.5,
+          }}
+        >
+          +
+        </motion.div>
+      ))}
+      
+      {/* Floating dots - reduced */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={`particle-${i}`}
+          className="absolute w-1 h-1 rounded-full"
+          style={{
+            left: `${8 + (i * 15) % 85}%`,
+            top: `${20 + (i * 12) % 60}%`,
+            backgroundColor: [COLORS.NEON_GREEN, COLORS.NEON_CYAN, COLORS.NEON_LIME][i % 3],
+            boxShadow: `0 0 4px ${[COLORS.NEON_GREEN, COLORS.NEON_CYAN, COLORS.NEON_LIME][i % 3]}`,
+          }}
+          animate={{
+            opacity: [0.2, 0.6, 0.2],
+          }}
+          transition={{
+            duration: 3 + (i % 2),
+            repeat: Infinity,
+            delay: i * 0.4,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SPONSOR CARD - Updated with neon style
+// ═══════════════════════════════════════════════════════════════════
+
 function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
   const tierConfig = TIER_CONFIG[sponsor.tier];
   const size = CARD_SIZES[tierConfig.cardSize];
+  
+  const neonColor = sponsor.tier === "title" ? COLORS.NEON_PINK : 
+                    sponsor.tier === "major" ? COLORS.NEON_CYAN :
+                    sponsor.tier === "co-title" ? COLORS.NEON_PURPLE :
+                    COLORS.NEON_LIME;
 
   return (
-    <div
-      className="relative group transition-all duration-500 hover:scale-[1.05] hover:-translate-y-1"
+    <motion.div
+      className="relative group"
       style={{
         width: size.width,
         height: size.height,
       }}
+      whileHover={{ scale: 1.05, y: -5 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       {/* Outer glow on hover */}
       <div
         className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"
         style={{
-          background: `linear-gradient(135deg, ${tierConfig.glowColor}, transparent, ${tierConfig.glowColor})`,
+          background: `linear-gradient(135deg, ${neonColor}60, transparent, ${neonColor}60)`,
         }}
       />
 
@@ -46,33 +527,33 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
       <div
         className="absolute inset-0 rounded-2xl overflow-hidden"
         style={{
-          background: `linear-gradient(145deg, rgba(30,15,25,0.95) 0%, rgba(20,10,18,0.98) 100%)`,
-          boxShadow: `
-            0 8px 32px rgba(0,0,0,0.5), 
-            0 0 40px ${tierConfig.glowColor}
-          `,
+          background: `linear-gradient(145deg, rgba(15,10,25,0.9) 0%, rgba(5,5,15,0.95) 100%)`,
+          border: `1px solid ${neonColor}30`,
+          boxShadow: `0 0 30px ${neonColor}20`,
         }}
       >
-        {/* Inner shimmer */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            background: `radial-gradient(ellipse at 50% 0%, ${tierConfig.glowColor} 0%, transparent 60%)`,
-          }}
+        {/* Corner accents */}
+        <div 
+          className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 rounded-tl-xl"
+          style={{ borderColor: `${neonColor}50` }}
         />
-
-        {/* Decorative frame overlay */}
-        <Image
-          src={IMAGES.sponsors.rectangularFrame}
-          alt=""
-          fill
-          className="object-fill opacity-70 group-hover:opacity-90 transition-opacity pointer-events-none"
+        <div 
+          className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 rounded-tr-xl"
+          style={{ borderColor: `${neonColor}50` }}
+        />
+        <div 
+          className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 rounded-bl-xl"
+          style={{ borderColor: `${neonColor}50` }}
+        />
+        <div 
+          className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 rounded-br-xl"
+          style={{ borderColor: `${neonColor}50` }}
         />
       </div>
 
       {/* Content */}
-      <div className="relative h-full flex flex-col items-center justify-center p-14 z-10">
-        {/* Logo container with white background for visibility */}
+      <div className="relative h-full flex flex-col items-center justify-center p-6 z-10">
+        {/* Logo container */}
         <div
           className="relative flex items-center justify-center rounded-xl overflow-hidden bg-white/95 p-3 shadow-lg"
           style={{
@@ -89,27 +570,30 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
           />
         </div>
 
-        {/* Category label with better styling */}
+        {/* Category label */}
         <div 
           className="mt-4 px-4 py-1.5 rounded-full"
           style={{
-            background: `linear-gradient(135deg, rgba(255,215,0,0.15), rgba(184,134,11,0.1))`,
-            border: `1px solid rgba(255,215,0,0.25)`,
+            background: `${neonColor}15`,
+            border: `1px solid ${neonColor}40`,
           }}
         >
           <p
             className="text-center text-[11px] tracking-wider uppercase font-medium"
-            style={{ color: COLORS.GOLD }}
+            style={{ color: neonColor }}
           >
             {sponsor.category}
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-// Tier Section Component
+// ═══════════════════════════════════════════════════════════════════
+// TIER SECTION
+// ═══════════════════════════════════════════════════════════════════
+
 function TierSection({
   title,
   sponsors,
@@ -121,44 +605,40 @@ function TierSection({
 }) {
   if (sponsors.length === 0) return null;
 
-  const tierConfig = TIER_CONFIG[tier];
+  const neonColor = tier === "title" ? COLORS.NEON_PINK : 
+                    tier === "major" ? COLORS.NEON_CYAN :
+                    tier === "co-title" ? COLORS.NEON_PURPLE :
+                    COLORS.NEON_LIME;
 
   return (
-    <div className="mb-12">
+    <div className="mb-16">
       {/* Tier title */}
-      <div className="flex items-center justify-center gap-4 mb-8">
-        <div className="flex-1 max-w-[120px] h-8 opacity-60">
-          <Image
-            src={IMAGES.sponsors.ornamentalDivider}
-            alt=""
-            width={120}
-            height={32}
-            className="w-full h-full object-contain scale-x-[-1]"
-          />
-        </div>
-        <h3
-          className="text-lg sm:text-xl font-bold tracking-[0.2em] uppercase shrink-0"
+      <div className="flex items-center justify-center gap-4 mb-10">
+        <div 
+          className="h-[2px] w-16 sm:w-24"
           style={{
-            fontFamily: "'Cinzel', serif",
-            color: COLORS.GOLD,
-            textShadow: `0 0 20px ${tierConfig.glowColor}`,
+            background: `linear-gradient(90deg, transparent, ${neonColor})`,
+          }}
+        />
+        <h3
+          className="text-lg sm:text-xl font-bold tracking-[0.2em] uppercase"
+          style={{
+            color: neonColor,
+            textShadow: `0 0 20px ${neonColor}60`,
           }}
         >
           {title}
         </h3>
-        <div className="flex-1 max-w-[120px] h-8 opacity-60">
-          <Image
-            src={IMAGES.sponsors.ornamentalDivider}
-            alt=""
-            width={120}
-            height={32}
-            className="w-full h-full object-contain"
-          />
-        </div>
+        <div 
+          className="h-[2px] w-16 sm:w-24"
+          style={{
+            background: `linear-gradient(90deg, ${neonColor}, transparent)`,
+          }}
+        />
       </div>
 
       {/* Sponsors grid */}
-      <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+      <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
         {sponsors.map((sponsor) => (
           <SponsorCard key={sponsor.name} sponsor={sponsor} />
         ))}
@@ -166,6 +646,10 @@ function TierSection({
     </div>
   );
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// MAIN EXPORT
+// ═══════════════════════════════════════════════════════════════════
 
 export function SponsorsPageContent() {
   const groupedSponsors = groupSponsorsByTier(SPONSORS_2026);
@@ -178,110 +662,183 @@ export function SponsorsPageContent() {
       </div>
 
       <main
-        className="min-h-screen pt-28 sm:pt-32 pb-16 px-4"
+        className="min-h-screen pt-28 sm:pt-32 pb-16 px-4 relative"
         style={{
-          background: `
-            radial-gradient(ellipse at 20% 20%, rgba(139,21,56,0.15) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 80%, rgba(184,134,11,0.1) 0%, transparent 50%),
-            linear-gradient(180deg, ${COLORS.BG_DEEP} 0%, ${COLORS.BG_WINE} 50%, ${COLORS.BG_DEEP} 100%)
-          `,
+          background: `linear-gradient(180deg, ${COLORS.BG_DEEP} 0%, ${COLORS.BG_PURPLE} 50%, ${COLORS.BG_DEEP} 100%)`,
         }}
       >
-        {/* Background mandala */}
-        <div
-          className="fixed inset-0 pointer-events-none opacity-[0.03]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23FFD700' stroke-width='0.5'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3Ccircle cx='100' cy='100' r='75'/%3E%3Ccircle cx='100' cy='100' r='55'/%3E%3Ccircle cx='100' cy='100' r='35'/%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundSize: "400px 400px",
-            backgroundPosition: "center",
-          }}
-        />
+        {/* Background effects */}
+        <BackgroundEffects />
+        
+        {/* Floating elements */}
+        <FloatingElements />
+        
+        {/* Side decorations */}
+        <LeftSideDecor />
+        <RightSideDecor />
 
-        <div className="relative max-w-7xl mx-auto">
+        <div className="relative max-w-6xl mx-auto">
           {/* Page Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            {/* Om symbol */}
-            <div
-              className="text-4xl sm:text-5xl mb-4"
-              style={{
-                color: COLORS.GOLD,
-                textShadow: `0 0 30px rgba(255,215,0,0.5)`,
-              }}
-            >
-              ॐ
+          <motion.div 
+            className="text-center mb-16 sm:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Decorative top element */}
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div 
+                className="h-[2px] w-16 sm:w-24"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${COLORS.NEON_CYAN})`,
+                }}
+              />
+              <span className="text-2xl">⚡</span>
+              <div 
+                className="h-[2px] w-16 sm:w-24"
+                style={{
+                  background: `linear-gradient(90deg, ${COLORS.NEON_CYAN}, transparent)`,
+                }}
+              />
             </div>
 
-            {/* Title */}
+            {/* Title with gradient */}
             <h1
-              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
+              className="text-4xl sm:text-5xl md:text-7xl font-black mb-8 tracking-tight"
               style={{
-                fontFamily: "'Cinzel Decorative', serif",
-                background: `linear-gradient(135deg, #FFF3C4 0%, ${COLORS.GOLD} 50%, ${COLORS.GOLD_DARK} 100%)`,
+                fontFamily: "var(--font-cinzel-decorative), 'Cinzel Decorative', serif",
+                background: `linear-gradient(135deg, ${COLORS.WHITE} 0%, ${COLORS.NEON_CYAN} 25%, ${COLORS.WHITE} 50%, ${COLORS.NEON_PINK} 75%, ${COLORS.WHITE} 100%)`,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
+                filter: `drop-shadow(0 4px 8px rgba(0,0,0,0.3))`,
               }}
             >
-              Our Partners
+              OUR PARTNERS
             </h1>
 
-            {/* Decorative ornamental divider */}
-            <div className="flex items-center justify-center mb-6">
-              <Image
-                src={IMAGES.sponsors.ornamentalDivider}
-                alt=""
-                width={280}
-                height={40}
-                className="opacity-80"
+            {/* Decorative divider */}
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div 
+                className="h-[1px] w-16 sm:w-24"
+                style={{ background: `linear-gradient(90deg, transparent, ${COLORS.NEON_PINK})` }}
+              />
+              <span 
+                className="text-xl"
+                style={{ 
+                  color: COLORS.NEON_PINK,
+                  textShadow: `0 0 15px ${COLORS.NEON_PINK}`,
+                }}
+              >
+                ✦
+              </span>
+              <div 
+                className="h-[1px] w-16 sm:w-24"
+                style={{ background: `linear-gradient(90deg, ${COLORS.NEON_PINK}, transparent)` }}
               />
             </div>
 
-            {/* Subtitle */}
-            <p
-              className="text-sm sm:text-base max-w-2xl mx-auto leading-relaxed"
-              style={{ color: `${COLORS.CREAM}90` }}
-            >
-              Kashi Yatra 2027 partners will be announced soon. Below are the
-              esteemed partners who supported our previous edition and helped
-              make it a grand success.
-            </p>
+            {/* Tagline badges - improved styling */}
+            <div className="flex items-center justify-center gap-4 flex-wrap mb-10">
+              {["POWERED BY", "SUPPORTED BY", "ENABLED BY"].map((tag, i) => (
+                <span
+                  key={tag}
+                  className="px-5 py-2 rounded-full text-xs font-bold tracking-[0.15em] transition-all duration-300 hover:scale-105"
+                  style={{
+                    background: `linear-gradient(135deg, ${[COLORS.NEON_CYAN, COLORS.NEON_PINK, COLORS.NEON_PURPLE][i]}20 0%, transparent 100%)`,
+                    border: `1.5px solid ${[COLORS.NEON_CYAN, COLORS.NEON_PINK, COLORS.NEON_PURPLE][i]}60`,
+                    color: [COLORS.NEON_CYAN, COLORS.NEON_PINK, COLORS.NEON_PURPLE][i],
+                    boxShadow: `0 0 20px ${[COLORS.NEON_CYAN, COLORS.NEON_PINK, COLORS.NEON_PURPLE][i]}20`,
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
 
-            {/* Coming soon badge */}
-            <div
-              className="inline-block mt-6 px-4 py-2 rounded-full"
+            {/* Subtitle - improved typography */}
+            <div className="max-w-2xl mx-auto mb-10 px-4">
+              <p
+                className="text-base sm:text-lg leading-relaxed text-center"
+                style={{ 
+                  color: "rgba(255,255,255,0.75)",
+                  fontFamily: "'Georgia', serif",
+                }}
+              >
+                Kashi Yatra 2027 partners will be announced soon.
+              </p>
+              <p
+                className="text-base sm:text-lg leading-relaxed text-center mt-2"
+                style={{ color: "rgba(255,255,255,0.6)" }}
+              >
+                Below are the amazing brands who made our previous edition{" "}
+                <span 
+                  className="font-bold"
+                  style={{ 
+                    background: `linear-gradient(90deg, ${COLORS.NEON_PINK}, ${COLORS.NEON_PURPLE})`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  legendary
+                </span>
+                .
+              </p>
+            </div>
+
+            {/* Coming soon badge - enhanced */}
+            <motion.div
+              className="inline-block px-8 py-4 rounded-2xl"
               style={{
-                background: "rgba(255,215,0,0.1)",
-                border: "1px solid rgba(255,215,0,0.3)",
+                background: `linear-gradient(135deg, ${COLORS.NEON_PINK}15, ${COLORS.NEON_PURPLE}15, ${COLORS.NEON_CYAN}15)`,
+                border: `2px solid transparent`,
+                borderImage: `linear-gradient(135deg, ${COLORS.NEON_PINK}60, ${COLORS.NEON_PURPLE}60, ${COLORS.NEON_CYAN}60) 1`,
               }}
+              animate={{
+                boxShadow: [
+                  `0 0 20px ${COLORS.NEON_PINK}20, 0 0 40px ${COLORS.NEON_PURPLE}10`,
+                  `0 0 30px ${COLORS.NEON_PINK}40, 0 0 60px ${COLORS.NEON_PURPLE}20`,
+                  `0 0 20px ${COLORS.NEON_PINK}20, 0 0 40px ${COLORS.NEON_PURPLE}10`,
+                ],
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
             >
               <span
-                className="text-xs tracking-[0.2em] uppercase"
-                style={{ color: COLORS.GOLD }}
+                className="text-sm sm:text-base tracking-[0.2em] uppercase font-bold flex items-center gap-3"
+                style={{ 
+                  background: `linear-gradient(90deg, ${COLORS.NEON_PINK}, ${COLORS.NEON_PURPLE})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
               >
+                <span className="text-lg">🚀</span>
                 2027 Partners Coming Soon
+                <span className="text-lg">✨</span>
               </span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Previous Edition Section */}
           <div className="mb-8">
-            <div className="flex items-center justify-center gap-3 mb-10">
+            <div className="flex items-center justify-center gap-3 mb-12">
               <span
                 className="h-px w-20 sm:w-32"
                 style={{
-                  background: `linear-gradient(90deg, transparent, rgba(255,215,0,0.4))`,
+                  background: `linear-gradient(90deg, transparent, ${COLORS.NEON_PURPLE}60)`,
                 }}
               />
               <h2
-                className="text-sm tracking-[0.3em] uppercase"
-                style={{ color: `${COLORS.GOLD}80` }}
+                className="text-sm tracking-[0.3em] uppercase font-bold"
+                style={{ color: COLORS.NEON_PURPLE }}
               >
                 Previous Edition Partners
               </h2>
               <span
                 className="h-px w-20 sm:w-32"
                 style={{
-                  background: `linear-gradient(90deg, rgba(255,215,0,0.4), transparent)`,
+                  background: `linear-gradient(90deg, ${COLORS.NEON_PURPLE}60, transparent)`,
                 }}
               />
             </div>
@@ -324,24 +881,24 @@ export function SponsorsPageContent() {
             <span
               className="h-px w-20"
               style={{
-                background: `linear-gradient(90deg, transparent, rgba(255,215,0,0.3))`,
+                background: `linear-gradient(90deg, transparent, ${COLORS.NEON_CYAN}40)`,
               }}
             />
-            <span className="text-2xl">🪔</span>
+            <span className="text-2xl">🎉</span>
             <span
               className="h-px w-20"
               style={{
-                background: `linear-gradient(90deg, rgba(255,215,0,0.3), transparent)`,
+                background: `linear-gradient(90deg, ${COLORS.NEON_CYAN}40, transparent)`,
               }}
             />
           </div>
 
           {/* Footer text */}
           <p
-            className="text-center text-xs mt-4 tracking-wider"
-            style={{ color: `${COLORS.GOLD}50` }}
+            className="text-center text-sm mt-6 tracking-wider"
+            style={{ color: `${COLORS.NEON_PURPLE}80` }}
           >
-            ॥ IIT (BHU) Varanasi ॥
+            IIT (BHU) Varanasi • Kashi Yatra 2027
           </p>
         </div>
       </main>

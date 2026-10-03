@@ -33,7 +33,7 @@ export const BrandHeader = memo(function BrandHeader() {
           fontFamily: "'Cinzel Decorative', serif",
         }}
       >
-        काशी यात्रा
+        Kashi Yatra
       </h3>
       
       {/* Year with ornate styling */}

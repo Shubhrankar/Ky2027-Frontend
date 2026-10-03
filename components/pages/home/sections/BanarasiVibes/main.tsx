@@ -81,7 +81,7 @@ function BanarasiVibesContent() {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `url('${IMAGES.vibes.background}')`,
+          backgroundImage: `url('${IMAGES.vibes.backgroundDark}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

@@ -70,7 +70,8 @@ function HomeContent() {
             <div className="sticky top-0 z-30">
               <FestHighlightsSection />
             </div>
-            <div className="relative z-70">
+            {/* Footer uses relative with high z-index to cover sticky sections */}
+            <div className="relative z-[100]">
               <FooterSection />
             </div>
           </motion.div>

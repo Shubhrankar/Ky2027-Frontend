@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Geist, Geist_Mono, Cinzel_Decorative } from "next/font/google";
+import { Geist, Geist_Mono, Cinzel_Decorative, Cinzel } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -20,10 +20,16 @@ const geistMono = Geist_Mono({
 });
 
 // Ethereal, ornate carved-in-stone display serif for the navbar / headings.
-const cinzel = Cinzel_Decorative({
-  variable: "--font-ethereal",
+const cinzelDecorative = Cinzel_Decorative({
+  variable: "--font-cinzel-decorative",
   subsets: ["latin"],
   weight: ["400", "700", "900"],
+});
+
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -50,7 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cinzelDecorative.variable} ${cinzel.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Toaster />

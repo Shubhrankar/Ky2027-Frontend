@@ -5,7 +5,7 @@ export { StageBackground, FloatingElements, CursorTrail } from "./Background";
 export { EnterButton, BlastEffect } from "./Enter";
 
 // Video section - video player transition
-export { VideoPlayer } from "./Video";
+export { VideoPlayer, FirePot } from "./Video";
 
 // Drawer section - navigation drawer
 export { NavigationDrawer } from "./Drawer";

@@ -9,8 +9,8 @@ import {
   EnterButton,
   BlastEffect,
   VideoPlayer,
+  FirePot,
   NavigationDrawer,
-  MuteButton,
 } from "./sections";
 import "./styles/cursor.css";
 
@@ -31,6 +31,9 @@ export function IntroSection() {
 
       {/* Video player - shows after blast */}
       <VideoPlayer />
+
+      {/* Audio-reactive fire pot - shows during video phase */}
+      <FirePot />
 
       {/* Blast effect overlay */}
       <BlastEffect />
@@ -67,9 +70,6 @@ export function IntroSection() {
           <SkipButton />
         )}
       </AnimatePresence>
-
-      {/* Mute button - shows when audio is playing */}
-      <MuteButton />
 
       {/* Navigation drawer - shows during video phase */}
       <NavigationDrawer />
