@@ -50,14 +50,7 @@ function DiscoBallModel() {
     }
   });
 
-  return (
-    <primitive 
-      ref={groupRef}
-      object={scene} 
-      scale={1.5}
-      position={[0, 0, 0]} 
-    />
-  );
+  return <primitive ref={groupRef} object={scene} scale={1.5} position={[0, 0, 0]} />;
 }
 
 // 3D Disco Ball with Canvas - skips rendering on mobile for performance
@@ -71,171 +64,148 @@ function DiscoBall3D() {
   }
 
   return (
-    <motion.div 
-      className="relative w-36 h-36 sm:w-44 sm:h-44 mx-auto"
+    <motion.div
+      className="relative mx-auto h-36 w-36 sm:h-44 sm:w-44"
       initial={{ y: -200, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
-      transition={{ 
+      transition={{
         type: "spring",
         stiffness: 60,
         damping: 12,
-        delay: 0.2
+        delay: 0.2,
       }}
     >
       {/* Hanging wire */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-12 -mt-12 bg-gradient-to-b from-gray-600 to-gray-400" style={{ zIndex: 30 }} />
+      <div
+        className="absolute top-0 left-1/2 -mt-12 h-12 w-[1px] -translate-x-1/2 bg-gradient-to-b from-gray-600 to-gray-400"
+        style={{ zIndex: 30 }}
+      />
 
-      {/* LASER BEAMS emitting from ball center - z-index 5 so behind the ball */}
-      <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 5 }}>
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            style={{
-              width: "300px",
-              height: "2px",
-              background: `linear-gradient(90deg, transparent 0%, ${
-                ["#EC4899", "#8B5CF6", "#06B6D4", "#F59E0B", "#10B981", "#A855F7"][i % 6]
-              } 10%, ${
-                ["#EC4899", "#8B5CF6", "#06B6D4", "#F59E0B", "#10B981", "#A855F7"][i % 6]
-              }80 50%, transparent 100%)`,
-              transformOrigin: "center center",
-              transform: `rotate(${i * 30}deg)`,
-              filter: "blur(0.5px)",
-            }}
-            animate={isAnimating ? {
-              opacity: [0.1, 0.7, 0.1],
-              scaleX: [0.3, 1, 0.3],
-            } : {}}
-            transition={{
-              duration: 2 + (i % 3) * 0.5,
-              repeat: Infinity,
-              delay: i * 0.15,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
+      {/* LASER BEAMS emitting from ball center - only render when animating */}
+      {isAnimating && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 5 }}>
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute"
+              style={{
+                width: "300px",
+                height: "2px",
+                background: `linear-gradient(90deg, transparent 0%, ${
+                  ["#EC4899", "#8B5CF6", "#06B6D4", "#F59E0B", "#10B981", "#A855F7"][i % 6]
+                } 10%, ${
+                  ["#EC4899", "#8B5CF6", "#06B6D4", "#F59E0B", "#10B981", "#A855F7"][i % 6]
+                }80 50%, transparent 100%)`,
+                transformOrigin: "center center",
+                transform: `rotate(${i * 30}deg)`,
+              }}
+              animate={{
+                opacity: [0.1, 0.7, 0.1],
+                scaleX: [0.3, 1, 0.3],
+              }}
+              transition={{
+                duration: 2 + (i % 3) * 0.5,
+                repeat: Infinity,
+                delay: i * 0.15,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+      )}
 
-      {/* Rotating laser beams - slower rotation */}
-      <motion.div 
-        className="absolute inset-0 flex items-center justify-center"
-        style={{ zIndex: 5 }}
-        animate={isAnimating ? { rotate: 360 } : {}}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      >
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={`rot-${i}`}
-            className="absolute"
-            style={{
-              width: "350px",
-              height: "3px",
-              background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 5%, ${
-                ["#EC4899", "#8B5CF6", "#06B6D4"][i % 3]
-              } 20%, transparent 100%)`,
-              transformOrigin: "center center",
-              transform: `rotate(${i * 60}deg)`,
-            }}
-          />
-        ))}
-      </motion.div>
-
-      {/* Strong glow behind ball */}
-      <motion.div 
-        className="absolute inset-0 rounded-full blur-3xl"
-        style={{ zIndex: 10 }}
-        animate={isAnimating ? {
-          scale: [1.2, 1.5, 1.2],
-          opacity: [0.5, 0.8, 0.5],
-        } : {}}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      >
-        <div 
-          className="w-full h-full rounded-full"
-          style={{
-            background: "radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(139,92,246,0.6) 30%, rgba(236,72,153,0.4) 60%, transparent 70%)",
-          }}
-        />
-      </motion.div>
-
-      {/* Secondary pulsing glow */}
-      <motion.div 
-        className="absolute inset-0 rounded-full blur-2xl"
-        style={{ zIndex: 10 }}
-        animate={isAnimating ? {
-          scale: [1, 1.3, 1],
-          opacity: [0.3, 0.6, 0.3],
-        } : {}}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.5,
-        }}
-      >
-        <div 
-          className="w-full h-full rounded-full"
-          style={{
-            background: "radial-gradient(circle, rgba(6,182,212,0.5) 0%, rgba(139,92,246,0.4) 50%, transparent 70%)",
-          }}
-        />
-      </motion.div>
-
-      {/* 3D Canvas - THE BALL - uses frameloop="demand" when not animating */}
-      <div className="relative w-full h-full" style={{ zIndex: 20 }}>
-        <Canvas
-          camera={{ position: [0, 0, 4], fov: 50 }}
-          style={{ background: "transparent" }}
-          frameloop={isAnimating ? "always" : "demand"}
-          dpr={[1, 1.5]}
+      {/* Rotating laser beams - only render when animating */}
+      {isAnimating && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ zIndex: 5 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         >
-          <Suspense fallback={null}>
-            {/* Bright white ambient for original colors */}
-            <ambientLight intensity={2} />
-            {/* Multiple directional lights for reflections */}
-            <directionalLight position={[5, 5, 5]} intensity={3} color="#ffffff" />
-            <directionalLight position={[-5, 5, 5]} intensity={2} color="#ffffff" />
-            <directionalLight position={[0, -5, 5]} intensity={1.5} color="#ffffff" />
-            <directionalLight position={[0, 5, -5]} intensity={1} color="#ffffff" />
-            {/* Colored accent lights */}
-            <pointLight position={[3, 0, 3]} intensity={1} color="#EC4899" />
-            <pointLight position={[-3, 0, 3]} intensity={1} color="#8B5CF6" />
-            <pointLight position={[0, 3, 3]} intensity={1} color="#06B6D4" />
-            
-            <DiscoBallModel />
-            
-            <Environment preset="sunset" />
-          </Suspense>
-        </Canvas>
-      </div>
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={`rot-${i}`}
+              className="absolute"
+              style={{
+                width: "350px",
+                height: "3px",
+                background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 5%, ${
+                  ["#EC4899", "#8B5CF6", "#06B6D4"][i % 3]
+                } 20%, transparent 100%)`,
+                transformOrigin: "center center",
+                transform: `rotate(${i * 60}deg)`,
+              }}
+            />
+          ))}
+        </motion.div>
+      )}
 
-      {/* Strong glow underneath */}
-      <motion.div 
-        className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-48 h-16 blur-2xl"
-        style={{ zIndex: 15 }}
-        animate={isAnimating ? {
-          opacity: [0.5, 0.9, 0.5],
-          scaleX: [0.8, 1.2, 0.8],
-        } : {}}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
+      {/* Static glow behind ball - no animation, just gradient */}
+      <div
+        className="absolute inset-0 rounded-full"
+        style={{
+          zIndex: 10,
+          background:
+            "radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(139,92,246,0.5) 30%, rgba(236,72,153,0.3) 60%, transparent 70%)",
+          transform: "scale(1.3)",
+          opacity: isAnimating ? 0.7 : 0.4,
+          transition: "opacity 0.3s ease",
         }}
-      >
-        <div 
-          className="w-full h-full"
+      />
+
+      {/* 3D Canvas - ONLY RENDER WHEN IN VIEWPORT */}
+      {isAnimating && (
+        <div className="relative h-full w-full" style={{ zIndex: 20 }}>
+          <Canvas
+            camera={{ position: [0, 0, 4], fov: 50 }}
+            style={{ background: "transparent" }}
+            frameloop="always"
+            dpr={[1, 1.5]}
+          >
+            <Suspense fallback={null}>
+              <ambientLight intensity={2} />
+              <directionalLight position={[5, 5, 5]} intensity={3} color="#ffffff" />
+              <directionalLight position={[-5, 5, 5]} intensity={2} color="#ffffff" />
+              <directionalLight position={[0, -5, 5]} intensity={1.5} color="#ffffff" />
+              <directionalLight position={[0, 5, -5]} intensity={1} color="#ffffff" />
+              <pointLight position={[3, 0, 3]} intensity={1} color="#EC4899" />
+              <pointLight position={[-3, 0, 3]} intensity={1} color="#8B5CF6" />
+              <pointLight position={[0, 3, 3]} intensity={1} color="#06B6D4" />
+
+              <DiscoBallModel />
+
+              <Environment preset="sunset" />
+            </Suspense>
+          </Canvas>
+        </div>
+      )}
+
+      {/* Static fallback when not animating */}
+      {!isAnimating && (
+        <div
+          className="relative h-full w-full rounded-full"
           style={{
-            background: "radial-gradient(ellipse, rgba(255,255,255,0.4) 0%, rgba(139,92,246,0.7) 30%, rgba(236,72,153,0.5) 60%, transparent 80%)",
+            zIndex: 20,
+            background:
+              "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(139,92,246,0.4) 50%, rgba(100,70,150,0.6))",
+            boxShadow: "inset 0 0 30px rgba(255,255,255,0.2), 0 0 40px rgba(139,92,246,0.5)",
           }}
         />
-      </motion.div>
+      )}
+
+      {/* Static glow underneath */}
+      <div
+        className="absolute -bottom-8 left-1/2 h-16 w-48 -translate-x-1/2"
+        style={{
+          zIndex: 15,
+          background:
+            "radial-gradient(ellipse, rgba(255,255,255,0.3) 0%, rgba(139,92,246,0.5) 30%, rgba(236,72,153,0.3) 60%, transparent 80%)",
+          opacity: isAnimating ? 0.7 : 0.4,
+          filter: "blur(16px)",
+          transition: "opacity 0.3s ease",
+        }}
+      />
     </motion.div>
   );
 }
@@ -245,13 +215,17 @@ useGLTF.preload("/home/discoBall.glb");
 
 // Animated Laser Beams - Only 2 (extreme left and extreme right)
 function LaserBeams() {
+  const { isAnimating } = useMotionZone();
+
+  if (!isAnimating) return null;
+
   const beams = [
     { color: "#EC4899", top: "20%", fromLeft: true },
     { color: "#8B5CF6", top: "60%", fromLeft: false },
   ];
-  
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {beams.map((beam, i) => (
         <motion.div
           key={i}
@@ -281,9 +255,13 @@ function LaserBeams() {
 
 // Floating Music Notes - Reduced count
 function FloatingNotes() {
+  const { isAnimating } = useMotionZone();
   const notes = ["♪", "♫", "♬"];
+
+  if (!isAnimating) return null;
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {[...Array(6)].map((_, i) => (
         <motion.span
           key={i}
@@ -317,12 +295,15 @@ function FloatingNotes() {
 // Silhouette Image at bottom
 function SilhouetteImage() {
   return (
-    <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ zIndex: 50, height: "180px" }}>
+    <div
+      className="pointer-events-none absolute right-0 bottom-0 left-0"
+      style={{ zIndex: 50, height: "180px" }}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={IMAGES.proNites.silhouette}
         alt="Crowd silhouette"
-        className="w-full h-full object-cover object-top"
+        className="h-full w-full object-cover object-top"
         onError={(e) => {
           (e.target as HTMLImageElement).src = "/home/proNites/common/silhoutte.png";
         }}
@@ -333,8 +314,12 @@ function SilhouetteImage() {
 
 // Spotlight Cones - Only 2 (extreme left and extreme right)
 function Spotlights() {
+  const { isAnimating } = useMotionZone();
+
+  if (!isAnimating) return null;
+
   return (
-    <div className="absolute top-0 left-0 right-0 h-full overflow-hidden pointer-events-none">
+    <div className="pointer-events-none absolute top-0 right-0 left-0 h-full overflow-hidden">
       {/* Left spotlight */}
       <motion.div
         className="absolute top-0"
@@ -384,15 +369,23 @@ function Spotlights() {
 
 // Neon Side Borders - Vertical light strips on left and right with floating text
 function NeonSideBorders() {
+  const { isAnimating } = useMotionZone();
+
+  if (!isAnimating) return null;
+
   return (
     <>
       {/* Left Border */}
-      <div className="hidden lg:block absolute left-4 xl:left-8 top-0 bottom-0 pointer-events-none" style={{ zIndex: 5 }}>
+      <div
+        className="pointer-events-none absolute top-0 bottom-0 left-4 hidden lg:block xl:left-8"
+        style={{ zIndex: 5 }}
+      >
         {/* Main gradient bar */}
         <motion.div
-          className="absolute left-0 top-[10%] bottom-[25%] w-1"
+          className="absolute top-[10%] bottom-[25%] left-0 w-1"
           style={{
-            background: "linear-gradient(180deg, transparent 0%, #EC4899 15%, #8B5CF6 40%, #06B6D4 60%, #8B5CF6 85%, transparent 100%)",
+            background:
+              "linear-gradient(180deg, transparent 0%, #EC4899 15%, #8B5CF6 40%, #06B6D4 60%, #8B5CF6 85%, transparent 100%)",
             boxShadow: "0 0 20px #8B5CF6, 0 0 40px #8B5CF680, 0 0 60px #EC489940",
             borderRadius: "2px",
           }}
@@ -406,24 +399,25 @@ function NeonSideBorders() {
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         />
-        
+
         {/* Outer glow line */}
         <motion.div
-          className="absolute left-[-4px] top-[10%] bottom-[25%] w-2"
+          className="absolute top-[10%] bottom-[25%] left-[-4px] w-2"
           style={{
-            background: "linear-gradient(180deg, transparent 0%, #EC489950 15%, #8B5CF650 40%, #06B6D450 60%, #8B5CF650 85%, transparent 100%)",
+            background:
+              "linear-gradient(180deg, transparent 0%, #EC489950 15%, #8B5CF650 40%, #06B6D450 60%, #8B5CF650 85%, transparent 100%)",
             filter: "blur(8px)",
             borderRadius: "4px",
           }}
           animate={{ opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
         />
-        
+
         {/* Pulsing light nodes along the bar */}
         {[15, 30, 45, 60, 75].map((pos, i) => (
           <motion.div
             key={`left-node-${i}`}
-            className="absolute left-[-3px] w-3 h-3 rounded-full"
+            className="absolute left-[-3px] h-3 w-3 rounded-full"
             style={{
               top: `${pos}%`,
               background: ["#EC4899", "#8B5CF6", "#06B6D4", "#8B5CF6", "#EC4899"][i],
@@ -441,10 +435,10 @@ function NeonSideBorders() {
             }}
           />
         ))}
-        
+
         {/* Traveling light effect */}
         <motion.div
-          className="absolute left-[-1px] w-2 h-16 rounded-full"
+          className="absolute left-[-1px] h-16 w-2 rounded-full"
           style={{
             background: "linear-gradient(180deg, transparent, #fff, transparent)",
             filter: "blur(2px)",
@@ -462,7 +456,7 @@ function NeonSideBorders() {
 
         {/* Floating Vertical Text - "LIVE" */}
         <motion.div
-          className="absolute left-6 top-[30%] flex flex-col gap-2"
+          className="absolute top-[30%] left-6 flex flex-col gap-2"
           style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
           animate={{
             y: [0, -15, 0],
@@ -475,7 +469,7 @@ function NeonSideBorders() {
           }}
         >
           <span
-            className="text-3xl xl:text-4xl font-black tracking-[0.2em] rotate-180"
+            className="rotate-180 text-3xl font-black tracking-[0.2em] xl:text-4xl"
             style={{
               background: "linear-gradient(180deg, #EC4899, #8B5CF6, #06B6D4)",
               WebkitBackgroundClip: "text",
@@ -490,12 +484,16 @@ function NeonSideBorders() {
       </div>
 
       {/* Right Border */}
-      <div className="hidden lg:block absolute right-4 xl:right-8 top-0 bottom-0 pointer-events-none" style={{ zIndex: 5 }}>
+      <div
+        className="pointer-events-none absolute top-0 right-4 bottom-0 hidden lg:block xl:right-8"
+        style={{ zIndex: 5 }}
+      >
         {/* Main gradient bar */}
         <motion.div
-          className="absolute right-0 top-[10%] bottom-[25%] w-1"
+          className="absolute top-[10%] right-0 bottom-[25%] w-1"
           style={{
-            background: "linear-gradient(180deg, transparent 0%, #06B6D4 15%, #8B5CF6 40%, #EC4899 60%, #8B5CF6 85%, transparent 100%)",
+            background:
+              "linear-gradient(180deg, transparent 0%, #06B6D4 15%, #8B5CF6 40%, #EC4899 60%, #8B5CF6 85%, transparent 100%)",
             boxShadow: "0 0 20px #8B5CF6, 0 0 40px #8B5CF680, 0 0 60px #06B6D440",
             borderRadius: "2px",
           }}
@@ -509,24 +507,25 @@ function NeonSideBorders() {
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
         />
-        
+
         {/* Outer glow line */}
         <motion.div
-          className="absolute right-[-4px] top-[10%] bottom-[25%] w-2"
+          className="absolute top-[10%] right-[-4px] bottom-[25%] w-2"
           style={{
-            background: "linear-gradient(180deg, transparent 0%, #06B6D450 15%, #8B5CF650 40%, #EC489950 60%, #8B5CF650 85%, transparent 100%)",
+            background:
+              "linear-gradient(180deg, transparent 0%, #06B6D450 15%, #8B5CF650 40%, #EC489950 60%, #8B5CF650 85%, transparent 100%)",
             filter: "blur(8px)",
             borderRadius: "4px",
           }}
           animate={{ opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         />
-        
+
         {/* Pulsing light nodes along the bar */}
         {[15, 30, 45, 60, 75].map((pos, i) => (
           <motion.div
             key={`right-node-${i}`}
-            className="absolute right-[-3px] w-3 h-3 rounded-full"
+            className="absolute right-[-3px] h-3 w-3 rounded-full"
             style={{
               top: `${pos}%`,
               background: ["#06B6D4", "#8B5CF6", "#EC4899", "#8B5CF6", "#06B6D4"][i],
@@ -544,10 +543,10 @@ function NeonSideBorders() {
             }}
           />
         ))}
-        
+
         {/* Traveling light effect */}
         <motion.div
-          className="absolute right-[-1px] w-2 h-16 rounded-full"
+          className="absolute right-[-1px] h-16 w-2 rounded-full"
           style={{
             background: "linear-gradient(180deg, transparent, #fff, transparent)",
             filter: "blur(2px)",
@@ -566,7 +565,7 @@ function NeonSideBorders() {
 
         {/* Floating Vertical Text - "CONCERT" */}
         <motion.div
-          className="absolute right-6 top-[30%] flex flex-col gap-2"
+          className="absolute top-[30%] right-6 flex flex-col gap-2"
           style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
           animate={{
             y: [0, 15, 0],
@@ -580,7 +579,7 @@ function NeonSideBorders() {
           }}
         >
           <span
-            className="text-3xl xl:text-4xl font-black tracking-[0.2em]"
+            className="text-3xl font-black tracking-[0.2em] xl:text-4xl"
             style={{
               background: "linear-gradient(180deg, #06B6D4, #8B5CF6, #EC4899)",
               WebkitBackgroundClip: "text",
@@ -600,9 +599,9 @@ function NeonSideBorders() {
 // Neon Grid Floor
 function NeonGrid() {
   return (
-    <div className="absolute bottom-24 sm:bottom-32 left-0 right-0 h-32 overflow-hidden opacity-30">
+    <div className="absolute right-0 bottom-24 left-0 h-32 overflow-hidden opacity-30 sm:bottom-32">
       <div
-        className="w-full h-full"
+        className="h-full w-full"
         style={{
           background: `
             linear-gradient(90deg, #8B5CF6 1px, transparent 1px),
@@ -669,7 +668,7 @@ function FestHighlightsContent() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen py-8 sm:py-12 overflow-hidden"
+      className="relative min-h-screen overflow-hidden py-8 sm:py-12"
       style={{
         background: "linear-gradient(180deg, #0a0510 0%, #1a0a2e 30%, #0f0720 70%, #050208 100%)",
       }}
@@ -690,7 +689,7 @@ function FestHighlightsContent() {
 
           {/* Title with Gradient */}
           <motion.h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
+            className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
             style={{
               background: "linear-gradient(90deg, #EC4899, #8B5CF6, #06B6D4, #EC4899)",
               backgroundSize: "200% auto",
@@ -712,7 +711,7 @@ function FestHighlightsContent() {
 
           {/* Subtitle */}
           <motion.p
-            className="text-sm sm:text-base tracking-[0.4em] uppercase mb-6 sm:mb-8 text-purple-300"
+            className="mb-6 text-sm tracking-[0.4em] text-purple-300 uppercase sm:mb-8 sm:text-base"
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
@@ -720,16 +719,16 @@ function FestHighlightsContent() {
           </motion.p>
 
           {/* Description - Enhanced with highlights */}
-          <motion.div 
-            className="mb-8 sm:mb-12 max-w-3xl mx-auto px-4"
+          <motion.div
+            className="mx-auto mb-8 max-w-3xl px-4 sm:mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed text-center">
+            <p className="text-center text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
               Get ready for the{" "}
-              <span 
+              <span
                 className="font-bold"
                 style={{
                   background: "linear-gradient(90deg, #EC4899, #F59E0B)",
@@ -742,16 +741,16 @@ function FestHighlightsContent() {
               </span>
               !
             </p>
-            <p className="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed text-center mt-3">
+            <p className="mt-3 text-center text-base leading-relaxed text-gray-400 sm:text-lg md:text-xl">
               <span className="text-pink-400">Live concerts</span>
               {" • "}
               <span className="text-purple-400">Celebrity performances</span>
               {" • "}
               <span className="text-cyan-400">Insane DJ nights</span>
             </p>
-            <p className="text-sm sm:text-base text-gray-500 leading-relaxed text-center mt-4 italic">
+            <p className="mt-4 text-center text-sm leading-relaxed text-gray-500 italic sm:text-base">
               Vibes that&apos;ll blow your mind — This is{" "}
-              <span 
+              <span
                 className="font-bold not-italic"
                 style={{
                   background: "linear-gradient(90deg, #8B5CF6, #06B6D4)",
@@ -767,11 +766,11 @@ function FestHighlightsContent() {
           </motion.div>
 
           {/* Highlight Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {highlights.map((item, i) => (
               <motion.div
                 key={i}
-                className="highlight-card relative p-4 sm:p-6 rounded-2xl cursor-pointer group overflow-hidden"
+                className="highlight-card group relative cursor-pointer overflow-hidden rounded-2xl p-4 sm:p-6"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -808,7 +807,7 @@ function FestHighlightsContent() {
 
                 {/* Outer glow */}
                 <motion.div
-                  className="absolute -inset-1 rounded-2xl opacity-50 group-hover:opacity-100 transition-opacity blur-md"
+                  className="absolute -inset-1 rounded-2xl opacity-50 blur-md transition-opacity group-hover:opacity-100"
                   style={{ background: item.color }}
                   animate={{ opacity: [0.2, 0.4, 0.2] }}
                   transition={{ duration: 2, repeat: Infinity }}
@@ -827,21 +826,21 @@ function FestHighlightsContent() {
                 <div className="relative z-10">
                   {/* Icon with glow */}
                   <motion.div
-                    className="relative inline-block mb-3"
+                    className="relative mb-3 inline-block"
                     animate={{ y: [0, -8, 0] }}
                     transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.15 }}
                   >
                     <HighlightIcon type={item.iconType} color={item.color} />
                     {/* Icon glow underneath */}
                     <div
-                      className="absolute inset-0 blur-xl opacity-60 -z-10"
+                      className="absolute inset-0 -z-10 opacity-60 blur-xl"
                       style={{ background: item.color }}
                     />
                   </motion.div>
 
                   {/* Title with text glow */}
                   <h4
-                    className="font-black text-sm sm:text-lg mb-1 uppercase tracking-wider"
+                    className="mb-1 text-sm font-black tracking-wider uppercase sm:text-lg"
                     style={{
                       color: item.color,
                       textShadow: `0 0 20px ${item.color}, 0 0 40px ${item.color}60`,
@@ -851,12 +850,12 @@ function FestHighlightsContent() {
                   </h4>
 
                   {/* Description */}
-                  <p className="text-xs sm:text-sm text-gray-300 font-medium">{item.desc}</p>
+                  <p className="text-xs font-medium text-gray-300 sm:text-sm">{item.desc}</p>
                 </div>
 
                 {/* Animated corner sparks */}
                 <motion.div
-                  className="absolute top-0 left-0 w-8 h-8"
+                  className="absolute top-0 left-0 h-8 w-8"
                   style={{
                     background: `radial-gradient(circle at top left, ${item.color} 0%, transparent 70%)`,
                   }}
@@ -864,7 +863,7 @@ function FestHighlightsContent() {
                   transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
                 />
                 <motion.div
-                  className="absolute bottom-0 right-0 w-8 h-8"
+                  className="absolute right-0 bottom-0 h-8 w-8"
                   style={{
                     background: `radial-gradient(circle at bottom right, ${item.color} 0%, transparent 70%)`,
                   }}
