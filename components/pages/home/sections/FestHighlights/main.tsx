@@ -3,7 +3,7 @@
 import { useEffect, useRef, Suspense } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 import { MotionZone, useMotionZone } from "@/lib/motion";
@@ -43,10 +43,12 @@ function DiscoBallModel() {
   const { scene } = useGLTF("/home/discoBall.glb");
   const groupRef = useRef<THREE.Group>(null);
   const { isAnimating } = useMotionZone();
+  const { invalidate } = useThree();
 
   useFrame(() => {
     if (groupRef.current && isAnimating) {
       groupRef.current.rotation.y += 0.005;
+      invalidate(); // Request a new frame for demand mode
     }
   });
 
@@ -160,21 +162,20 @@ function DiscoBall3D() {
           <Canvas
             camera={{ position: [0, 0, 4], fov: 50 }}
             style={{ background: "transparent" }}
-            frameloop="always"
-            dpr={[1, 1.5]}
+            frameloop="demand"
+            dpr={1}
+            gl={{
+              antialias: false,
+              powerPreference: "low-power",
+              alpha: true,
+            }}
           >
             <Suspense fallback={null}>
-              <ambientLight intensity={2} />
-              <directionalLight position={[5, 5, 5]} intensity={3} color="#ffffff" />
-              <directionalLight position={[-5, 5, 5]} intensity={2} color="#ffffff" />
-              <directionalLight position={[0, -5, 5]} intensity={1.5} color="#ffffff" />
-              <directionalLight position={[0, 5, -5]} intensity={1} color="#ffffff" />
-              <pointLight position={[3, 0, 3]} intensity={1} color="#EC4899" />
-              <pointLight position={[-3, 0, 3]} intensity={1} color="#8B5CF6" />
-              <pointLight position={[0, 3, 3]} intensity={1} color="#06B6D4" />
+              <ambientLight intensity={3} />
+              <directionalLight position={[5, 5, 5]} intensity={2} color="#ffffff" />
+              <directionalLight position={[-5, -5, 5]} intensity={1.5} color="#ffffff" />
 
               <DiscoBallModel />
-
               <Environment preset="sunset" />
             </Suspense>
           </Canvas>
@@ -213,11 +214,12 @@ function DiscoBall3D() {
 // Preload
 useGLTF.preload("/home/discoBall.glb");
 
-// Animated Laser Beams - Only 2 (extreme left and extreme right)
+// Animated Laser Beams - Only 2 (extreme left and extreme right) - Desktop only
 function LaserBeams() {
   const { isAnimating } = useMotionZone();
+  const isMobile = useIsMobile();
 
-  if (!isAnimating) return null;
+  if (!isAnimating || isMobile) return null;
 
   const beams = [
     { color: "#EC4899", top: "20%", fromLeft: true },
@@ -253,12 +255,13 @@ function LaserBeams() {
   );
 }
 
-// Floating Music Notes - Reduced count
+// Floating Music Notes - Desktop only
 function FloatingNotes() {
   const { isAnimating } = useMotionZone();
+  const isMobile = useIsMobile();
   const notes = ["♪", "♫", "♬"];
 
-  if (!isAnimating) return null;
+  if (!isAnimating || isMobile) return null;
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -296,8 +299,8 @@ function FloatingNotes() {
 function SilhouetteImage() {
   return (
     <div
-      className="pointer-events-none absolute right-0 bottom-0 left-0"
-      style={{ zIndex: 50, height: "180px" }}
+      className="pointer-events-none absolute right-0 bottom-0 left-0 h-[450px] sm:h-[180px]"
+      style={{ zIndex: 50 }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -312,11 +315,12 @@ function SilhouetteImage() {
   );
 }
 
-// Spotlight Cones - Only 2 (extreme left and extreme right)
+// Spotlight Cones - Desktop only
 function Spotlights() {
   const { isAnimating } = useMotionZone();
+  const isMobile = useIsMobile();
 
-  if (!isAnimating) return null;
+  if (!isAnimating || isMobile) return null;
 
   return (
     <div className="pointer-events-none absolute top-0 right-0 left-0 h-full overflow-hidden">
@@ -367,11 +371,12 @@ function Spotlights() {
   );
 }
 
-// Neon Side Borders - Vertical light strips on left and right with floating text
+// Neon Side Borders - Desktop only
 function NeonSideBorders() {
   const { isAnimating } = useMotionZone();
+  const isMobile = useIsMobile();
 
-  if (!isAnimating) return null;
+  if (!isAnimating || isMobile) return null;
 
   return (
     <>
@@ -616,13 +621,176 @@ function NeonGrid() {
   );
 }
 
+// Static Highlight Card for Mobile
+function StaticHighlightCard({ item, index }: { item: (typeof highlights)[0]; index: number }) {
+  return (
+    <div className="highlight-card group relative overflow-hidden rounded-2xl p-4 sm:p-6">
+      {/* Static gradient background */}
+      <div
+        className="absolute inset-0 rounded-2xl"
+        style={{
+          background: `linear-gradient(135deg, ${item.color}30 0%, rgba(0,0,0,0.8) 50%, ${item.color}20 100%)`,
+        }}
+      />
+
+      {/* Glowing border effect */}
+      <div
+        className="absolute inset-0 rounded-2xl"
+        style={{
+          padding: "2px",
+          background: `linear-gradient(135deg, ${item.color}, ${item.color}40, ${item.color})`,
+          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+
+      {/* Outer glow */}
+      <div
+        className="absolute -inset-1 rounded-2xl opacity-30 blur-md"
+        style={{ background: item.color }}
+      />
+
+      {/* Content container */}
+      <div className="relative z-10">
+        {/* Icon */}
+        <div className="relative mb-3 inline-block">
+          <HighlightIcon type={item.iconType} color={item.color} />
+          <div
+            className="absolute inset-0 -z-10 opacity-60 blur-xl"
+            style={{ background: item.color }}
+          />
+        </div>
+
+        {/* Title */}
+        <h4
+          className="mb-1 text-sm font-black tracking-wider uppercase sm:text-lg"
+          style={{
+            color: item.color,
+            textShadow: `0 0 20px ${item.color}, 0 0 40px ${item.color}60`,
+          }}
+        >
+          {item.title}
+        </h4>
+
+        {/* Description */}
+        <p className="text-xs font-medium text-gray-300 sm:text-sm">{item.desc}</p>
+      </div>
+
+      {/* Static corner accents */}
+      <div
+        className="absolute top-0 left-0 h-8 w-8 opacity-50"
+        style={{
+          background: `radial-gradient(circle at top left, ${item.color} 0%, transparent 70%)`,
+        }}
+      />
+      <div
+        className="absolute right-0 bottom-0 h-8 w-8 opacity-50"
+        style={{
+          background: `radial-gradient(circle at bottom right, ${item.color} 0%, transparent 70%)`,
+        }}
+      />
+    </div>
+  );
+}
+
+// Animated Highlight Card for Desktop - Uses CSS animations that respect MotionZone pausing
+function AnimatedHighlightCard({ item, index }: { item: (typeof highlights)[0]; index: number }) {
+  return (
+    <motion.div
+      className="highlight-card group relative cursor-pointer overflow-hidden rounded-2xl p-4 sm:p-6"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ scale: 1.05, y: -5 }}
+    >
+      {/* Static gradient background */}
+      <div
+        className="absolute inset-0 rounded-2xl"
+        style={{
+          background: `linear-gradient(135deg, ${item.color}30 0%, rgba(0,0,0,0.8) 50%, ${item.color}20 100%)`,
+        }}
+      />
+
+      {/* Glowing border effect */}
+      <div
+        className="absolute inset-0 rounded-2xl"
+        style={{
+          padding: "2px",
+          background: `linear-gradient(135deg, ${item.color}, ${item.color}40, ${item.color})`,
+          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+
+      {/* Outer glow - static with hover transition */}
+      <div
+        className="absolute -inset-1 rounded-2xl opacity-30 blur-md transition-opacity duration-300 group-hover:opacity-80"
+        style={{ background: item.color }}
+      />
+
+      {/* Inner shine effect */}
+      <div
+        className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(circle at 30% 30%, ${item.color}40 0%, transparent 60%)`,
+        }}
+      />
+
+      {/* Content container */}
+      <div className="relative z-10">
+        {/* Icon - static, no floating animation */}
+        <div className="relative mb-3 inline-block">
+          <HighlightIcon type={item.iconType} color={item.color} />
+          {/* Icon glow underneath */}
+          <div
+            className="absolute inset-0 -z-10 opacity-60 blur-xl"
+            style={{ background: item.color }}
+          />
+        </div>
+
+        {/* Title with text glow */}
+        <h4
+          className="mb-1 text-sm font-black tracking-wider uppercase sm:text-lg"
+          style={{
+            color: item.color,
+            textShadow: `0 0 20px ${item.color}, 0 0 40px ${item.color}60`,
+          }}
+        >
+          {item.title}
+        </h4>
+
+        {/* Description */}
+        <p className="text-xs font-medium text-gray-300 sm:text-sm">{item.desc}</p>
+      </div>
+
+      {/* Static corner accents */}
+      <div
+        className="absolute top-0 left-0 h-8 w-8 opacity-60"
+        style={{
+          background: `radial-gradient(circle at top left, ${item.color} 0%, transparent 70%)`,
+        }}
+      />
+      <div
+        className="absolute right-0 bottom-0 h-8 w-8 opacity-60"
+        style={{
+          background: `radial-gradient(circle at bottom right, ${item.color} 0%, transparent 70%)`,
+        }}
+      />
+    </motion.div>
+  );
+}
+
 function FestHighlightsContent() {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || isMobile) return;
     if (typeof window !== "undefined" && window.innerWidth < 640) return;
 
     const ctx = gsap.context(() => {
@@ -663,7 +831,7 @@ function FestHighlightsContent() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isMobile]);
 
   return (
     <section
@@ -673,7 +841,7 @@ function FestHighlightsContent() {
         background: "linear-gradient(180deg, #0a0510 0%, #1a0a2e 30%, #0f0720 70%, #050208 100%)",
       }}
     >
-      {/* Animated Background Elements */}
+      {/* Animated Background Elements - Desktop only */}
       <Spotlights />
       <LaserBeams />
       <FloatingNotes />
@@ -682,50 +850,45 @@ function FestHighlightsContent() {
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={contentRef} className="text-center">
-          {/* 3D Disco Ball - Uses useIsMobile to skip on mobile, useMotionZone to pause when off-screen */}
+          {/* 3D Disco Ball - Desktop only */}
           <div className="mb-6 sm:mb-8">
             <DiscoBall3D />
           </div>
 
-          {/* Title with Gradient */}
-          <motion.h2
-            className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
-            style={{
-              background: "linear-gradient(90deg, #EC4899, #8B5CF6, #06B6D4, #EC4899)",
-              backgroundSize: "200% auto",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              textShadow: "0 0 40px rgba(139, 92, 246, 0.5)",
-            }}
-            animate={{
-              backgroundPosition: ["0% center", "200% center"],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            THE ULTIMATE FEST
-          </motion.h2>
+          {/* Title with Gradient - Static on mobile */}
+          {isMobile ? (
+            <h2
+              className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
+              style={{
+                background: "linear-gradient(90deg, #EC4899, #8B5CF6, #06B6D4)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                textShadow: "0 0 40px rgba(139, 92, 246, 0.5)",
+              }}
+            >
+              THE ULTIMATE FEST
+            </h2>
+          ) : (
+            <h2
+              className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
+              style={{
+                background: "linear-gradient(90deg, #EC4899, #8B5CF6, #06B6D4)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                textShadow: "0 0 40px rgba(139, 92, 246, 0.5)",
+              }}
+            >
+              THE ULTIMATE FEST
+            </h2>
+          )}
 
-          {/* Subtitle */}
-          <motion.p
-            className="mb-6 text-sm tracking-[0.4em] text-purple-300 uppercase sm:mb-8 sm:text-base"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
+          {/* Subtitle - Static */}
+          <p className="mb-6 text-sm tracking-[0.4em] text-purple-300 uppercase sm:mb-8 sm:text-base">
             ⚡ 4 Days of Non-Stop Energy ⚡
-          </motion.p>
+          </p>
 
-          {/* Description - Enhanced with highlights */}
-          <motion.div
-            className="mx-auto mb-8 max-w-3xl px-4 sm:mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
+          {/* Description */}
+          <div className="mx-auto mb-8 max-w-3xl px-4 sm:mb-12">
             <p className="text-center text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
               Get ready for the{" "}
               <span
@@ -763,115 +926,17 @@ function FestHighlightsContent() {
               </span>
               !
             </p>
-          </motion.div>
+          </div>
 
-          {/* Highlight Cards */}
+          {/* Highlight Cards - Static on mobile, animated on desktop */}
           <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-            {highlights.map((item, i) => (
-              <motion.div
-                key={i}
-                className="highlight-card group relative cursor-pointer overflow-hidden rounded-2xl p-4 sm:p-6"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-              >
-                {/* Animated gradient background */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl"
-                  style={{
-                    background: `linear-gradient(135deg, ${item.color}30 0%, rgba(0,0,0,0.8) 50%, ${item.color}20 100%)`,
-                  }}
-                  animate={{
-                    background: [
-                      `linear-gradient(135deg, ${item.color}30 0%, rgba(0,0,0,0.8) 50%, ${item.color}20 100%)`,
-                      `linear-gradient(225deg, ${item.color}25 0%, rgba(0,0,0,0.85) 50%, ${item.color}30 100%)`,
-                      `linear-gradient(135deg, ${item.color}30 0%, rgba(0,0,0,0.8) 50%, ${item.color}20 100%)`,
-                    ],
-                  }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                />
-
-                {/* Glowing border effect */}
-                <div
-                  className="absolute inset-0 rounded-2xl"
-                  style={{
-                    padding: "2px",
-                    background: `linear-gradient(135deg, ${item.color}, ${item.color}40, ${item.color})`,
-                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    maskComposite: "exclude",
-                  }}
-                />
-
-                {/* Outer glow */}
-                <motion.div
-                  className="absolute -inset-1 rounded-2xl opacity-50 blur-md transition-opacity group-hover:opacity-100"
-                  style={{ background: item.color }}
-                  animate={{ opacity: [0.2, 0.4, 0.2] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-
-                {/* Inner shine effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
-                  style={{
-                    background: `radial-gradient(circle at 30% 30%, ${item.color}40 0%, transparent 60%)`,
-                  }}
-                  transition={{ duration: 0.3 }}
-                />
-
-                {/* Content container */}
-                <div className="relative z-10">
-                  {/* Icon with glow */}
-                  <motion.div
-                    className="relative mb-3 inline-block"
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.15 }}
-                  >
-                    <HighlightIcon type={item.iconType} color={item.color} />
-                    {/* Icon glow underneath */}
-                    <div
-                      className="absolute inset-0 -z-10 opacity-60 blur-xl"
-                      style={{ background: item.color }}
-                    />
-                  </motion.div>
-
-                  {/* Title with text glow */}
-                  <h4
-                    className="mb-1 text-sm font-black tracking-wider uppercase sm:text-lg"
-                    style={{
-                      color: item.color,
-                      textShadow: `0 0 20px ${item.color}, 0 0 40px ${item.color}60`,
-                    }}
-                  >
-                    {item.title}
-                  </h4>
-
-                  {/* Description */}
-                  <p className="text-xs font-medium text-gray-300 sm:text-sm">{item.desc}</p>
-                </div>
-
-                {/* Animated corner sparks */}
-                <motion.div
-                  className="absolute top-0 left-0 h-8 w-8"
-                  style={{
-                    background: `radial-gradient(circle at top left, ${item.color} 0%, transparent 70%)`,
-                  }}
-                  animate={{ opacity: [0.5, 1, 0.5], scale: [0.8, 1.2, 0.8] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-                />
-                <motion.div
-                  className="absolute right-0 bottom-0 h-8 w-8"
-                  style={{
-                    background: `radial-gradient(circle at bottom right, ${item.color} 0%, transparent 70%)`,
-                  }}
-                  animate={{ opacity: [0.5, 1, 0.5], scale: [0.8, 1.2, 0.8] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 + 0.75 }}
-                />
-              </motion.div>
-            ))}
+            {highlights.map((item, i) =>
+              isMobile ? (
+                <StaticHighlightCard key={i} item={item} index={i} />
+              ) : (
+                <AnimatedHighlightCard key={i} item={item} index={i} />
+              )
+            )}
           </div>
         </div>
       </div>

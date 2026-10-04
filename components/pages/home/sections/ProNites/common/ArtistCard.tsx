@@ -9,10 +9,10 @@ import { useMotionZone } from "@/lib/motion";
 // ═══════════════════════════════════════════════════════════════════
 // MYSTERY SILHOUETTE - Animated question mark
 // ═══════════════════════════════════════════════════════════════════
-const MysterySilhouette = memo(function MysterySilhouette({ 
+const MysterySilhouette = memo(function MysterySilhouette({
   accentColor,
-  isHeadliner 
-}: { 
+  isHeadliner,
+}: {
   accentColor: string;
   isHeadliner: boolean;
 }) {
@@ -20,14 +20,14 @@ const MysterySilhouette = memo(function MysterySilhouette({
     <div className="absolute inset-0 flex items-center justify-center">
       {/* Pulsing glow rings - desktop only */}
       <div
-        className="hidden sm:block absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full"
+        className="absolute hidden h-20 w-20 rounded-full sm:block sm:h-24 sm:w-24"
         style={{
           background: `radial-gradient(circle, ${accentColor}20 0%, transparent 70%)`,
           animation: "pulseSlow 2s ease-in-out infinite",
           willChange: "transform, opacity",
         }}
       />
-      
+
       {/* Glowing question mark */}
       <span
         className={`font-black ${isHeadliner ? "text-5xl sm:text-6xl" : "text-3xl sm:text-4xl"}`}
@@ -38,12 +38,24 @@ const MysterySilhouette = memo(function MysterySilhouette({
       >
         ?
       </span>
-      
+
       {/* Corner accents */}
-      <div className="absolute top-2 left-2 w-3 h-3 border-l-2 border-t-2" style={{ borderColor: `${accentColor}60` }} />
-      <div className="absolute top-2 right-2 w-3 h-3 border-r-2 border-t-2" style={{ borderColor: `${accentColor}60` }} />
-      <div className="absolute bottom-2 left-2 w-3 h-3 border-l-2 border-b-2" style={{ borderColor: `${accentColor}60` }} />
-      <div className="absolute bottom-2 right-2 w-3 h-3 border-r-2 border-b-2" style={{ borderColor: `${accentColor}60` }} />
+      <div
+        className="absolute top-2 left-2 h-3 w-3 border-t-2 border-l-2"
+        style={{ borderColor: `${accentColor}60` }}
+      />
+      <div
+        className="absolute top-2 right-2 h-3 w-3 border-t-2 border-r-2"
+        style={{ borderColor: `${accentColor}60` }}
+      />
+      <div
+        className="absolute bottom-2 left-2 h-3 w-3 border-b-2 border-l-2"
+        style={{ borderColor: `${accentColor}60` }}
+      />
+      <div
+        className="absolute right-2 bottom-2 h-3 w-3 border-r-2 border-b-2"
+        style={{ borderColor: `${accentColor}60` }}
+      />
     </div>
   );
 });
@@ -77,7 +89,7 @@ const RevealedArtist = memo(function RevealedArtist({
       />
       {/* Accent glow at bottom */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-1/3"
+        className="absolute right-0 bottom-0 left-0 h-1/3"
         style={{
           background: `linear-gradient(to top, ${accentColor}30, transparent)`,
         }}
@@ -89,26 +101,26 @@ const RevealedArtist = memo(function RevealedArtist({
 // ═══════════════════════════════════════════════════════════════════
 // HEADLINER CARD - Premium large card
 // ═══════════════════════════════════════════════════════════════════
-export const HeadlinerCard = memo(function HeadlinerCard({ 
-  artist, 
-  index 
-}: { 
-  artist: Artist; 
+export const HeadlinerCard = memo(function HeadlinerCard({
+  artist,
+  index,
+}: {
+  artist: Artist;
   index: number;
 }) {
   const accentColor = artist.accentColor || CONCERT_COLORS.NEON_GOLD;
-  
+
   return (
-    <div className="relative group" style={{ animationDelay: `${index * 0.15}s` }}>
+    <div className="group relative" style={{ animationDelay: `${index * 0.15}s` }}>
       {/* Border glow - desktop only */}
       <div
-        className="hidden sm:block absolute -inset-[2px] rounded-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+        className="absolute -inset-[2px] hidden rounded-3xl opacity-60 transition-opacity duration-500 group-hover:opacity-100 sm:block"
         style={{
           background: `linear-gradient(135deg, ${accentColor} 0%, ${CONCERT_COLORS.NEON_PURPLE} 50%, ${accentColor} 100%)`,
           filter: "blur(2px)",
         }}
       />
-      
+
       {/* Card */}
       <div
         className="relative overflow-hidden rounded-3xl p-5 sm:p-6"
@@ -119,9 +131,9 @@ export const HeadlinerCard = memo(function HeadlinerCard({
         }}
       >
         {/* Genre tag */}
-        <div className="flex justify-center mb-4">
+        <div className="mb-4 flex justify-center">
           <div
-            className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
+            className="rounded-full px-4 py-1.5 text-xs font-bold tracking-widest uppercase"
             style={{
               background: `${accentColor}20`,
               color: accentColor,
@@ -131,10 +143,10 @@ export const HeadlinerCard = memo(function HeadlinerCard({
             ★ {artist.genre} ★
           </div>
         </div>
-        
+
         {/* Silhouette or Image */}
         <div
-          className="relative mx-auto mb-4 w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden"
+          className="relative mx-auto mb-4 h-32 w-32 overflow-hidden rounded-2xl sm:h-36 sm:w-36"
           style={{
             background: `linear-gradient(180deg, ${CONCERT_COLORS.STAGE_PURPLE} 0%, ${CONCERT_COLORS.STAGE_DARK} 100%)`,
             border: `2px solid ${accentColor}30`,
@@ -146,21 +158,24 @@ export const HeadlinerCard = memo(function HeadlinerCard({
             <MysterySilhouette accentColor={accentColor} isHeadliner={true} />
           )}
         </div>
-        
+
         {/* Name */}
         <h3
-          className="text-center text-xl sm:text-2xl font-black tracking-wide mb-3"
+          className="mb-3 text-center text-xl font-black tracking-wide sm:text-2xl"
           style={{ color: accentColor, textShadow: `0 0 20px ${accentColor}` }}
         >
           {artist.name}
         </h3>
-        
-        <div className="hidden sm:flex justify-center">
+
+        <div className="hidden justify-center sm:flex">
           <EqualizerBars color={accentColor} size="lg" />
         </div>
-        
+
         {!artist.isRevealed && (
-          <p className="text-center text-xs mt-3 uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.4)" }}>
+          <p
+            className="mt-3 text-center text-xs tracking-widest uppercase"
+            style={{ color: "rgba(255,255,255,0.4)" }}
+          >
             Reveal Coming Soon
           </p>
         )}
@@ -172,11 +187,11 @@ export const HeadlinerCard = memo(function HeadlinerCard({
 // ═══════════════════════════════════════════════════════════════════
 // FEATURING CARD - Simplified with static diamond gradient
 // ═══════════════════════════════════════════════════════════════════
-export const FeaturingCard = memo(function FeaturingCard({ 
-  artist, 
-  index 
-}: { 
-  artist: Artist; 
+export const FeaturingCard = memo(function FeaturingCard({
+  artist,
+  index,
+}: {
+  artist: Artist;
   index: number;
 }) {
   const accentColor = artist.accentColor || CONCERT_COLORS.NEON_PURPLE;
@@ -191,17 +206,17 @@ export const FeaturingCard = memo(function FeaturingCard({
     ];
     return colors[(index + 1) % colors.length];
   }, [index]);
-  
+
   return (
-    <div 
-      className="relative group" 
-      style={{ 
+    <div
+      className="group relative"
+      style={{
         animationDelay: `${index * 0.1}s`,
       }}
     >
       {/* Static diamond gradient border */}
       <div
-        className="absolute -inset-[2px] rounded-2xl opacity-60 sm:group-hover:opacity-100 transition-opacity duration-300"
+        className="absolute -inset-[2px] rounded-xl opacity-60 transition-opacity duration-300 sm:rounded-2xl sm:group-hover:opacity-100"
         style={{
           background: `linear-gradient(45deg, 
             ${accentColor} 0%, 
@@ -212,10 +227,10 @@ export const FeaturingCard = memo(function FeaturingCard({
           filter: "blur(1px)",
         }}
       />
-      
+
       {/* Main card */}
       <div
-        className="relative overflow-hidden rounded-2xl transition-all duration-300 sm:group-hover:scale-[1.02]"
+        className="relative overflow-hidden rounded-xl transition-all duration-300 sm:rounded-2xl sm:group-hover:scale-[1.02]"
         style={{
           background: `linear-gradient(135deg, 
             rgba(15,5,25,0.95) 0%, 
@@ -226,38 +241,38 @@ export const FeaturingCard = memo(function FeaturingCard({
         }}
       >
         {/* Corner accent cuts */}
-        <div 
-          className="absolute top-0 left-0 w-4 h-4"
+        <div
+          className="absolute top-0 left-0 h-3 w-3 sm:h-4 sm:w-4"
           style={{
             background: `linear-gradient(135deg, ${accentColor} 50%, transparent 50%)`,
             opacity: 0.8,
           }}
         />
-        <div 
-          className="absolute bottom-0 right-0 w-4 h-4"
+        <div
+          className="absolute right-0 bottom-0 h-3 w-3 sm:h-4 sm:w-4"
           style={{
             background: `linear-gradient(-45deg, ${secondaryColor} 50%, transparent 50%)`,
             opacity: 0.8,
           }}
         />
-        
-        {/* Inner content container */}
-        <div className="relative p-3 sm:p-4">
-          {/* Artist image with static diamond frame */}
-          <div className="relative mx-auto mb-3 w-full aspect-square max-w-[140px]">
+
+        {/* Inner content container - reduced padding on mobile */}
+        <div className="relative p-1.5 sm:p-4">
+          {/* Artist image with static diamond frame - smaller on mobile */}
+          <div className="relative mx-auto mb-1.5 aspect-square w-full max-w-[70px] sm:mb-3 sm:max-w-[140px]">
             {/* Static diamond gradient glow at 45deg */}
-            <div 
-              className="absolute -inset-1 rounded-xl opacity-50 sm:group-hover:opacity-90 transition-opacity duration-300"
+            <div
+              className="absolute -inset-1 rounded-lg opacity-50 transition-opacity duration-300 sm:rounded-xl sm:group-hover:opacity-90"
               style={{
                 background: `conic-gradient(from 45deg, ${accentColor}, ${secondaryColor}, ${CONCERT_COLORS.NEON_GOLD}, ${accentColor})`,
                 transform: "rotate(45deg)",
                 filter: "blur(4px)",
               }}
             />
-            
+
             {/* Image container */}
-            <div 
-              className="relative w-full h-full rounded-xl overflow-hidden"
+            <div
+              className="relative h-full w-full overflow-hidden rounded-lg sm:rounded-xl"
               style={{
                 background: `linear-gradient(180deg, ${CONCERT_COLORS.STAGE_PURPLE} 0%, ${CONCERT_COLORS.STAGE_DARK} 100%)`,
               }}
@@ -283,11 +298,11 @@ export const FeaturingCard = memo(function FeaturingCard({
               )}
             </div>
           </div>
-          
-          {/* Artist name only */}
-          <h4 
-            className="text-center text-sm sm:text-base font-bold tracking-wide transition-all duration-300 sm:group-hover:scale-105"
-            style={{ 
+
+          {/* Artist name only - smaller on mobile */}
+          <h4
+            className="text-center text-xs font-bold tracking-wide transition-all duration-300 sm:text-base sm:group-hover:scale-105"
+            style={{
               color: "#fff",
               textShadow: `0 0 20px ${accentColor}60`,
             }}

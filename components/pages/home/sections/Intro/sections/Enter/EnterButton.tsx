@@ -8,8 +8,15 @@ import { useIsMobile } from "@/hooks";
 const HOLD_DURATION = 3500; // 3.5 seconds
 
 export function EnterButton() {
-  const { phase, loadProgress, startLoading, cancelLoading, startBlast, setLoadProgress } =
-    useIntro();
+  const {
+    phase,
+    loadProgress,
+    startLoading,
+    cancelLoading,
+    startBlast,
+    setLoadProgress,
+    skipIntro,
+  } = useIntro();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isMobile = useIsMobile();
 
@@ -47,6 +54,12 @@ export function EnterButton() {
     cancelLoading();
   }, [phase, cancelLoading]);
 
+  // Mobile: Direct click to enter (skip intro entirely)
+  const handleMobileClick = useCallback(() => {
+    if (phase !== "idle") return;
+    skipIntro();
+  }, [phase, skipIntro]);
+
   useEffect(() => {
     return () => {
       if (intervalRef.current) {
@@ -62,7 +75,7 @@ export function EnterButton() {
 
   const [isHovered, setIsHovered] = useState(false);
 
-  // MOBILE: Ultra simplified version
+  // MOBILE: Simple click-to-enter version (no hold, no audio)
   if (isMobile) {
     return (
       <motion.div
@@ -70,20 +83,19 @@ export function EnterButton() {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        onTouchStart={handleMouseDown}
-        onTouchEnd={handleMouseUp}
+        onClick={handleMobileClick}
       >
-        {/* Simple glow - no animation */}
+        {/* Simple glow */}
         <div
           className="absolute rounded-full"
           style={{
             inset: -15,
-            background: `radial-gradient(circle, rgba(255, 200, 100, ${isLoading ? 0.4 : 0.2}) 0%, transparent 70%)`,
+            background: "radial-gradient(circle, rgba(255, 200, 100, 0.25) 0%, transparent 70%)",
             filter: "blur(8px)",
           }}
         />
 
-        {/* Main SVG Button - no filters, no shimmer */}
+        {/* Main SVG Button */}
         <svg width="130" height="130" viewBox="0 0 140 140" className="relative z-10">
           <defs>
             <linearGradient id="progressGoldM" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -103,21 +115,19 @@ export function EnterButton() {
             cy="70"
             r="58"
             fill="none"
-            stroke="rgba(255, 200, 100, 0.15)"
+            stroke="rgba(255, 200, 100, 0.2)"
             strokeWidth="2"
           />
 
-          {/* Progress circle - the only animated thing */}
+          {/* Full progress circle (always complete) */}
           <circle
             cx="70"
             cy="70"
             r="58"
             fill="none"
             stroke="url(#progressGoldM)"
-            strokeWidth={isLoading ? 4 : 2}
+            strokeWidth="2"
             strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
             transform="rotate(-90 70 70)"
           />
 
@@ -131,10 +141,10 @@ export function EnterButton() {
             strokeWidth="1"
           />
 
-          {/* Text */}
+          {/* Text - Just "ENTER" */}
           <text
             x="70"
-            y={isLoading ? "65" : "70"}
+            y="70"
             textAnchor="middle"
             dominantBaseline="middle"
             fill="url(#textGoldM)"
@@ -143,23 +153,8 @@ export function EnterButton() {
             letterSpacing="4"
             style={{ fontFamily: "inherit" }}
           >
-            {isLoading ? "HOLD" : "ENTER"}
+            ENTER
           </text>
-
-          {/* Loading percentage */}
-          {isLoading && (
-            <text
-              x="70"
-              y="88"
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill="rgba(255, 200, 100, 0.8)"
-              fontSize="12"
-              style={{ fontFamily: "inherit" }}
-            >
-              {Math.round(loadProgress)}%
-            </text>
-          )}
         </svg>
       </motion.div>
     );

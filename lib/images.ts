@@ -220,6 +220,8 @@ export const IMAGES = {
     // Decorative elements
     ornamentalDivider: `${IMAGEKIT_BASE}/sponsors/decorative/ornamental-divider.png`,
     rectangularFrame: `${IMAGEKIT_BASE}/sponsors/decorative/rectangular-frame.png`,
+    sponsorStamp: `${IMAGEKIT_BASE}/sponsors/common/sponsor-stamp.png`,
+    standingGirl: `${IMAGEKIT_BASE}/sponsors/common/standing-girl.png`,
 
     // Title & Co-Title
     titleSponsor: `${IMAGEKIT_BASE}/sponsors/title-sponsor.jpeg`,

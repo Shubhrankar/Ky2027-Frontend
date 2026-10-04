@@ -11,7 +11,7 @@ import { CONCERT_COLORS } from "../constants";
  */
 export const DancingGirlFestiveVibes = memo(function DancingGirlFestiveVibes() {
   return (
-    <div className="absolute top-[15%] sm:top-[3%] -left-[2%] w-[38vw] pointer-events-none z-[40]">
+    <div className="pointer-events-none absolute top-[15%] -left-[2%] z-[40] w-[55vw] sm:top-[3%] sm:w-[38vw]">
       {/* Glow behind DancingGirlFestiveVibes - subtle dark blue */}
       <div
         className="absolute inset-0"
@@ -28,7 +28,7 @@ export const DancingGirlFestiveVibes = memo(function DancingGirlFestiveVibes() {
         alt="DancingGirlFestiveVibes"
         width={400}
         height={500}
-        className="relative w-full h-auto"
+        className="relative h-auto w-full"
         style={{
           filter: `drop-shadow(0 0 25px rgba(50,50,120,0.5)) drop-shadow(0 0 50px rgba(30,30,80,0.3))`,
         }}
@@ -44,7 +44,7 @@ export const DancingGirlFestiveVibes = memo(function DancingGirlFestiveVibes() {
  */
 export const GlowingMoon = memo(function GlowingMoon() {
   return (
-    <div className="absolute -top-[36vh] -right-[100vw] w-[180vw] aspect-square sm:-top-[50%] sm:left-auto sm:-right-[45%] sm:w-[90vw] pointer-events-none z-[1]">
+    <div className="pointer-events-none absolute -top-[36vh] -right-[100vw] z-[1] aspect-square w-[180vw] sm:-top-[50%] sm:-right-[45%] sm:left-auto sm:w-[90vw]">
       {/* Radiance rings - bluish-white glow rings around moon */}
       <div
         className="absolute inset-0 rounded-full"
@@ -85,7 +85,7 @@ export const GlowingMoon = memo(function GlowingMoon() {
         src={IMAGES.proNites.moon}
         alt=""
         fill
-        className="object-contain pronites-moon-rotate"
+        className="pronites-moon-rotate object-contain"
         style={{
           filter: `drop-shadow(0 0 40px rgba(180,220,255,0.3)) drop-shadow(0 0 80px rgba(150,200,255,0.2)) drop-shadow(0 0 120px rgba(120,180,255,0.15))`,
         }}
@@ -95,13 +95,12 @@ export const GlowingMoon = memo(function GlowingMoon() {
   );
 });
 
-
 /**
  * NeonBorders - Top and bottom neon line borders
  */
 export const TopBorder = memo(function TopBorder() {
   return (
-    <div className="absolute top-0 left-0 right-0">
+    <div className="absolute top-0 right-0 left-0">
       <div
         className="h-[1px]"
         style={{
@@ -115,7 +114,7 @@ export const TopBorder = memo(function TopBorder() {
         }}
       />
       <div
-        className="hidden sm:block h-8 opacity-30"
+        className="hidden h-8 opacity-30 sm:block"
         style={{
           background: `linear-gradient(180deg, rgba(30, 30, 80, 0.5) 0%, transparent 100%)`,
           filter: "blur(10px)",
@@ -127,9 +126,9 @@ export const TopBorder = memo(function TopBorder() {
 
 export const BottomBorder = memo(function BottomBorder() {
   return (
-    <div className="absolute bottom-0 left-0 right-0">
+    <div className="absolute right-0 bottom-0 left-0">
       <div
-        className="hidden sm:block h-8 opacity-30"
+        className="hidden h-8 opacity-30 sm:block"
         style={{
           background: `linear-gradient(0deg, rgba(30, 30, 80, 0.5) 0%, transparent 100%)`,
           filter: "blur(10px)",
@@ -157,7 +156,7 @@ export const BottomBorder = memo(function BottomBorder() {
 export const GridOverlay = memo(function GridOverlay() {
   return (
     <div
-      className="hidden sm:block absolute inset-0 pointer-events-none opacity-[0.02]"
+      className="pointer-events-none absolute inset-0 hidden opacity-[0.02] sm:block"
       style={{
         backgroundImage: `
           linear-gradient(${CONCERT_COLORS.NEON_PURPLE}50 1px, transparent 1px),
@@ -175,15 +174,15 @@ export const GridOverlay = memo(function GridOverlay() {
  */
 export const CrowdSilhouette = memo(function CrowdSilhouette() {
   return (
-    <div className="hidden sm:block sm:absolute sm:-bottom-[150px] h-[100px] sm:h-[400px] sm:w-[1500px] pointer-events-none z-[500]">
+    <div className="pointer-events-none z-[500] hidden h-[100px] sm:absolute sm:-bottom-[150px] sm:block sm:h-[400px] sm:w-[1500px]">
       {/* Glow behind the crowd */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-full"
+        className="absolute right-0 bottom-0 left-0 h-full"
         style={{
           background: `linear-gradient(to top, rgba(100,80,180,0.3) 0%, transparent 70%)`,
         }}
       />
-      
+
       {/* Silhouette image */}
       <Image
         src={IMAGES.proNites.silhouette}
