@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Spinner } from "@/components/ui/spinner";
 import { useNavbar } from "../config/NavbarContext";
-import { useSignOut } from "@/lib/api/hooks";
 
 /**
  * Light Theme Mobile Navbar - Golden/cream style
@@ -13,21 +12,7 @@ import { useSignOut } from "@/lib/api/hooks";
  */
 export const NavbarMobileLight = memo(function NavbarMobileLight() {
   const [open, setOpen] = useState(false);
-  const { 
-    isActive, 
-    isSessionLoading,
-    isAuthenticated, 
-    user, 
-    userInitials, 
-    allLinks 
-  } = useNavbar();
-  const { isSigningOut, handleSignOut: signOutFn } = useSignOut();
-
-  // Wrap signOut to also close menu
-  const handleSignOut = () => {
-    setOpen(false);
-    signOutFn();
-  };
+  const { isActive, isSessionLoading, isAuthenticated, user, userInitials, allLinks } = useNavbar();
 
   return (
     <div className="sm:hidden">
@@ -37,21 +22,20 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="absolute right-[2%] top-[58%] -translate-y-1/2 z-20
-                   flex h-8 w-8 flex-col items-center justify-center gap-1.5"
+        className="absolute top-[58%] right-[2%] z-20 flex h-8 w-8 -translate-y-1/2 flex-col items-center justify-center gap-1.5"
       >
         <span
           className="block h-[3px] w-6 rounded-full transition-transform duration-300"
-          style={{ 
+          style={{
             background: "linear-gradient(90deg, #8a5a1a, #d4a853)",
-            transform: open ? "translateY(7px) rotate(45deg)" : "none" 
+            transform: open ? "translateY(7px) rotate(45deg)" : "none",
           }}
         />
         <span
           className="block h-[3px] w-6 rounded-full transition-opacity duration-300"
-          style={{ 
+          style={{
             background: "linear-gradient(90deg, #8a5a1a, #d4a853)",
-            opacity: open ? 0 : 1 
+            opacity: open ? 0 : 1,
           }}
         />
         <span
@@ -65,12 +49,11 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
 
       {/* Dropdown panel */}
       <div
-        className={`naksha-panel absolute left-2 right-2 top-[calc(100%+8px)] z-10 origin-top
-                    transition-all duration-300 ease-out ${
-                      open
-                        ? "opacity-100 scale-y-100 pointer-events-auto"
-                        : "opacity-0 scale-y-0 pointer-events-none"
-                    }`}
+        className={`naksha-panel absolute top-[calc(100%+8px)] right-2 left-2 z-10 origin-top transition-all duration-300 ease-out ${
+          open
+            ? "pointer-events-auto scale-y-100 opacity-100"
+            : "pointer-events-none scale-y-0 opacity-0"
+        }`}
         style={{
           borderRadius: "14px",
           background:
@@ -84,7 +67,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         {/* Mottled parchment texture */}
         <span
           aria-hidden
-          className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply"
+          className="pointer-events-none absolute inset-0 opacity-30 mix-blend-multiply"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
@@ -94,7 +77,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         {/* Faint mystical mandala watermark - center */}
         <span
           aria-hidden
-          className="naksha-mandala absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none animate-[spin_60s_linear_infinite]"
+          className="naksha-mandala pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-[spin_60s_linear_infinite]"
           style={{
             width: "78%",
             aspectRatio: "1",
@@ -111,7 +94,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         {/* Second mystical mandala - bottom right (different design) */}
         <span
           aria-hidden
-          className="naksha-mandala absolute -bottom-8 -right-8 pointer-events-none"
+          className="naksha-mandala pointer-events-none absolute -right-8 -bottom-8"
           style={{
             width: "45%",
             aspectRatio: "1",
@@ -127,7 +110,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         {/* Inner ornamental frame */}
         <span
           aria-hidden
-          className="absolute inset-[6px] rounded-[10px] pointer-events-none"
+          className="pointer-events-none absolute inset-[6px] rounded-[10px]"
           style={{ border: "1px solid rgba(122,61,16,0.5)" }}
         />
 
@@ -141,7 +124,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
           <span
             key={pos}
             aria-hidden
-            className={`absolute ${pos} w-2 h-2 rotate-45 pointer-events-none`}
+            className={`absolute ${pos} pointer-events-none h-2 w-2 rotate-45`}
             style={{
               background: "linear-gradient(135deg, #FFD700, #B8860B)",
               boxShadow: "0 0 6px rgba(255,215,0,0.7)",
@@ -150,17 +133,19 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         ))}
 
         <nav
-          className="relative flex flex-col px-5 pb-4 pt-3 gap-1"
+          className="relative flex flex-col gap-1 px-5 pt-3 pb-4"
           aria-label="Mobile"
           style={{ fontFamily: "var(--font-ethereal), serif" }}
         >
           {/* User info header when logged in */}
           {isAuthenticated && user ? (
-            <div className="flex items-center gap-3 pb-3 mb-2 border-b border-[#8a5a1a]/30">
-              <div 
-                className="h-10 w-10 rounded-full overflow-hidden border-2 border-[#d4a853] flex items-center justify-center"
+            <div className="mb-2 flex items-center gap-3 border-b border-[#8a5a1a]/30 pb-3">
+              <div
+                className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border-2 border-[#d4a853]"
                 style={{
-                  background: user.image ? "transparent" : "linear-gradient(135deg, #d4a853 0%, #8b6914 100%)",
+                  background: user.image
+                    ? "transparent"
+                    : "linear-gradient(135deg, #d4a853 0%, #8b6914 100%)",
                 }}
               >
                 {user.image ? (
@@ -178,11 +163,11 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                   </span>
                 )}
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold truncate" style={{ color: "#3a1505" }}>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-bold" style={{ color: "#3a1505" }}>
                   {user.name}
                 </p>
-                <p className="text-xs truncate" style={{ color: "#6b3f14" }}>
+                <p className="truncate text-xs" style={{ color: "#6b3f14" }}>
                   {user.email}
                 </p>
               </div>
@@ -210,7 +195,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
               </span>
               <span
                 aria-hidden
-                className="mt-1.5 flex items-center justify-center gap-2 w-full text-[#8a5a1a] opacity-80"
+                className="mt-1.5 flex w-full items-center justify-center gap-2 text-[#8a5a1a] opacity-80"
               >
                 <span
                   className="h-px flex-1"
@@ -233,9 +218,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                 <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="naksha-link naksha-item flex items-center justify-center gap-2 px-3 py-2 rounded-md
-                             text-[15px] uppercase tracking-[0.18em] text-center
-                             transition-all duration-300"
+                  className="naksha-link naksha-item flex items-center justify-center gap-2 rounded-md px-3 py-2 text-center text-[15px] tracking-[0.18em] uppercase transition-all duration-300"
                   style={{
                     fontWeight: 900,
                     color: active ? "#3a1505" : "#3d1e0a",
@@ -250,14 +233,18 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                       : "0 1px 1px rgba(255,245,215,0.6)",
                     border: active ? "1px solid rgba(255,230,100,0.9)" : "1px solid transparent",
                     opacity: open ? 1 : 0,
-                    transform: open ? (active ? "translateY(0) scale(1.02)" : "translateY(0)") : "translateY(-8px)",
+                    transform: open
+                      ? active
+                        ? "translateY(0) scale(1.02)"
+                        : "translateY(0)"
+                      : "translateY(-8px)",
                     transitionDelay: open ? `${50 + i * 30}ms` : "0ms",
                   }}
                 >
-                  <span 
-                    aria-hidden 
+                  <span
+                    aria-hidden
                     className="text-[9px]"
-                    style={{ 
+                    style={{
                       color: active ? "#FFD700" : "#b8860b",
                       filter: active ? "drop-shadow(0 0 4px rgba(255,215,0,0.9))" : "none",
                     }}
@@ -265,10 +252,10 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                     {active ? "✦" : "◆"}
                   </span>
                   {isLoginLink && isSessionLoading ? <Spinner className="size-4" /> : link.label}
-                  <span 
-                    aria-hidden 
+                  <span
+                    aria-hidden
                     className="text-[9px]"
-                    style={{ 
+                    style={{
                       color: active ? "#FFD700" : "#b8860b",
                       filter: active ? "drop-shadow(0 0 4px rgba(255,215,0,0.9))" : "none",
                     }}
@@ -297,7 +284,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
             );
           })}
 
-          {/* Logout button when logged in */}
+          {/* Profile link when logged in */}
           {isAuthenticated && (
             <>
               <span
@@ -314,40 +301,60 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                   style={{ background: "linear-gradient(90deg, #8a5a1a, transparent)" }}
                 />
               </span>
-              <button
-                onClick={handleSignOut}
-                disabled={isSigningOut}
-                className="naksha-link naksha-item flex items-center justify-center gap-2 px-3 py-2 rounded-md
-                           text-[15px] uppercase tracking-[0.18em] text-center
-                           transition-all duration-300 disabled:opacity-50"
+              <Link
+                href="/profile"
+                onClick={() => setOpen(false)}
+                className="naksha-link naksha-item flex items-center justify-center gap-2 rounded-md px-3 py-2 text-center text-[15px] tracking-[0.18em] uppercase transition-all duration-300"
                 style={{
                   fontWeight: 900,
-                  color: "#8b2020",
-                  background: "transparent",
-                  textShadow: "0 1px 1px rgba(255,245,215,0.6)",
-                  border: "1px solid transparent",
+                  color: isActive("/profile") ? "#3a1505" : "#3d1e0a",
+                  background: isActive("/profile")
+                    ? "linear-gradient(135deg, rgba(255,215,0,0.7) 0%, rgba(255,230,100,0.8) 50%, rgba(255,215,0,0.7) 100%)"
+                    : "transparent",
+                  boxShadow: isActive("/profile")
+                    ? "0 0 25px rgba(255,215,0,0.8), 0 0 50px rgba(255,180,0,0.5), inset 0 0 15px rgba(255,255,200,0.6)"
+                    : "none",
+                  textShadow: isActive("/profile")
+                    ? "0 0 10px rgba(255,215,0,0.8), 0 0 20px rgba(255,180,0,0.6), 0 1px 1px rgba(255,245,215,0.8)"
+                    : "0 1px 1px rgba(255,245,215,0.6)",
+                  border: isActive("/profile")
+                    ? "1px solid rgba(255,230,100,0.9)"
+                    : "1px solid transparent",
                   opacity: open ? 1 : 0,
-                  transform: open ? "translateY(0)" : "translateY(-8px)",
+                  transform: open
+                    ? isActive("/profile")
+                      ? "translateY(0) scale(1.02)"
+                      : "translateY(0)"
+                    : "translateY(-8px)",
                   transitionDelay: open ? `${50 + allLinks.length * 30}ms` : "0ms",
                 }}
               >
-                {isSigningOut ? (
-                  <>
-                    <Spinner className="size-4" />
-                    SIGNING OUT...
-                  </>
-                ) : (
-                  <>
-                    <span aria-hidden className="text-[9px]" style={{ color: "#b8860b" }}>
-                      ◆
-                    </span>
-                    LOGOUT
-                    <span aria-hidden className="text-[9px]" style={{ color: "#b8860b" }}>
-                      ◆
-                    </span>
-                  </>
-                )}
-              </button>
+                <span
+                  aria-hidden
+                  className="text-[9px]"
+                  style={{
+                    color: isActive("/profile") ? "#FFD700" : "#b8860b",
+                    filter: isActive("/profile")
+                      ? "drop-shadow(0 0 4px rgba(255,215,0,0.9))"
+                      : "none",
+                  }}
+                >
+                  {isActive("/profile") ? "✦" : "◆"}
+                </span>
+                PROFILE
+                <span
+                  aria-hidden
+                  className="text-[9px]"
+                  style={{
+                    color: isActive("/profile") ? "#FFD700" : "#b8860b",
+                    filter: isActive("/profile")
+                      ? "drop-shadow(0 0 4px rgba(255,215,0,0.9))"
+                      : "none",
+                  }}
+                >
+                  {isActive("/profile") ? "✦" : "◆"}
+                </span>
+              </Link>
             </>
           )}
         </nav>

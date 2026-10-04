@@ -4,7 +4,7 @@ import { useEffect, useRef, Suspense } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 import { MotionZone, useMotionZone } from "@/lib/motion";
 import { IMAGES } from "@/lib/images";
