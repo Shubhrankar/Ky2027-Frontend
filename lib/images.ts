@@ -221,6 +221,8 @@ export const IMAGES = {
     rectangularFrame: `${IMAGEKIT_BASE}/sponsors/decorative/rectangular-frame.png`,
     sponsorStamp: `${IMAGEKIT_BASE}/sponsors/common/sponsor-stamp.png`,
     standingGirl: `${IMAGEKIT_BASE}/sponsors/common/standing-girl.png`,
+    leftTreeBranch: `${IMAGEKIT_BASE}/sponsors/common/left-tree-branch.png`,
+    sponsorPresentor: `${IMAGEKIT_BASE}/sponsors/common/sponsor-presentor.png`,
 
     // Title & Co-Title
     titleSponsor: `${IMAGEKIT_BASE}/sponsors/title-sponsor.jpeg`,

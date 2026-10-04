@@ -32,7 +32,7 @@ const COLORS = {
 
 function LeftSideDecor() {
   return (
-    <div className="pointer-events-none fixed top-0 left-0 z-10 hidden h-full w-48 overflow-hidden lg:block lg:w-64">
+    <div className="pointer-events-none fixed top-0 left-0 z-10 hidden h-full w-48 lg:block lg:w-64">
       {/* Stage curtain effect - dark green */}
       <div
         className="absolute inset-y-0 left-0 w-full"
@@ -182,18 +182,6 @@ function LeftSideDecor() {
           ★
         </motion.div>
       ))}
-
-      {/* Tree branch decoration */}
-      <Image
-        src="/sponsor/leftTreeBranch_nobg.png"
-        alt=""
-        width={300}
-        height={400}
-        className="absolute top-0 -left-4 w-[280px] opacity-80"
-        style={{
-          filter: "drop-shadow(0 0 10px rgba(0,255,100,0.2))",
-        }}
-      />
     </div>
   );
 }
@@ -706,27 +694,47 @@ export function SponsorsPageContent() {
         <LeftSideDecor />
         <RightSideDecor />
 
-        {/* Mobile standing girls decoration */}
-        <div className="pointer-events-none fixed inset-y-0 left-0 z-[5] w-20 opacity-40 lg:hidden">
-          <div className="absolute bottom-0 left-0 h-[50vh] w-full">
-            <Image
-              src={IMAGES.sponsors.standingGirl}
-              alt=""
-              fill
-              className="object-contain object-bottom"
-              style={{ transform: "scaleX(-1)" }}
-            />
-          </div>
+        {/* Tree branch decoration - Desktop */}
+        <div className="pointer-events-none fixed -top-12 left-0 z-20 hidden lg:block">
+          <Image
+            src={IMAGES.sponsors.leftTreeBranch}
+            alt=""
+            width={1000}
+            height={1200}
+            className="w-[480px] opacity-90"
+            style={{
+              filter: "drop-shadow(0 0 15px rgba(0,255,100,0.3))",
+            }}
+          />
         </div>
-        <div className="pointer-events-none fixed inset-y-0 right-0 z-[5] w-20 opacity-40 lg:hidden">
-          <div className="absolute right-0 bottom-0 h-[50vh] w-full">
-            <Image
-              src={IMAGES.sponsors.standingGirl}
-              alt=""
-              fill
-              className="object-contain object-bottom"
-            />
-          </div>
+
+        {/* Tree branch decoration - Top Right (mirrored) */}
+        <div className="pointer-events-none fixed -top-12 right-0 z-20 hidden lg:block">
+          <Image
+            src={IMAGES.sponsors.leftTreeBranch}
+            alt=""
+            width={1000}
+            height={1200}
+            className="w-[480px] opacity-90"
+            style={{
+              filter: "drop-shadow(0 0 15px rgba(0,255,100,0.3))",
+              transform: "scaleX(-1)",
+            }}
+          />
+        </div>
+
+        {/* Sponsor Presenter - Bottom Left */}
+        <div className="pointer-events-none fixed bottom-0 -left-32 z-20 hidden lg:block">
+          <Image
+            src={IMAGES.sponsors.sponsorPresentor}
+            alt=""
+            width={1200}
+            height={1400}
+            className="w-[700px] opacity-90"
+            style={{
+              filter: "drop-shadow(0 0 15px rgba(0,255,100,0.3))",
+            }}
+          />
         </div>
 
         <div className="relative mx-auto max-w-6xl">
