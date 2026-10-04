@@ -366,7 +366,8 @@ export const PassCard = memo(function PassCard({
   const [isFlipped, setIsFlipped] = useState(false);
   const isMobile = useIsMobile();
 
-  const handleFlip = () => setIsFlipped((prev) => !prev);
+  const handleMouseEnter = () => setIsFlipped(true);
+  const handleMouseLeave = () => setIsFlipped(false);
   const floatDelay = index * 0.4;
 
   return (
@@ -408,7 +409,8 @@ export const PassCard = memo(function PassCard({
               perspective: "800px",
               WebkitPerspective: "800px",
             }}
-            onClick={handleFlip}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <motion.div
               className="relative w-full h-full"

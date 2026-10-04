@@ -243,31 +243,34 @@ function DiscoBall3D() {
 // Preload
 useGLTF.preload("/home/discoBall.glb");
 
-// Animated Laser Beams
+// Animated Laser Beams - Only 2 (extreme left and extreme right)
 function LaserBeams() {
+  const beams = [
+    { color: "#EC4899", top: "20%", fromLeft: true },
+    { color: "#8B5CF6", top: "60%", fromLeft: false },
+  ];
+  
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(6)].map((_, i) => (
+      {beams.map((beam, i) => (
         <motion.div
           key={i}
           className="absolute h-[2px]"
           style={{
             width: "100%",
-            background: `linear-gradient(90deg, transparent, ${
-              ["#EC4899", "#8B5CF6", "#06B6D4", "#F59E0B", "#10B981", "#EF4444"][i]
-            }, transparent)`,
-            top: `${15 + i * 12}%`,
-            transformOrigin: i % 2 === 0 ? "left" : "right",
+            background: `linear-gradient(90deg, transparent, ${beam.color}, transparent)`,
+            top: beam.top,
+            transformOrigin: beam.fromLeft ? "left" : "right",
           }}
           animate={{
             scaleX: [0, 1, 0],
             opacity: [0, 0.7, 0],
-            rotate: i % 2 === 0 ? [0, 15, 0] : [0, -15, 0],
+            rotate: beam.fromLeft ? [0, 15, 0] : [0, -15, 0],
           }}
           transition={{
             duration: 3,
             repeat: Infinity,
-            delay: i * 0.5,
+            delay: i * 1.5,
             ease: "easeInOut",
           }}
         />
@@ -276,17 +279,17 @@ function LaserBeams() {
   );
 }
 
-// Floating Music Notes
+// Floating Music Notes - Reduced count
 function FloatingNotes() {
-  const notes = ["♪", "♫", "♬", "🎵", "🎶"];
+  const notes = ["♪", "♫", "♬"];
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(15)].map((_, i) => (
+      {[...Array(6)].map((_, i) => (
         <motion.span
           key={i}
           className="absolute text-xl sm:text-2xl"
           style={{
-            left: `${Math.random() * 100}%`,
+            left: `${15 + i * 15}%`,
             color: ["#EC4899", "#8B5CF6", "#06B6D4", "#F59E0B"][i % 4],
             textShadow: `0 0 10px currentColor`,
           }}
@@ -294,13 +297,13 @@ function FloatingNotes() {
           animate={{
             y: "-100vh",
             opacity: [0, 1, 1, 0],
-            x: [0, Math.random() * 50 - 25, 0],
+            x: [0, Math.random() * 30 - 15, 0],
             rotate: [0, 360],
           }}
           transition={{
-            duration: 8 + Math.random() * 4,
+            duration: 10 + Math.random() * 4,
             repeat: Infinity,
-            delay: i * 0.8,
+            delay: i * 1.5,
             ease: "linear",
           }}
         >
@@ -328,36 +331,53 @@ function SilhouetteImage() {
   );
 }
 
-// Spotlight Cones
+// Spotlight Cones - Only 2 (extreme left and extreme right)
 function Spotlights() {
   return (
     <div className="absolute top-0 left-0 right-0 h-full overflow-hidden pointer-events-none">
-      {[...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute top-0"
-          style={{
-            left: `${10 + i * 20}%`,
-            width: "100px",
-            height: "100%",
-            background: `linear-gradient(to bottom, ${
-              ["#EC489933", "#8B5CF633", "#06B6D433", "#F59E0B33", "#10B98133"][i]
-            } 0%, transparent 60%)`,
-            clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
-            transformOrigin: "top center",
-          }}
-          animate={{
-            rotate: [-15, 15, -15],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            delay: i * 0.5,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
+      {/* Left spotlight */}
+      <motion.div
+        className="absolute top-0"
+        style={{
+          left: "5%",
+          width: "100px",
+          height: "100%",
+          background: "linear-gradient(to bottom, #EC489933 0%, transparent 60%)",
+          clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
+          transformOrigin: "top center",
+        }}
+        animate={{
+          rotate: [-15, 15, -15],
+          opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      {/* Right spotlight */}
+      <motion.div
+        className="absolute top-0"
+        style={{
+          left: "85%",
+          width: "100px",
+          height: "100%",
+          background: "linear-gradient(to bottom, #8B5CF633 0%, transparent 60%)",
+          clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
+          transformOrigin: "top center",
+        }}
+        animate={{
+          rotate: [15, -15, 15],
+          opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          delay: 0.5,
+          ease: "easeInOut",
+        }}
+      />
     </div>
   );
 }
