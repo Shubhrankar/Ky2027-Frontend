@@ -215,25 +215,26 @@ export const IMAGES = {
   sponsors: {
     // Background
     background: `${IMAGEKIT_BASE}/sponsors/common/sponsor-bg.png`,
-    
+
     // Decorative elements
     ornamentalDivider: `${IMAGEKIT_BASE}/sponsors/decorative/ornamental-divider.png`,
     rectangularFrame: `${IMAGEKIT_BASE}/sponsors/decorative/rectangular-frame.png`,
-    
+    sponsorStamp: `${IMAGEKIT_BASE}/sponsors/common/sponsor-stamp.png`,
+
     // Title & Co-Title
     titleSponsor: `${IMAGEKIT_BASE}/sponsors/title-sponsor.jpeg`,
     coTitlePartner: `${IMAGEKIT_BASE}/sponsors/co-title-partner.png`,
-    
+
     // Powered By Partners
     poweredByPartner: `${IMAGEKIT_BASE}/sponsors/powered-by-partner.jpg`,
     coPoweredByPartner: `${IMAGEKIT_BASE}/sponsors/co-powered-by-partner.png`,
     adaniCoPoweredPartner: `${IMAGEKIT_BASE}/sponsors/adani-co-powered-partner.png`,
-    
+
     // Major & Event Sponsors
     majorSponsor: `${IMAGEKIT_BASE}/sponsors/major-sponsor.jpg`,
     eventTitleCrosswindz: `${IMAGEKIT_BASE}/sponsors/event-title-crosswindz.jpg`,
     titleEnquiztaSamvad: `${IMAGEKIT_BASE}/sponsors/title-enquizta-samvad.jpg`,
-    
+
     // Industry Partners
     energyPartner: `${IMAGEKIT_BASE}/sponsors/energy-partner.png`,
     steelPartner: `${IMAGEKIT_BASE}/sponsors/steel-partner.png`,
@@ -242,21 +243,21 @@ export const IMAGES = {
     infrastructurePartner: `${IMAGEKIT_BASE}/sponsors/infrastructure-partner.png`,
     realEstatePartner: `${IMAGEKIT_BASE}/sponsors/real-estate-partner.jpeg`,
     developmentPartner: `${IMAGEKIT_BASE}/sponsors/development-partner.png`,
-    
+
     // Social & CSR Partners
     nmdcSustainabilityPartner: `${IMAGEKIT_BASE}/sponsors/nmdc-sustainability-partner.jpg`,
     csrPartner: `${IMAGEKIT_BASE}/sponsors/csr-partner.png`,
     socialWelfarePartner: `${IMAGEKIT_BASE}/sponsors/social-welfare-partner.png`,
     nationBuildingPartner: `${IMAGEKIT_BASE}/sponsors/nation-building-partner.png`,
     communityPartner: `${IMAGEKIT_BASE}/sponsors/community-partner.png`,
-    
+
     // Hospitality & Lifestyle Partners
     hospitalityPartner: `${IMAGEKIT_BASE}/sponsors/hospitality-partner.jpeg`,
     coffeePartner: `${IMAGEKIT_BASE}/sponsors/coffee-partner.png`,
     chocolatePartner: `${IMAGEKIT_BASE}/sponsors/chocolate-partner.png`,
     fragrancePartner: `${IMAGEKIT_BASE}/sponsors/fragrance-partner.jpg`,
     sareePartner: `${IMAGEKIT_BASE}/sponsors/saree-partner.jpg`,
-    
+
     // Media & Tech Partners
     gamingPartner: `${IMAGEKIT_BASE}/sponsors/gaming-partner.png`,
     musicStreamingPartner: `${IMAGEKIT_BASE}/sponsors/music-streaming-partner.webp`,
