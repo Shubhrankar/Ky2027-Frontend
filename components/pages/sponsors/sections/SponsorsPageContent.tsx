@@ -182,6 +182,18 @@ function LeftSideDecor() {
           ★
         </motion.div>
       ))}
+
+      {/* Tree branch decoration */}
+      <Image
+        src="/sponsor/leftTreeBranch_nobg.png"
+        alt=""
+        width={300}
+        height={400}
+        className="absolute top-0 -left-4 w-[280px] opacity-80"
+        style={{
+          filter: "drop-shadow(0 0 10px rgba(0,255,100,0.2))",
+        }}
+      />
     </div>
   );
 }

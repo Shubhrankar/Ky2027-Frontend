@@ -4,6 +4,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { IMAGES } from "@/lib/images";
+import { useIsMobile } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // STATS SECTION - Bold GenZ Concert Vibes with Custom SVG Icons
@@ -11,28 +12,11 @@ import { IMAGES } from "@/lib/images";
 
 // Custom SVG Icons
 const GuitarIcon = () => (
-  <svg viewBox="0 0 40 40" className="w-10 h-10">
-    <ellipse
-      cx="12"
-      cy="28"
-      rx="10"
-      ry="8"
-      fill="none"
-      stroke="#6366f1"
-      strokeWidth="2"
-    />
+  <svg viewBox="0 0 40 40" className="h-10 w-10">
+    <ellipse cx="12" cy="28" rx="10" ry="8" fill="none" stroke="#6366f1" strokeWidth="2" />
     <ellipse cx="12" cy="28" rx="4" ry="3" fill="#6366f1" />
     <rect x="20" y="8" width="4" height="22" rx="1" fill="#6366f1" />
-    <rect
-      x="18"
-      y="4"
-      width="8"
-      height="6"
-      rx="1"
-      fill="none"
-      stroke="#6366f1"
-      strokeWidth="2"
-    />
+    <rect x="18" y="4" width="8" height="6" rx="1" fill="none" stroke="#6366f1" strokeWidth="2" />
     <line x1="19" y1="7" x2="19" y2="10" stroke="#6366f1" strokeWidth="1" />
     <line x1="22" y1="7" x2="22" y2="10" stroke="#6366f1" strokeWidth="1" />
     <line x1="25" y1="7" x2="25" y2="10" stroke="#6366f1" strokeWidth="1" />
@@ -40,7 +24,7 @@ const GuitarIcon = () => (
 );
 
 const CrowdIcon = () => (
-  <svg viewBox="0 0 40 40" className="w-10 h-10">
+  <svg viewBox="0 0 40 40" className="h-10 w-10">
     {/* People silhouettes */}
     <circle cx="10" cy="12" r="4" fill="#6366f1" />
     <path d="M4,28 Q4,20 10,20 Q16,20 16,28" fill="#6366f1" />
@@ -49,47 +33,15 @@ const CrowdIcon = () => (
     <circle cx="30" cy="12" r="4" fill="#6366f1" />
     <path d="M24,28 Q24,20 30,20 Q36,20 36,28" fill="#6366f1" />
     {/* Raised hands */}
-    <line
-      x1="8"
-      y1="20"
-      x2="6"
-      y2="14"
-      stroke="#6366f1"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    <line
-      x1="20"
-      y1="18"
-      x2="18"
-      y2="10"
-      stroke="#8b5cf6"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    <line
-      x1="20"
-      y1="18"
-      x2="22"
-      y2="10"
-      stroke="#8b5cf6"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    <line
-      x1="32"
-      y1="20"
-      x2="34"
-      y2="14"
-      stroke="#6366f1"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
+    <line x1="8" y1="20" x2="6" y2="14" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" />
+    <line x1="20" y1="18" x2="18" y2="10" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" />
+    <line x1="20" y1="18" x2="22" y2="10" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" />
+    <line x1="32" y1="20" x2="34" y2="14" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
 
 const StageIcon = () => (
-  <svg viewBox="0 0 40 40" className="w-10 h-10">
+  <svg viewBox="0 0 40 40" className="h-10 w-10">
     {/* Stage platform */}
     <rect
       x="2"
@@ -108,19 +60,12 @@ const StageIcon = () => (
     <path d="M30,12 L25,28 L35,28 Z" fill="#8b5cf6" opacity="0.3" />
     {/* Center mic */}
     <rect x="18" y="18" width="4" height="12" rx="1" fill="#6366f1" />
-    <circle
-      cx="20"
-      cy="16"
-      r="4"
-      fill="none"
-      stroke="#6366f1"
-      strokeWidth="2"
-    />
+    <circle cx="20" cy="16" r="4" fill="none" stroke="#6366f1" strokeWidth="2" />
   </svg>
 );
 
 const TrophyIcon = () => (
-  <svg viewBox="0 0 40 40" className="w-10 h-10">
+  <svg viewBox="0 0 40 40" className="h-10 w-10">
     {/* Cup */}
     <path
       d="M10,8 L10,20 Q10,28 20,28 Q30,28 30,20 L30,8 Z"
@@ -129,26 +74,13 @@ const TrophyIcon = () => (
       strokeWidth="2"
     />
     {/* Handles */}
-    <path
-      d="M10,12 Q2,12 2,18 Q2,22 10,22"
-      fill="none"
-      stroke="#6366f1"
-      strokeWidth="2"
-    />
-    <path
-      d="M30,12 Q38,12 38,18 Q38,22 30,22"
-      fill="none"
-      stroke="#6366f1"
-      strokeWidth="2"
-    />
+    <path d="M10,12 Q2,12 2,18 Q2,22 10,22" fill="none" stroke="#6366f1" strokeWidth="2" />
+    <path d="M30,12 Q38,12 38,18 Q38,22 30,22" fill="none" stroke="#6366f1" strokeWidth="2" />
     {/* Base */}
     <rect x="16" y="28" width="8" height="4" fill="#6366f1" />
     <rect x="12" y="32" width="16" height="4" rx="1" fill="#6366f1" />
     {/* Star */}
-    <polygon
-      points="20,12 22,16 26,16 23,19 24,23 20,21 16,23 17,19 14,16 18,16"
-      fill="#6366f1"
-    />
+    <polygon points="20,12 22,16 26,16 23,19 24,23 20,21 16,23 17,19 14,16 18,16" fill="#6366f1" />
   </svg>
 );
 
@@ -220,126 +152,138 @@ const stamps = [
 ];
 
 export const StatsSection = memo(function StatsSection() {
+  const isMobile = useIsMobile();
+
   return (
-    <section className="relative py-20 sm:py-28 px-4 sm:px-6 overflow-visible">
+    <section className="relative overflow-visible px-4 py-16 sm:px-6 sm:py-28">
       {/* Background accent */}
       <div
         className="absolute inset-0 opacity-30"
         style={{
-          background:
-            "radial-gradient(ellipse at center, #6366f120 0%, transparent 70%)",
+          background: "radial-gradient(ellipse at center, #6366f120 0%, transparent 70%)",
         }}
       />
 
-      {/* Floating Stamps - Left and Right */}
-      {stamps.map((stamp, i) => (
-        <motion.div
-          key={i}
-          className={`hidden lg:block absolute ${stamp.position} ${stamp.size} h-auto z-[100] pointer-events-none`}
-          initial={{ opacity: 0, y: 30, rotate: stamp.rotate - 10 }}
-          whileInView={{ opacity: 1, y: 0, rotate: stamp.rotate }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 + i * 0.2, duration: 0.6 }}
-          style={{
-            animation: `float ${3 + i * 0.5}s ease-in-out infinite`,
-            animationDelay: `${stamp.floatDelay}s`,
-          }}
-        >
+      {/* Floating Stamps - Desktop only with animations */}
+      {!isMobile &&
+        stamps.map((stamp, i) => (
           <motion.div
-            animate={{ y: [0, -12, 0] }}
-            transition={{
-              duration: 3 + i * 0.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: stamp.floatDelay,
-            }}
+            key={i}
+            className={`absolute hidden lg:block ${stamp.position} ${stamp.size} pointer-events-none z-[100] h-auto`}
+            initial={{ opacity: 0, y: 30, rotate: stamp.rotate - 10 }}
+            whileInView={{ opacity: 1, y: 0, rotate: stamp.rotate }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 + i * 0.2, duration: 0.6 }}
           >
-            <Image
-              src={stamp.src}
-              alt={stamp.alt}
-              width={stamp.imgSize}
-              height={Math.round(stamp.imgSize * 1.25)}
-              className="drop-shadow-2xl"
-              style={{
-                filter: "drop-shadow(0 10px 40px rgba(0,0,0,0.4))",
-              }}
-            />
-          </motion.div>
-        </motion.div>
-      ))}
-
-      <div className="max-w-5xl mx-auto relative z-10">
-        {/* Section title */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-sm uppercase tracking-[0.3em] text-[#6366f1] font-bold mb-3">
-            By The Numbers
-          </p>
-          <h2 className="text-4xl sm:text-5xl font-black text-white uppercase">
-            The Stats Don&apos;t Lie
-          </h2>
-        </motion.div>
-
-        {/* Stats grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {stats.map((stat, i) => (
             <motion.div
-              key={i}
-              className="relative group"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              animate={{ y: [0, -12, 0] }}
+              transition={{
+                duration: 3 + i * 0.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: stamp.floatDelay,
+              }}
             >
-              {/* Card */}
-              <div
-                className="relative p-6 sm:p-8 rounded-2xl text-center overflow-hidden"
+              <Image
+                src={stamp.src}
+                alt={stamp.alt}
+                width={stamp.imgSize}
+                height={Math.round(stamp.imgSize * 1.25)}
+                className="drop-shadow-2xl"
                 style={{
-                  background:
-                    "linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)",
-                  border: `2px solid ${stat.color}30`,
+                  filter: "drop-shadow(0 10px 40px rgba(0,0,0,0.4))",
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        ))}
+
+      <div className="relative z-10 mx-auto max-w-5xl">
+        {/* Section title - static on mobile */}
+        {isMobile ? (
+          <div className="mb-10 text-center">
+            <p className="mb-2 text-xs font-bold tracking-[0.3em] text-[#6366f1] uppercase">
+              By The Numbers
+            </p>
+            <h2 className="text-3xl font-black text-white uppercase">The Stats Don&apos;t Lie</h2>
+          </div>
+        ) : (
+          <motion.div
+            className="mb-16 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="mb-3 text-sm font-bold tracking-[0.3em] text-[#6366f1] uppercase">
+              By The Numbers
+            </p>
+            <h2 className="text-4xl font-black text-white uppercase sm:text-5xl">
+              The Stats Don&apos;t Lie
+            </h2>
+          </motion.div>
+        )}
+
+        {/* Stats grid - static on mobile */}
+        <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-4">
+          {stats.map((stat, i) =>
+            isMobile ? (
+              <div
+                key={i}
+                className="relative rounded-xl p-5 text-center"
+                style={{
+                  background: "linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)",
+                  border: `1px solid ${stat.color}30`,
                 }}
               >
-                {/* Glow on hover */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `radial-gradient(circle at center, ${stat.color}20 0%, transparent 70%)`,
-                  }}
-                />
-
-                {/* Icon */}
-                <div className="flex justify-center mb-4">
+                <div className="mb-3 flex justify-center">
                   <stat.Icon />
                 </div>
-
-                {/* Value */}
-                <p
-                  className="text-4xl sm:text-5xl font-black mb-2"
-                  style={{ color: stat.color }}
-                >
+                <p className="mb-1 text-3xl font-black" style={{ color: stat.color }}>
                   {stat.value}
                 </p>
-
-                {/* Label */}
-                <p className="text-xs sm:text-sm uppercase tracking-wider text-white/50">
-                  {stat.label}
-                </p>
-
-                {/* Corner accent */}
-                <div
-                  className="absolute top-0 right-0 w-16 h-16"
-                  style={{
-                    background: `linear-gradient(135deg, transparent 50%, ${stat.color}10 50%)`,
-                  }}
-                />
+                <p className="text-[10px] tracking-wider text-white/50 uppercase">{stat.label}</p>
               </div>
-            </motion.div>
-          ))}
+            ) : (
+              <motion.div
+                key={i}
+                className="group relative"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <div
+                  className="relative overflow-hidden rounded-2xl p-6 text-center sm:p-8"
+                  style={{
+                    background: "linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)",
+                    border: `2px solid ${stat.color}30`,
+                  }}
+                >
+                  <div
+                    className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    style={{
+                      background: `radial-gradient(circle at center, ${stat.color}20 0%, transparent 70%)`,
+                    }}
+                  />
+                  <div className="mb-4 flex justify-center">
+                    <stat.Icon />
+                  </div>
+                  <p className="mb-2 text-4xl font-black sm:text-5xl" style={{ color: stat.color }}>
+                    {stat.value}
+                  </p>
+                  <p className="text-xs tracking-wider text-white/50 uppercase sm:text-sm">
+                    {stat.label}
+                  </p>
+                  <div
+                    className="absolute top-0 right-0 h-16 w-16"
+                    style={{
+                      background: `linear-gradient(135deg, transparent 50%, ${stat.color}10 50%)`,
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )
+          )}
         </div>
       </div>
     </section>
