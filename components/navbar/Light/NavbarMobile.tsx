@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Spinner } from "@/components/ui/spinner";
@@ -14,8 +14,29 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
   const [open, setOpen] = useState(false);
   const { isActive, isSessionLoading, isAuthenticated, user, userInitials, allLinks } = useNavbar();
 
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <div className="sm:hidden">
+      {/* Backdrop overlay - blocks scroll when menu is open */}
+      {open && (
+        <div
+          className="fixed inset-0 z-[5] bg-black/30"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Hamburger sits on the right of the bar */}
       <button
         type="button"
