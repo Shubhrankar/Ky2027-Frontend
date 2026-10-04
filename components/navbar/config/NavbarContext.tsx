@@ -9,21 +9,26 @@ import { primaryLinks, secondaryLinks } from "./links.config";
 // TYPES
 // ═══════════════════════════════════════════════════════════════════
 
+export type NavbarTheme = "main" | "about" | "sponsor";
+
 // Link types derived from the config structure
 type PrimaryLink = { label: string; href: string };
 type SecondaryLink = { label: string; href: string; icon: "om" | "lotus" };
 type AllLink = PrimaryLink | SecondaryLink;
 
 interface NavbarContextValue {
+  // Theme
+  theme: NavbarTheme;
+
   // Navigation state
   pathname: string;
   isActive: (href: string) => boolean;
-  
+
   // Auth state
   session: ReturnType<typeof useSession>["data"];
   isSessionLoading: boolean;
   isAuthenticated: boolean;
-  
+
   // User info (when authenticated)
   user: {
     name?: string | null;
@@ -31,7 +36,7 @@ interface NavbarContextValue {
     image?: string | null;
   } | null;
   userInitials: string;
-  
+
   // Filtered links based on auth state
   primaryLinks: PrimaryLink[];
   secondaryLinks: SecondaryLink[];
@@ -50,31 +55,33 @@ const NavbarContext = createContext<NavbarContextValue | null>(null);
 
 interface NavbarProviderProps {
   children: ReactNode;
+  theme?: NavbarTheme;
 }
 
-export function NavbarProvider({ children }: NavbarProviderProps) {
+export function NavbarProvider({ children, theme = "main" }: NavbarProviderProps) {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  
+
   const value = useMemo<NavbarContextValue>(() => {
     const isSessionLoading = status === "loading";
     const isAuthenticated = !!session?.user;
     const user = session?.user ?? null;
-    
+
     // Check if a link is active
     const isActive = (href: string) => {
       if (href === "/") return pathname === "/";
       return pathname.startsWith(href);
     };
-    
+
     // User initials for avatar fallback
-    const userInitials = user?.name
-      ?.split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2) || "U";
-    
+    const userInitials =
+      user?.name
+        ?.split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2) || "U";
+
     // Filter links based on auth state
     // When authenticated: remove LOGIN (avatar dropdown handles profile)
     // When not authenticated: show all links including LOGIN
@@ -82,8 +89,9 @@ export function NavbarProvider({ children }: NavbarProviderProps) {
     const filteredSecondaryLinks = isAuthenticated
       ? secondaryLinks.filter((link) => link.label !== "LOGIN")
       : secondaryLinks;
-    
+
     return {
+      theme,
       pathname,
       isActive,
       session,
@@ -95,13 +103,9 @@ export function NavbarProvider({ children }: NavbarProviderProps) {
       secondaryLinks: filteredSecondaryLinks,
       allLinks: [...primaryLinks, ...filteredSecondaryLinks],
     };
-  }, [pathname, session, status]);
-  
-  return (
-    <NavbarContext.Provider value={value}>
-      {children}
-    </NavbarContext.Provider>
-  );
+  }, [pathname, session, status, theme]);
+
+  return <NavbarContext.Provider value={value}>{children}</NavbarContext.Provider>;
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -110,10 +114,10 @@ export function NavbarProvider({ children }: NavbarProviderProps) {
 
 export function useNavbar() {
   const context = useContext(NavbarContext);
-  
+
   if (!context) {
     throw new Error("useNavbar must be used within a NavbarProvider");
   }
-  
+
   return context;
 }

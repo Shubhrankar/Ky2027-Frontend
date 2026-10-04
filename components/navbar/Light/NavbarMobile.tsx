@@ -5,14 +5,92 @@ import Link from "next/link";
 import Image from "next/image";
 import { Spinner } from "@/components/ui/spinner";
 import { useNavbar } from "../config/NavbarContext";
+import { NavbarTheme, THEME_CONFIG } from "./index";
 
 /**
- * Light Theme Mobile Navbar - Golden/cream style
+ * Theme-aware Mobile Navbar
  * Visible on mobile (sm:hidden)
  */
-export const NavbarMobileLight = memo(function NavbarMobileLight() {
+
+// Theme-specific mobile menu styles
+const MOBILE_THEME_STYLES = {
+  main: {
+    hamburgerGradient: "linear-gradient(90deg, #8a5a1a, #d4a853)",
+    panelBg:
+      "radial-gradient(ellipse at 30% 20%, rgba(245,222,164,0.98) 0%, rgba(214,176,110,0.98) 45%, rgba(168,124,64,0.98) 100%)",
+    panelBorder: "2px solid rgba(255,215,0,0.55)",
+    panelShadow:
+      "0 14px 34px rgba(0,0,0,0.55), inset 0 0 24px rgba(120,72,20,0.4), inset 0 0 2px rgba(255,240,200,0.6)",
+    textColor: "#3a1505",
+    textColorSecondary: "#6b3f14",
+    textColorInactive: "#3d1e0a",
+    dividerColor: "#8a5a1a",
+    accentGold: "#FFD700",
+    accentBronze: "#b8860b",
+    activeGradient:
+      "linear-gradient(135deg, rgba(255,215,0,0.7) 0%, rgba(255,230,100,0.8) 50%, rgba(255,215,0,0.7) 100%)",
+    activeShadow:
+      "0 0 25px rgba(255,215,0,0.8), 0 0 50px rgba(255,180,0,0.5), inset 0 0 15px rgba(255,255,200,0.6)",
+    activeTextShadow:
+      "0 0 10px rgba(255,215,0,0.8), 0 0 20px rgba(255,180,0,0.6), 0 1px 1px rgba(255,245,215,0.8)",
+    inactiveTextShadow: "0 1px 1px rgba(255,245,215,0.6)",
+    headerGradient: "linear-gradient(135deg, #FFF3C4, #FFD700 45%, #B8860B)",
+    mandalaStroke: "%235a3410",
+  },
+  about: {
+    hamburgerGradient: "linear-gradient(90deg, #8b5cf6, #a78bfa)",
+    panelBg:
+      "radial-gradient(ellipse at 30% 20%, rgba(30,20,50,0.98) 0%, rgba(45,27,78,0.98) 45%, rgba(26,26,46,0.98) 100%)",
+    panelBorder: "2px solid rgba(139,92,246,0.6)",
+    panelShadow:
+      "0 14px 34px rgba(0,0,0,0.7), inset 0 0 24px rgba(139,92,246,0.2), inset 0 0 2px rgba(196,181,253,0.3)",
+    textColor: "#e9d5ff",
+    textColorSecondary: "#c4b5fd",
+    textColorInactive: "#d8b4fe",
+    dividerColor: "#8b5cf6",
+    accentGold: "#a855f7",
+    accentBronze: "#7c3aed",
+    activeGradient:
+      "linear-gradient(135deg, rgba(139,92,246,0.8) 0%, rgba(168,85,247,0.9) 50%, rgba(139,92,246,0.8) 100%)",
+    activeShadow:
+      "0 0 25px rgba(139,92,246,0.8), 0 0 50px rgba(168,85,247,0.5), inset 0 0 15px rgba(196,181,253,0.5)",
+    activeTextShadow: "0 0 10px rgba(139,92,246,0.9), 0 0 20px rgba(168,85,247,0.7)",
+    inactiveTextShadow: "0 1px 2px rgba(0,0,0,0.5)",
+    headerGradient: "linear-gradient(135deg, #E9D5FF, #A855F7 45%, #6D28D9)",
+    mandalaStroke: "%238b5cf6",
+  },
+  sponsor: {
+    hamburgerGradient: "linear-gradient(90deg, #166534, #4ade80)",
+    panelBg:
+      "radial-gradient(ellipse at 30% 20%, rgba(20,40,20,0.98) 0%, rgba(30,60,30,0.98) 45%, rgba(15,35,15,0.98) 100%)",
+    panelBorder: "2px solid rgba(74,222,128,0.6)",
+    panelShadow:
+      "0 14px 34px rgba(0,0,0,0.6), inset 0 0 24px rgba(22,163,74,0.3), inset 0 0 2px rgba(187,247,208,0.3)",
+    textColor: "#dcfce7",
+    textColorSecondary: "#bbf7d0",
+    textColorInactive: "#a7f3d0",
+    dividerColor: "#22c55e",
+    accentGold: "#4ade80",
+    accentBronze: "#16a34a",
+    activeGradient:
+      "linear-gradient(135deg, rgba(74,222,128,0.8) 0%, rgba(34,197,94,0.9) 50%, rgba(74,222,128,0.8) 100%)",
+    activeShadow:
+      "0 0 25px rgba(74,222,128,0.8), 0 0 50px rgba(34,197,94,0.5), inset 0 0 15px rgba(187,247,208,0.5)",
+    activeTextShadow: "0 0 10px rgba(74,222,128,0.9), 0 0 20px rgba(34,197,94,0.7)",
+    inactiveTextShadow: "0 1px 2px rgba(0,0,0,0.5)",
+    headerGradient: "linear-gradient(135deg, #DCFCE7, #4ADE80 45%, #166534)",
+    mandalaStroke: "%2322c55e",
+  },
+};
+
+export const NavbarMobileLight = memo(function NavbarMobileLight({
+  theme = "main",
+}: {
+  theme?: NavbarTheme;
+}) {
   const [open, setOpen] = useState(false);
   const { isActive, isSessionLoading, isAuthenticated, user, userInitials, allLinks } = useNavbar();
+  const styles = MOBILE_THEME_STYLES[theme];
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -48,21 +126,21 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         <span
           className="block h-[3px] w-6 rounded-full transition-transform duration-300"
           style={{
-            background: "linear-gradient(90deg, #8a5a1a, #d4a853)",
+            background: styles.hamburgerGradient,
             transform: open ? "translateY(7px) rotate(45deg)" : "none",
           }}
         />
         <span
           className="block h-[3px] w-6 rounded-full transition-opacity duration-300"
           style={{
-            background: "linear-gradient(90deg, #8a5a1a, #d4a853)",
+            background: styles.hamburgerGradient,
             opacity: open ? 0 : 1,
           }}
         />
         <span
           className="block h-[3px] w-6 rounded-full transition-transform duration-300"
           style={{
-            background: "linear-gradient(90deg, #8a5a1a, #d4a853)",
+            background: styles.hamburgerGradient,
             transform: open ? "translateY(-7px) rotate(-45deg)" : "none",
           }}
         />
@@ -77,18 +155,16 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         }`}
         style={{
           borderRadius: "14px",
-          background:
-            "radial-gradient(ellipse at 30% 20%, rgba(245,222,164,0.98) 0%, rgba(214,176,110,0.98) 45%, rgba(168,124,64,0.98) 100%)",
-          border: "2px solid rgba(255,215,0,0.55)",
-          boxShadow:
-            "0 14px 34px rgba(0,0,0,0.55), inset 0 0 24px rgba(120,72,20,0.4), inset 0 0 2px rgba(255,240,200,0.6)",
+          background: styles.panelBg,
+          border: styles.panelBorder,
+          boxShadow: styles.panelShadow,
           willChange: "transform, opacity",
         }}
       >
-        {/* Mottled parchment texture */}
+        {/* Mottled texture */}
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-30 mix-blend-multiply"
+          className="pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
@@ -103,8 +179,7 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
             width: "78%",
             aspectRatio: "1",
             opacity: 0.14,
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%235a3410' stroke-width='1'%3E%3Ccircle cx='100' cy='100' r='96'/%3E%3Ccircle cx='100' cy='100' r='78'/%3E%3Ccircle cx='100' cy='100' r='54'/%3E%3Ccircle cx='100' cy='100' r='30'/%3E%3Cg%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(45 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(90 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(135 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(180 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(225 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(270 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(315 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='${styles.mandalaStroke}' stroke-width='1'%3E%3Ccircle cx='100' cy='100' r='96'/%3E%3Ccircle cx='100' cy='100' r='78'/%3E%3Ccircle cx='100' cy='100' r='54'/%3E%3Ccircle cx='100' cy='100' r='30'/%3E%3Cg%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(45 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(90 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(135 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(180 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(225 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(270 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3Cg transform='rotate(315 100 100)'%3E%3Cpath d='M100 4 L108 30 L100 22 L92 30 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
@@ -112,27 +187,11 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
           }}
         />
 
-        {/* Second mystical mandala - bottom right (different design) */}
-        <span
-          aria-hidden
-          className="naksha-mandala pointer-events-none absolute -right-8 -bottom-8"
-          style={{
-            width: "45%",
-            aspectRatio: "1",
-            opacity: 0.12,
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%235a3410' stroke-width='0.8'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3Ccircle cx='100' cy='100' r='80'/%3E%3Ccircle cx='100' cy='100' r='65'/%3E%3Ccircle cx='100' cy='100' r='50'/%3E%3Ccircle cx='100' cy='100' r='35'/%3E%3Ccircle cx='100' cy='100' r='20'/%3E%3C!-- 12-point lotus pattern --%3E%3Cg%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(30 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(60 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(90 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(120 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(150 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(180 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(210 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(240 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(270 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(300 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3Cg transform='rotate(330 100 100)'%3E%3Cellipse cx='100' cy='20' rx='8' ry='20' fill='%235a3410' fill-opacity='0.3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-          }}
-        />
-
         {/* Inner ornamental frame */}
         <span
           aria-hidden
           className="pointer-events-none absolute inset-[6px] rounded-[10px]"
-          style={{ border: "1px solid rgba(122,61,16,0.5)" }}
+          style={{ border: `1px solid ${styles.dividerColor}50` }}
         />
 
         {/* Decorative corner diamonds */}
@@ -147,8 +206,8 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
             aria-hidden
             className={`absolute ${pos} pointer-events-none h-2 w-2 rotate-45`}
             style={{
-              background: "linear-gradient(135deg, #FFD700, #B8860B)",
-              boxShadow: "0 0 6px rgba(255,215,0,0.7)",
+              background: `linear-gradient(135deg, ${styles.accentGold}, ${styles.accentBronze})`,
+              boxShadow: `0 0 6px ${styles.accentGold}70`,
             }}
           />
         ))}
@@ -160,13 +219,17 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
         >
           {/* User info header when logged in */}
           {isAuthenticated && user ? (
-            <div className="mb-2 flex items-center gap-3 border-b border-[#8a5a1a]/30 pb-3">
+            <div
+              className="mb-2 flex items-center gap-3 border-b pb-3"
+              style={{ borderColor: `${styles.dividerColor}30` }}
+            >
               <div
-                className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border-2 border-[#d4a853]"
+                className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border-2"
                 style={{
+                  borderColor: styles.accentGold,
                   background: user.image
                     ? "transparent"
-                    : "linear-gradient(135deg, #d4a853 0%, #8b6914 100%)",
+                    : `linear-gradient(135deg, ${styles.accentGold} 0%, ${styles.accentBronze} 100%)`,
                 }}
               >
                 {user.image ? (
@@ -179,16 +242,19 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <span className="text-sm font-bold" style={{ color: "#1a0a05" }}>
+                  <span
+                    className="text-sm font-bold"
+                    style={{ color: theme === "main" ? "#1a0a05" : "#fff" }}
+                  >
                     {userInitials}
                   </span>
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-bold" style={{ color: "#3a1505" }}>
+                <p className="truncate text-sm font-bold" style={{ color: styles.textColor }}>
                   {user.name}
                 </p>
-                <p className="truncate text-xs" style={{ color: "#6b3f14" }}>
+                <p className="truncate text-xs" style={{ color: styles.textColorSecondary }}>
                   {user.email}
                 </p>
               </div>
@@ -199,33 +265,38 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
               <span
                 className="text-[18px] leading-none"
                 style={{
-                  background: "linear-gradient(135deg, #FFF3C4, #FFD700 45%, #B8860B)",
+                  background: styles.headerGradient,
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   color: "transparent",
-                  filter: "drop-shadow(0 0 4px rgba(255,215,0,0.6))",
+                  filter: `drop-shadow(0 0 4px ${styles.accentGold}60)`,
                 }}
               >
                 ॐ
               </span>
               <span
                 className="mt-1 text-[10px] tracking-[0.4em] uppercase"
-                style={{ color: "#6b3f14", fontWeight: 900 }}
+                style={{ color: styles.textColorSecondary, fontWeight: 900 }}
               >
                 नक्शा
               </span>
               <span
                 aria-hidden
-                className="mt-1.5 flex w-full items-center justify-center gap-2 text-[#8a5a1a] opacity-80"
+                className="mt-1.5 flex w-full items-center justify-center gap-2 opacity-80"
+                style={{ color: styles.dividerColor }}
               >
                 <span
                   className="h-px flex-1"
-                  style={{ background: "linear-gradient(90deg, transparent, #8a5a1a)" }}
+                  style={{
+                    background: `linear-gradient(90deg, transparent, ${styles.dividerColor})`,
+                  }}
                 />
                 <span className="text-[9px]">✦</span>
                 <span
                   className="h-px flex-1"
-                  style={{ background: "linear-gradient(90deg, #8a5a1a, transparent)" }}
+                  style={{
+                    background: `linear-gradient(90deg, ${styles.dividerColor}, transparent)`,
+                  }}
                 />
               </span>
             </div>
@@ -242,17 +313,11 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                   className="naksha-link naksha-item flex items-center justify-center gap-2 rounded-md px-3 py-2 text-center text-[15px] tracking-[0.18em] uppercase transition-all duration-300"
                   style={{
                     fontWeight: 900,
-                    color: active ? "#3a1505" : "#3d1e0a",
-                    background: active
-                      ? "linear-gradient(135deg, rgba(255,215,0,0.7) 0%, rgba(255,230,100,0.8) 50%, rgba(255,215,0,0.7) 100%)"
-                      : "transparent",
-                    boxShadow: active
-                      ? "0 0 25px rgba(255,215,0,0.8), 0 0 50px rgba(255,180,0,0.5), inset 0 0 15px rgba(255,255,200,0.6)"
-                      : "none",
-                    textShadow: active
-                      ? "0 0 10px rgba(255,215,0,0.8), 0 0 20px rgba(255,180,0,0.6), 0 1px 1px rgba(255,245,215,0.8)"
-                      : "0 1px 1px rgba(255,245,215,0.6)",
-                    border: active ? "1px solid rgba(255,230,100,0.9)" : "1px solid transparent",
+                    color: active ? styles.textColor : styles.textColorInactive,
+                    background: active ? styles.activeGradient : "transparent",
+                    boxShadow: active ? styles.activeShadow : "none",
+                    textShadow: active ? styles.activeTextShadow : styles.inactiveTextShadow,
+                    border: active ? `1px solid ${styles.accentGold}90` : "1px solid transparent",
                     opacity: open ? 1 : 0,
                     transform: open
                       ? active
@@ -266,8 +331,8 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                     aria-hidden
                     className="text-[9px]"
                     style={{
-                      color: active ? "#FFD700" : "#b8860b",
-                      filter: active ? "drop-shadow(0 0 4px rgba(255,215,0,0.9))" : "none",
+                      color: active ? styles.accentGold : styles.accentBronze,
+                      filter: active ? `drop-shadow(0 0 4px ${styles.accentGold}90)` : "none",
                     }}
                   >
                     {active ? "✦" : "◆"}
@@ -277,8 +342,8 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                     aria-hidden
                     className="text-[9px]"
                     style={{
-                      color: active ? "#FFD700" : "#b8860b",
-                      filter: active ? "drop-shadow(0 0 4px rgba(255,215,0,0.9))" : "none",
+                      color: active ? styles.accentGold : styles.accentBronze,
+                      filter: active ? `drop-shadow(0 0 4px ${styles.accentGold}90)` : "none",
                     }}
                   >
                     {active ? "✦" : "◆"}
@@ -288,16 +353,21 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                 {i < arr.length - 1 && (
                   <span
                     aria-hidden
-                    className="flex items-center justify-center gap-2 py-0.5 text-[#8a5a1a] opacity-60"
+                    className="flex items-center justify-center gap-2 py-0.5 opacity-60"
+                    style={{ color: styles.dividerColor }}
                   >
                     <span
                       className="h-px w-8"
-                      style={{ background: "linear-gradient(90deg, transparent, #8a5a1a)" }}
+                      style={{
+                        background: `linear-gradient(90deg, transparent, ${styles.dividerColor})`,
+                      }}
                     />
                     <span className="text-[9px]">✦</span>
                     <span
                       className="h-px w-8"
-                      style={{ background: "linear-gradient(90deg, #8a5a1a, transparent)" }}
+                      style={{
+                        background: `linear-gradient(90deg, ${styles.dividerColor}, transparent)`,
+                      }}
                     />
                   </span>
                 )}
@@ -310,16 +380,21 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
             <>
               <span
                 aria-hidden
-                className="flex items-center justify-center gap-2 py-0.5 text-[#8a5a1a] opacity-60"
+                className="flex items-center justify-center gap-2 py-0.5 opacity-60"
+                style={{ color: styles.dividerColor }}
               >
                 <span
                   className="h-px w-8"
-                  style={{ background: "linear-gradient(90deg, transparent, #8a5a1a)" }}
+                  style={{
+                    background: `linear-gradient(90deg, transparent, ${styles.dividerColor})`,
+                  }}
                 />
                 <span className="text-[9px]">✦</span>
                 <span
                   className="h-px w-8"
-                  style={{ background: "linear-gradient(90deg, #8a5a1a, transparent)" }}
+                  style={{
+                    background: `linear-gradient(90deg, ${styles.dividerColor}, transparent)`,
+                  }}
                 />
               </span>
               <Link
@@ -328,18 +403,14 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                 className="naksha-link naksha-item flex items-center justify-center gap-2 rounded-md px-3 py-2 text-center text-[15px] tracking-[0.18em] uppercase transition-all duration-300"
                 style={{
                   fontWeight: 900,
-                  color: isActive("/profile") ? "#3a1505" : "#3d1e0a",
-                  background: isActive("/profile")
-                    ? "linear-gradient(135deg, rgba(255,215,0,0.7) 0%, rgba(255,230,100,0.8) 50%, rgba(255,215,0,0.7) 100%)"
-                    : "transparent",
-                  boxShadow: isActive("/profile")
-                    ? "0 0 25px rgba(255,215,0,0.8), 0 0 50px rgba(255,180,0,0.5), inset 0 0 15px rgba(255,255,200,0.6)"
-                    : "none",
+                  color: isActive("/profile") ? styles.textColor : styles.textColorInactive,
+                  background: isActive("/profile") ? styles.activeGradient : "transparent",
+                  boxShadow: isActive("/profile") ? styles.activeShadow : "none",
                   textShadow: isActive("/profile")
-                    ? "0 0 10px rgba(255,215,0,0.8), 0 0 20px rgba(255,180,0,0.6), 0 1px 1px rgba(255,245,215,0.8)"
-                    : "0 1px 1px rgba(255,245,215,0.6)",
+                    ? styles.activeTextShadow
+                    : styles.inactiveTextShadow,
                   border: isActive("/profile")
-                    ? "1px solid rgba(255,230,100,0.9)"
+                    ? `1px solid ${styles.accentGold}90`
                     : "1px solid transparent",
                   opacity: open ? 1 : 0,
                   transform: open
@@ -354,9 +425,9 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                   aria-hidden
                   className="text-[9px]"
                   style={{
-                    color: isActive("/profile") ? "#FFD700" : "#b8860b",
+                    color: isActive("/profile") ? styles.accentGold : styles.accentBronze,
                     filter: isActive("/profile")
-                      ? "drop-shadow(0 0 4px rgba(255,215,0,0.9))"
+                      ? `drop-shadow(0 0 4px ${styles.accentGold}90)`
                       : "none",
                   }}
                 >
@@ -367,9 +438,9 @@ export const NavbarMobileLight = memo(function NavbarMobileLight() {
                   aria-hidden
                   className="text-[9px]"
                   style={{
-                    color: isActive("/profile") ? "#FFD700" : "#b8860b",
+                    color: isActive("/profile") ? styles.accentGold : styles.accentBronze,
                     filter: isActive("/profile")
-                      ? "drop-shadow(0 0 4px rgba(255,215,0,0.9))"
+                      ? `drop-shadow(0 0 4px ${styles.accentGold}90)`
                       : "none",
                   }}
                 >

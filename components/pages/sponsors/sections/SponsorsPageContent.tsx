@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Navbar";
 import { IMAGES } from "@/lib/images";
 import {
   SPONSORS_2026,
@@ -673,9 +673,9 @@ export function SponsorsPageContent() {
 
   return (
     <>
-      {/* Navbar */}
+      {/* Navbar - Sponsor theme (green/gold nature) */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="sponsor" />
       </div>
 
       <main

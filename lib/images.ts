@@ -37,15 +37,27 @@ export const IMAGES = {
   },
 
   // ============================================
-  // NAVBAR - Light and Dark variants
+  // NAVBAR - Page-specific variants
   // ============================================
   navbar: {
-    // Light theme (golden/cream)
-    background: `${IMAGEKIT_BASE}/navbar/common/nav-bg.png`,
-    badge: `${IMAGEKIT_BASE}/navbar/common/nav-badge.png`,
-    // Dark theme (dark blue/teal)
-    backgroundDark: `${IMAGEKIT_BASE}/navbar/dark/nav-bar-bg-dark.png`,
-    badgeDark: `${IMAGEKIT_BASE}/navbar/dark/nav-bar-badge-dark.png`,
+    // Main/Home navbar (golden/cream theme)
+    main: {
+      background: `${IMAGEKIT_BASE}/navbar/main/nav-bg.png`,
+      badge: `${IMAGEKIT_BASE}/navbar/main/nav-badge-home.png`,
+    },
+    // About page navbar (purple/blue concert theme)
+    about: {
+      background: `${IMAGEKIT_BASE}/navbar/about/navbar-about.png`,
+      badge: `${IMAGEKIT_BASE}/navbar/about/nav-badge-about.png`,
+    },
+    // Sponsors page navbar (green/gold nature theme)
+    sponsor: {
+      background: `${IMAGEKIT_BASE}/navbar/sponsor/nav-sponsor.png`,
+      badge: `${IMAGEKIT_BASE}/navbar/sponsor/nav-badge-sponsor.png`,
+    },
+    // Legacy aliases for backwards compatibility
+    background: `${IMAGEKIT_BASE}/navbar/main/nav-bg.png`,
+    badge: `${IMAGEKIT_BASE}/navbar/main/nav-badge-home.png`,
   },
 
   // ============================================
