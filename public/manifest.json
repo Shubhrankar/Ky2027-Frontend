@@ -1,0 +1,16 @@
+{
+  "name": "Kashi Yatra 2027",
+  "short_name": "Kashi Yatra",
+  "description": "IIT BHU's Biggest Cultural Festival - 4 days, 50+ events, Pro Nites",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a15",
+  "theme_color": "#FFD700",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

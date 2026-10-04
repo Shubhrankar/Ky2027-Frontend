@@ -2,9 +2,21 @@ import { Metadata } from "next";
 import { EventsPageContent } from "@/components/pages/events";
 
 export const metadata: Metadata = {
-  title: "Events | Kashi Yatra 2027",
+  title: "Events",
   description:
-    "Explore all competitions and events at Kashi Yatra 2027 - IIT BHU's grandest cultural fest. Dance, Music, Drama, Fashion, Art, Quiz and more.",
+    "50+ competitions at Kashi Yatra 2027 - Dance, Music, Drama, Fashion, Art, Quiz, Literary events & more. Register now for IIT BHU's biggest cultural fest.",
+  keywords: [
+    "Kashi Yatra events",
+    "IIT BHU competitions",
+    "cultural events",
+    "dance competition",
+    "music competition",
+    "college fest events",
+  ],
+  openGraph: {
+    title: "Events at Kashi Yatra 2027",
+    description: "50+ events across Dance, Music, Drama, Fashion, Art & more. Compete & win!",
+  },
 };
 
 export default function EventsPage() {
