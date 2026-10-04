@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Geist, Geist_Mono, Cinzel_Decorative, Cinzel } from "next/font/google";
+import { Geist, Geist_Mono, Cinzel_Decorative, Cinzel, Cormorant_Garamond } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -32,21 +32,20 @@ const cinzel = Cinzel({
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
+// Elegant small-caps serif for the schedule map labels and event cards.
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "Kashi Yatra 2027 | IIT BHU Cultural Festival",
   description:
     "Kashi Yatra - The annual cultural festival of IIT (BHU) Varanasi. Experience the spiritual essence of Kashi through art, music, dance, and cultural extravaganza.",
-  keywords: [
-    "Kashi Yatra",
-    "IIT BHU",
-    "Cultural Festival",
-    "Varanasi",
-    "College Fest",
-  ],
+  keywords: ["Kashi Yatra", "IIT BHU", "Cultural Festival", "Varanasi", "College Fest"],
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-    ],
+    icon: [{ url: "/favicon.ico", sizes: "any" }],
     shortcut: "/favicon.ico",
     apple: "/favicon.ico",
   },
@@ -56,9 +55,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${cinzelDecorative.variable} ${cinzel.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cinzelDecorative.variable} ${cinzel.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full flex-col">
         <Toaster />
         <ApolloProvider>
           <QueryProvider>

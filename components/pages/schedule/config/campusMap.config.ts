@@ -1,0 +1,464 @@
+/**
+ * Campus Map Configuration
+ * Venues (map labels), lamp positions and the event-to-venue schedule
+ * for the Kashi Yatra 2027 schedule map.
+ *
+ * All positions are percentages of the map image (1332 × 1252).
+ */
+
+import {
+  EVENT_CATEGORIES,
+  type EventCategory,
+  type SubEvent,
+} from "@/components/pages/events/config/events.config";
+
+export const MAP_ASPECT = 1332 / 1252;
+
+/** Label colour variants from the original map design. */
+export type LabelTone = "blue" | "red" | "green" | "white" | "text";
+
+export interface Venue {
+  slug: string;
+  name: string;
+  /** Text shown on the map label (may contain line breaks). */
+  label: string;
+  tone: LabelTone;
+  large?: boolean;
+  /** Label centre. */
+  x: number;
+  y: number;
+  /** Point on the map the label's leader line points to. */
+  anchor?: [number, number];
+  /** Direction signs etc. are drawn but not clickable. */
+  clickable?: boolean;
+}
+
+export const VENUES: Venue[] = [
+  {
+    slug: "sergovardhanpur-gate",
+    name: "Sergovardhanpur Gate",
+    label: "Sergovardhanpur Gate",
+    tone: "white",
+    x: 61.5,
+    y: 2.8,
+    anchor: [52, 3.2],
+  },
+  {
+    slug: "lt-4",
+    name: "LT-4",
+    label: "LT-4",
+    tone: "blue",
+    large: true,
+    x: 59.5,
+    y: 8.5,
+    anchor: [58.9, 13.6],
+  },
+  {
+    slug: "lt-3",
+    name: "LT-3",
+    label: "LT-3",
+    tone: "blue",
+    large: true,
+    x: 68.5,
+    y: 16.5,
+    anchor: [67.4, 22.3],
+  },
+  {
+    slug: "sb",
+    name: "Swatantrata Bhawan",
+    label: "SB",
+    tone: "blue",
+    large: true,
+    x: 37,
+    y: 17.5,
+    anchor: [35.5, 22.3],
+  },
+  {
+    slug: "main-building",
+    name: "Electrical Engineering (Main Building)",
+    label: "Electrical Engineering\n(Main Building)",
+    tone: "red",
+    large: true,
+    x: 33,
+    y: 31.5,
+    anchor: [33.2, 39.3],
+  },
+  {
+    slug: "lt-2",
+    name: "LT-2",
+    label: "LT-2",
+    tone: "blue",
+    large: true,
+    x: 15,
+    y: 34,
+    anchor: [24.3, 37.4],
+  },
+  {
+    slug: "lt-1",
+    name: "LT-1",
+    label: "LT-1",
+    tone: "blue",
+    large: true,
+    x: 49,
+    y: 41.5,
+    anchor: [48, 46.4],
+  },
+  {
+    slug: "adv-ground",
+    name: "ADV Ground",
+    label: "ADV Ground",
+    tone: "green",
+    large: true,
+    x: 72,
+    y: 41.5,
+    anchor: [70, 49.5],
+  },
+  {
+    slug: "gymkhana-ground",
+    name: "Gymkhana Ground",
+    label: "GYMKHANA GROUND",
+    tone: "green",
+    x: 57,
+    y: 55.5,
+    anchor: [58.6, 62.5],
+  },
+  {
+    slug: "rajputana-ground",
+    name: "Rajputana Ground",
+    label: "RAJPUTANA GROUND",
+    tone: "green",
+    x: 43.5,
+    y: 62.5,
+    anchor: [42.8, 69],
+  },
+  {
+    slug: "sac",
+    name: "Student Activity Centre",
+    label: "SAC",
+    tone: "blue",
+    large: true,
+    x: 30,
+    y: 58.5,
+    anchor: [29.4, 64.2],
+  },
+  {
+    slug: "vishwanath-temple",
+    name: "Vishwanath Temple",
+    label: "Vishwanath Temple",
+    tone: "red",
+    x: 8.2,
+    y: 55.5,
+    anchor: [8.2, 59],
+  },
+  {
+    slug: "towards-temple",
+    name: "Way towards B-09, B-10 and Vishwanath Temple",
+    label: "Way towards\nB-09 and B-10\nand\nVishwanath Temple →",
+    tone: "text",
+    x: 7.5,
+    y: 48.5,
+    clickable: false,
+  },
+  {
+    slug: "entry",
+    name: "Entry to IIT (BHU)",
+    label: "Entry to\nIIT (BHU)",
+    tone: "blue",
+    large: true,
+    x: 15.5,
+    y: 71.5,
+  },
+  {
+    slug: "rajputana-crossing",
+    name: "Rajputana Crossing",
+    label: "Rajputana\nCrossing",
+    tone: "white",
+    x: 21,
+    y: 77,
+  },
+  {
+    slug: "pc-ray-satish-dhawan-hostels",
+    name: "PC Ray and Satish Dhawan Hostels",
+    label: "PC RAY AND\nSATISH DHAWAN\nHOSTELS",
+    tone: "blue",
+    x: 7.5,
+    y: 82,
+    anchor: [15.5, 86],
+  },
+  {
+    slug: "girls-hostels",
+    name: "Girls Hostels",
+    label: "GIRLS HOSTELS",
+    tone: "blue",
+    x: 47,
+    y: 77.5,
+    anchor: [37, 82],
+  },
+  {
+    slug: "hyderabad-gate",
+    name: "Hyderabad Gate",
+    label: "Hyderabad Gate",
+    tone: "blue",
+    large: true,
+    x: 47,
+    y: 92.5,
+    anchor: [35.8, 97.5],
+  },
+  {
+    slug: "chiron-hyderabad-gate",
+    name: "Chiron Hyderabad Gate",
+    label: "Chiron\nHyderabad Gate",
+    tone: "white",
+    x: 71,
+    y: 95.5,
+    anchor: [66, 90.6],
+  },
+];
+
+/** Highlighted outline around the Main Building (from the original map). */
+export const MAIN_BUILDING_OUTLINE = "23.6,45.2 40.6,35.4 43,39.4 26,49.2";
+
+/** Street lamp positions that twinkle on the night map. */
+export const LAMPS: [number, number][] = [
+  [68.32, 66.61],
+  [41.97, 45.45],
+  [73.87, 43.29],
+  [63.96, 14.3],
+  [27.03, 17.41],
+  [24.02, 17.01],
+  [83.78, 71.33],
+  [79.95, 53.35],
+  [42.12, 49.6],
+  [37.54, 21.65],
+  [95.72, 61.26],
+  [14.56, 39.62],
+  [57.36, 68.93],
+  [28.08, 44.73],
+  [27.1, 71.73],
+  [85.59, 42.65],
+  [28.53, 16.77],
+  [72.45, 62.62],
+  [32.73, 99.36],
+  [50.23, 12.22],
+  [31.98, 89.38],
+  [37.39, 17.81],
+  [22.52, 67.49],
+  [22.9, 38.74],
+  [53.53, 77.48],
+  [60.74, 43.85],
+  [52.85, 25.96],
+  [27.7, 73.32],
+  [12.76, 22.36],
+  [49.32, 12.7],
+  [87.16, 50],
+  [74.55, 82.99],
+  [76.43, 56.15],
+  [55.63, 18.77],
+  [21.17, 40.1],
+  [62.46, 69.25],
+  [35.21, 93.05],
+  [50.45, 43.45],
+  [14.19, 68.29],
+  [18.69, 83.87],
+  [37.61, 90.34],
+  [50.23, 97.52],
+  [85.36, 65.34],
+  [71.25, 84.58],
+  [8.78, 65.58],
+  [73.8, 36.34],
+  [64.79, 33.23],
+  [92.27, 57.67],
+  [72.45, 34.27],
+  [84.91, 60.94],
+  [48.05, 91.13],
+  [36.04, 59.74],
+  [36.19, 32.11],
+  [49.7, 33.55],
+  [69.14, 2.72],
+  [82.28, 55.99],
+  [8.33, 26.76],
+  [38.14, 78.51],
+  [74.17, 4.95],
+  [22.9, 63.42],
+  [41.52, 81.55],
+  [66.74, 33.63],
+  [44.82, 4.39],
+  [30.78, 79.31],
+  [24.1, 19.57],
+  [9.61, 65.26],
+  [23.72, 61.34],
+  [83.33, 78.67],
+  [68.84, 72.76],
+  [60.59, 76.44],
+  [51.43, 89.86],
+  [26.28, 69.65],
+  [91.14, 71.73],
+  [47.82, 95.21],
+  [59.23, 45.77],
+  [16.74, 57.67],
+  [35.81, 72.76],
+  [16.74, 53.27],
+  [1.95, 66.53],
+  [59.91, 48.08],
+  [50.38, 65.73],
+  [47.97, 42.81],
+  [40.24, 54.55],
+  [79.8, 6.55],
+  [44.37, 9.82],
+  [57.73, 0.64],
+  [21.62, 87.94],
+  [48.42, 41.77],
+  [64.86, 83.23],
+  [24.25, 57.11],
+  [54.05, 65.97],
+  [7.58, 26.6],
+  [45.57, 50.56],
+  [70.72, 98],
+  [61.71, 73.56],
+  [15.77, 44.41],
+  [94.44, 50],
+  [19.52, 59.5],
+  [49.4, 72.92],
+  [48.05, 62.62],
+  [39.04, 51.2],
+  [57.96, 39.22],
+  [20.35, 36.18],
+  [30.26, 37.78],
+  [57.58, 19.01],
+  [15.54, 50.24],
+  [19.22, 60.78],
+  [30.93, 86.58],
+  [60.44, 80.99],
+  [18.84, 87.38],
+  [8.48, 64.06],
+  [72.45, 64.22],
+  [29.88, 53.83],
+  [94.44, 52.88],
+  [31.01, 44.17],
+  [34.16, 90.26],
+  [48.65, 14.78],
+  [57.73, 49.44],
+  [23.5, 63.26],
+  [50.98, 7.91],
+  [54.5, 74.84],
+  [47.52, 60.22],
+  [37.54, 98.48],
+  [35.06, 61.74],
+  [26.35, 46.17],
+  [35.36, 98.8],
+  [40.99, 97.2],
+  [94.89, 83.47],
+  [50.3, 30.43],
+  [51.58, 15.5],
+  [40.39, 63.66],
+  [25.53, 59.74],
+  [59.83, 81.39],
+  [41.97, 63.42],
+  [18.84, 58.39],
+  [50.38, 71.49],
+  [75.6, 82.51],
+  [76.28, 34.98],
+  [37.39, 82.75],
+  [52.78, 47.84],
+  [23.72, 39.3],
+  [88.51, 54.63],
+  [42.42, 58.95],
+  [58.63, 82.11],
+  [62.76, 88.1],
+  [55.48, 95.85],
+  [57.06, 72.6],
+  [72.6, 91.21],
+  [24.47, 40.89],
+  [51.8, 1.84],
+  [9.46, 64.14],
+  [64.11, 74.28],
+  [52.18, 4.63],
+  [41.97, 54.23],
+  [90.62, 34.19],
+  [56.53, 23.64],
+  [30.03, 55.35],
+  [32.81, 75.56],
+  [61.86, 93.05],
+  [11.56, 30.67],
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// SCHEDULE
+// Which venue and festival day each event runs on.
+// NOTE: Placeholder allocation — update with the final schedule.
+// ═══════════════════════════════════════════════════════════════════
+
+export const FEST_DAYS: Record<number, string> = {
+  1: "14 Jan",
+  2: "15 Jan",
+  3: "16 Jan",
+  4: "17 Jan",
+};
+
+/** [category slug, sub-event id, venue slug, day] */
+const SCHEDULE: [string, string, string, number][] = [
+  ["natraj", "nritya", "sb", 1],
+  ["natraj", "cut-a-rug", "sac", 1],
+  ["natraj", "ecstasy", "sac", 2],
+  ["natraj", "cypher-of-mobs", "gymkhana-ground", 2],
+  ["natraj", "synchronicity", "rajputana-ground", 3],
+  ["crosswindz", "sur", "sb", 2],
+  ["crosswindz", "band-of-bands", "rajputana-ground", 2],
+  ["crosswindz", "jugalbandi", "sb", 3],
+  ["crosswindz", "unplugged", "sac", 3],
+  ["bandish", "raag-rang", "sb", 1],
+  ["bandish", "tantrang", "sb", 2],
+  ["bandish", "fusion-fiesta", "sb", 4],
+  ["abhinay", "mono-act", "lt-1", 1],
+  ["abhinay", "nukkad", "adv-ground", 2],
+  ["abhinay", "stage-play", "sb", 3],
+  ["abhinay", "mimicry", "lt-1", 3],
+  ["mirage", "themed-fashion", "rajputana-ground", 1],
+  ["mirage", "couture", "sac", 4],
+  ["mirage", "runway", "rajputana-ground", 4],
+  ["toolika", "canvas", "main-building", 1],
+  ["toolika", "sketch-it", "main-building", 2],
+  ["toolika", "digital-art", "lt-3", 2],
+  ["toolika", "mural", "main-building", 3],
+  ["enquizta", "general-quiz", "lt-2", 1],
+  ["enquizta", "biz-quiz", "lt-2", 2],
+  ["enquizta", "sci-tech", "lt-4", 3],
+  ["enquizta", "entertainment", "lt-4", 4],
+  ["samwaad", "debate", "lt-3", 1],
+  ["samwaad", "poetry-slam", "lt-1", 2],
+  ["samwaad", "extempore", "lt-4", 2],
+  ["samwaad", "creative-writing", "lt-3", 3],
+  ["samwaad", "mun", "lt-2", 3],
+  ["zaika", "masterchef", "adv-ground", 1],
+  ["zaika", "bake-off", "adv-ground", 3],
+  ["zaika", "mocktail", "adv-ground", 4],
+];
+
+export interface ScheduledEvent {
+  event: SubEvent;
+  category: EventCategory;
+  venue: Venue;
+  day: number;
+}
+
+export const SCHEDULED_EVENTS: ScheduledEvent[] = SCHEDULE.flatMap(
+  ([categorySlug, eventId, venueSlug, day]) => {
+    const category = EVENT_CATEGORIES.find((c) => c.slug === categorySlug);
+    const event = category?.subEvents.find((e) => e.id === eventId);
+    const venue = VENUES.find((v) => v.slug === venueSlug);
+    return category && event && venue ? [{ event, category, venue, day }] : [];
+  }
+).sort((a, b) => a.day - b.day);
+
+// Helper functions
+export function getVenueBySlug(slug: string): Venue | undefined {
+  return VENUES.find((v) => v.slug === slug && v.clickable !== false);
+}
+
+export function getEventsAtVenue(slug: string): ScheduledEvent[] {
+  return SCHEDULED_EVENTS.filter((s) => s.venue.slug === slug);
+}
+
+export function getAllVenueSlugs(): string[] {
+  return VENUES.filter((v) => v.clickable !== false).map((v) => v.slug);
+}

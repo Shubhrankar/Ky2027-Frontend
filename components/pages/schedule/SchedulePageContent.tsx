@@ -1,13 +1,13 @@
 "use client";
 
-import { JAZZ_COLORS } from "@/components/pages/home/constants/palette";
 import { NavbarDesign as Navbar } from "@/components/navbar/Design";
-import { ScheduleHero, SchedulePlaceholder } from ".";
+import { CampusMap, EventSearch, WhatsOnSidebar } from "./sections";
 
 // ═══════════════════════════════════════════════════════════════════
 // MAIN PAGE CONTENT
-// Mirrors the Contact/About page structure: fixed navbar + full-height
-// royal-jazz gradient backdrop, with content stacked above.
+// Events map (Thomso-style): search on top, "What's On" feed on the
+// left and the whole animated IIT (BHU) campus map in one frame.
+// Hovering a venue flies to it; clicking opens the venue's page.
 // ═══════════════════════════════════════════════════════════════════
 export function SchedulePageContent() {
   return (
@@ -18,23 +18,29 @@ export function SchedulePageContent() {
       </div>
 
       <main
-        className="relative min-h-screen pt-20 sm:pt-24 overflow-hidden"
+        className="relative min-h-[100dvh] pt-24 pb-6 text-white sm:pt-28 lg:h-[100dvh] lg:overflow-hidden lg:p-0"
         style={{
-          background: `linear-gradient(180deg, 
-            ${JAZZ_COLORS.BG_DEEP} 0%, 
-            ${JAZZ_COLORS.BG_ROYAL} 12%,
-            ${JAZZ_COLORS.BG_WINE} 35%,
-            ${JAZZ_COLORS.BG_ROYAL} 60%,
-            ${JAZZ_COLORS.BG_WINE} 80%,
-            ${JAZZ_COLORS.BG_DEEP} 100%
-          )`,
+          background: "radial-gradient(ellipse at 60% 55%, #121735 0%, #0a0c1d 55%, #06070f 100%)",
         }}
       >
-        {/* Content sits above the background layer */}
-        <div className="relative z-10">
-          <ScheduleHero />
-          <SchedulePlaceholder />
+        <EventSearch className="z-30 mx-4 lg:absolute lg:top-[100px] lg:left-1/2 lg:mx-0 lg:w-full lg:max-w-xl lg:-translate-x-1/2" />
+
+        {/* Whole map in one frame, as large as the free area allows (centred on wide screens) */}
+        <div className="mt-4 flex flex-col items-center lg:absolute lg:top-[150px] lg:right-6 lg:bottom-[34px] lg:left-[310px] lg:mt-0 lg:justify-center 2xl:right-[310px]">
+          <CampusMap
+            hoverZoom
+            edgeFade
+            showControls={false}
+            className="w-full lg:w-[min(100%,calc((100dvh_-_184px)*1.064))]"
+          />
         </div>
+
+        <p className="mt-2 text-center font-[family-name:var(--font-cormorant)] text-[13px] font-semibold tracking-[0.25em] text-[#efe4cc]/70 uppercase lg:absolute lg:right-6 lg:bottom-2 lg:left-[310px] lg:mt-0 2xl:right-[310px]">
+          <span className="hidden sm:inline">Hover a venue to fly to it · Click to walk in</span>
+          <span className="sm:hidden">Tap a venue to walk in</span>
+        </p>
+
+        <WhatsOnSidebar className="mx-4 mt-6 h-[460px] lg:absolute lg:top-[150px] lg:bottom-4 lg:left-6 lg:mx-0 lg:mt-0 lg:h-auto lg:w-[272px]" />
       </main>
     </>
   );

@@ -8,19 +8,20 @@ import { useIsMobile } from "@/hooks";
 const HOLD_DURATION = 3500; // 3.5 seconds
 
 export function EnterButton() {
-  const { phase, loadProgress, startLoading, cancelLoading, startBlast, setLoadProgress } = useIntro();
+  const { phase, loadProgress, startLoading, cancelLoading, startBlast, setLoadProgress } =
+    useIntro();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isMobile = useIsMobile();
 
   const handleMouseDown = useCallback(() => {
     if (phase !== "idle") return;
-    
+
     startLoading();
 
     const startTime = Date.now();
     // MOBILE: 80ms interval, DESKTOP: 50ms
     const interval = isMobile ? 80 : 50;
-    
+
     intervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min((elapsed / HOLD_DURATION) * 100, 100);
@@ -38,7 +39,7 @@ export function EnterButton() {
 
   const handleMouseUp = useCallback(() => {
     if (phase !== "loading") return;
-    
+
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -58,7 +59,7 @@ export function EnterButton() {
   const intensity = loadProgress / 100;
   const circumference = 2 * Math.PI * 58;
   const strokeDashoffset = circumference - (loadProgress / 100) * circumference;
-  
+
   const [isHovered, setIsHovered] = useState(false);
 
   // MOBILE: Ultra simplified version
@@ -89,7 +90,7 @@ export function EnterButton() {
               <stop offset="0%" stopColor="#FFD700" />
               <stop offset="100%" stopColor="#FF8C00" />
             </linearGradient>
-            
+
             <linearGradient id="textGoldM" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#FFF8DC" />
               <stop offset="100%" stopColor="#DAA520" />
@@ -98,15 +99,19 @@ export function EnterButton() {
 
           {/* Background track */}
           <circle
-            cx="70" cy="70" r="58"
+            cx="70"
+            cy="70"
+            r="58"
             fill="none"
             stroke="rgba(255, 200, 100, 0.15)"
             strokeWidth="2"
           />
-          
+
           {/* Progress circle - the only animated thing */}
           <circle
-            cx="70" cy="70" r="58"
+            cx="70"
+            cy="70"
+            r="58"
             fill="none"
             stroke="url(#progressGoldM)"
             strokeWidth={isLoading ? 4 : 2}
@@ -118,7 +123,9 @@ export function EnterButton() {
 
           {/* Inner circle */}
           <circle
-            cx="70" cy="70" r="50"
+            cx="70"
+            cy="70"
+            r="50"
             fill="rgba(20, 15, 40, 0.9)"
             stroke="rgba(255, 200, 100, 0.4)"
             strokeWidth="1"
@@ -126,7 +133,8 @@ export function EnterButton() {
 
           {/* Text */}
           <text
-            x="70" y={isLoading ? "65" : "70"}
+            x="70"
+            y={isLoading ? "65" : "70"}
             textAnchor="middle"
             dominantBaseline="middle"
             fill="url(#textGoldM)"
@@ -141,7 +149,8 @@ export function EnterButton() {
           {/* Loading percentage */}
           {isLoading && (
             <text
-              x="70" y="88"
+              x="70"
+              y="88"
               textAnchor="middle"
               dominantBaseline="middle"
               fill="rgba(255, 200, 100, 0.8)"
@@ -178,7 +187,7 @@ export function EnterButton() {
       {/* Hover glow effect */}
       {isHovered && !isLoading && (
         <motion.div
-          className="absolute rounded-full pointer-events-none"
+          className="pointer-events-none absolute rounded-full"
           style={{
             inset: -35,
             background: "radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%)",
@@ -190,7 +199,7 @@ export function EnterButton() {
           transition={{ duration: 0.3 }}
         />
       )}
-      
+
       {/* Outer glow aura */}
       <motion.div
         className="absolute rounded-full"
@@ -214,20 +223,20 @@ export function EnterButton() {
       {[0, 1, 2].map((i) => (
         <motion.div
           key={`pulse-${i}`}
-          className="absolute rounded-full pointer-events-none"
-          style={{ 
+          className="pointer-events-none absolute rounded-full"
+          style={{
             inset: 0,
             border: `${isLoading ? 2.5 : 2}px solid rgba(255, 200, 100, ${isLoading ? 0.6 - i * 0.15 : 0.4 - i * 0.1})`,
             boxShadow: `0 0 ${isLoading ? 15 : 10}px rgba(255, 200, 100, ${isLoading ? 0.5 - i * 0.12 : 0.35 - i * 0.08})`,
           }}
-          animate={{ 
-            scale: [1, isLoading ? 2.5 : 2], 
-            opacity: [isLoading ? 0.6 : 0.45, 0] 
+          animate={{
+            scale: [1, isLoading ? 2.5 : 2],
+            opacity: [isLoading ? 0.6 : 0.45, 0],
           }}
-          transition={{ 
-            duration: isLoading ? 0.9 : 2, 
-            repeat: Infinity, 
-            delay: i * (isLoading ? 0.3 : 0.6), 
+          transition={{
+            duration: isLoading ? 0.9 : 2,
+            repeat: Infinity,
+            delay: i * (isLoading ? 0.3 : 0.6),
             ease: [0.25, 0.1, 0.25, 1],
           }}
         />
@@ -241,7 +250,7 @@ export function EnterButton() {
             <stop offset="50%" stopColor="#FFA500" />
             <stop offset="100%" stopColor="#FF8C00" />
           </linearGradient>
-          
+
           <linearGradient id="textGold" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#FFF8DC" />
             <stop offset="50%" stopColor="#FFD700" />
@@ -249,10 +258,10 @@ export function EnterButton() {
           </linearGradient>
 
           <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feGaussianBlur stdDeviation="2" result="blur" />
             <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
 
@@ -264,15 +273,19 @@ export function EnterButton() {
 
         {/* Background track */}
         <circle
-          cx="70" cy="70" r="58"
+          cx="70"
+          cy="70"
+          r="58"
           fill="none"
           stroke="rgba(255, 200, 100, 0.18)"
           strokeWidth="2.5"
         />
-        
+
         {/* Progress circle */}
         <circle
-          cx="70" cy="70" r="58"
+          cx="70"
+          cy="70"
+          r="58"
           fill="none"
           stroke="url(#progressGold)"
           strokeWidth={isLoading ? 4 : 2.5}
@@ -285,7 +298,9 @@ export function EnterButton() {
 
         {/* Inner circle */}
         <circle
-          cx="70" cy="70" r="50"
+          cx="70"
+          cy="70"
+          r="50"
           fill="url(#innerBg)"
           stroke="rgba(255, 200, 100, 0.45)"
           strokeWidth="1.5"
@@ -293,7 +308,9 @@ export function EnterButton() {
 
         {/* Rotating shimmer */}
         <motion.circle
-          cx="70" cy="70" r="50"
+          cx="70"
+          cy="70"
+          r="50"
           fill="none"
           stroke="rgba(255, 255, 255, 0.25)"
           strokeWidth="1.5"
@@ -306,7 +323,8 @@ export function EnterButton() {
 
         {/* Text */}
         <text
-          x="70" y={isLoading ? "65" : "70"}
+          x="70"
+          y={isLoading ? "65" : "70"}
           textAnchor="middle"
           dominantBaseline="middle"
           fill="url(#textGold)"
@@ -322,7 +340,8 @@ export function EnterButton() {
         {/* Loading percentage */}
         {isLoading && (
           <text
-            x="70" y="88"
+            x="70"
+            y="88"
             textAnchor="middle"
             dominantBaseline="middle"
             fill="rgba(255, 200, 100, 0.85)"
@@ -339,9 +358,10 @@ export function EnterButton() {
       {[0, 60, 120, 180, 240, 300].map((angle) => {
         const radian = (angle * Math.PI) / 180;
         const radius = 80;
-        const x = Math.cos(radian) * radius;
-        const y = Math.sin(radian) * radius;
-        
+        // Round so server (Node) and client trig results serialize identically
+        const x = Math.round(Math.cos(radian) * radius * 100) / 100;
+        const y = Math.round(Math.sin(radian) * radius * 100) / 100;
+
         return (
           <motion.div
             key={`dot-${angle}`}
@@ -373,7 +393,7 @@ export function EnterButton() {
         return (
           <motion.div
             key={`emit-${angle}`}
-            className="absolute rounded-full pointer-events-none"
+            className="pointer-events-none absolute rounded-full"
             style={{
               width: isLoading ? 4 : 3,
               height: isLoading ? 4 : 3,
