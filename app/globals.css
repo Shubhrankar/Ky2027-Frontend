@@ -1161,6 +1161,51 @@ body {
   }
 }
 
+/* Float up and down animation for decorative elements */
+@keyframes floatUpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Pulse glow animation for glowing elements */
+@keyframes pulseGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 20px rgba(255, 200, 100, 0.6));
+    opacity: 0.8;
+  }
+  50% {
+    filter: drop-shadow(0 0 40px rgba(255, 200, 100, 0.9));
+    opacity: 1;
+  }
+}
+
+/* Shimmer animation for gradient elements */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Generic float animation for stamps and decorative elements */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
 /* Golden vibrant pulse for active nav links */
 @keyframes goldenPulse {
   0%,
@@ -1196,23 +1241,6 @@ body {
     text-shadow:
       0 0 30px rgba(255, 215, 0, 1),
       0 0 60px rgba(255, 150, 50, 0.7);
-  }
-}
-
-/* Shimmer slide for active login underline */
-@keyframes shimmerSlide {
-  0%,
-  100% {
-    opacity: 0.7;
-    box-shadow:
-      0 0 8px rgba(255, 215, 0, 0.6),
-      0 0 16px rgba(255, 140, 0, 0.4);
-  }
-  50% {
-    opacity: 1;
-    box-shadow:
-      0 0 12px rgba(255, 215, 0, 0.9),
-      0 0 24px rgba(255, 140, 0, 0.6);
   }
 }
 
@@ -1916,16 +1944,6 @@ body {
   }
 }
 
-/* Conic gradient spin for the image border glow */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Mobile optimizations for funky cards */
 @media (max-width: 639px) {
   @keyframes holographicShift {
@@ -2079,18 +2097,7 @@ body {
    ETHEREAL ABOUT PAGE ANIMATIONS
    ═══════════════════════════════════════════════════════════════════ */
 
-/* Star twinkling effect */
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
+/* Note: twinkle, floatParticle, flameFlicker, pulseSlow are defined earlier */
 
 .animate-twinkle {
   animation: twinkle 3s ease-in-out infinite;
@@ -2161,60 +2168,12 @@ body {
   animation: sacredBreath 8s ease-in-out infinite;
 }
 
-/* Floating particle drift */
-@keyframes floatParticle {
-  0% {
-    transform: translateY(0) translateX(0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.5;
-  }
-  90% {
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(50px);
-    opacity: 0;
-  }
-}
-
 .animate-floatParticle {
   animation: floatParticle 20s linear infinite;
 }
 
-/* Flame flickering */
-@keyframes flameFlicker {
-  0%,
-  100% {
-    transform: scale(1) translateY(0);
-  }
-  25% {
-    transform: scale(1.05) translateY(-2px);
-  }
-  50% {
-    transform: scale(0.95) translateY(1px);
-  }
-  75% {
-    transform: scale(1.02) translateY(-1px);
-  }
-}
-
 .animate-flameFlicker {
   animation: flameFlicker 0.5s ease-in-out infinite;
-}
-
-/* Slow pulse for peacock glow */
-@keyframes pulseSlow {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.05);
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
