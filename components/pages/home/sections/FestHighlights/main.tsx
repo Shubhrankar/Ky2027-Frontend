@@ -694,7 +694,7 @@ function StaticHighlightCard({ item, index }: { item: (typeof highlights)[0]; in
   );
 }
 
-// Animated Highlight Card for Desktop
+// Animated Highlight Card for Desktop - Uses CSS animations that respect MotionZone pausing
 function AnimatedHighlightCard({ item, index }: { item: (typeof highlights)[0]; index: number }) {
   return (
     <motion.div
@@ -705,20 +705,12 @@ function AnimatedHighlightCard({ item, index }: { item: (typeof highlights)[0]; 
       transition={{ delay: index * 0.1 }}
       whileHover={{ scale: 1.05, y: -5 }}
     >
-      {/* Animated gradient background */}
-      <motion.div
+      {/* Static gradient background */}
+      <div
         className="absolute inset-0 rounded-2xl"
         style={{
           background: `linear-gradient(135deg, ${item.color}30 0%, rgba(0,0,0,0.8) 50%, ${item.color}20 100%)`,
         }}
-        animate={{
-          background: [
-            `linear-gradient(135deg, ${item.color}30 0%, rgba(0,0,0,0.8) 50%, ${item.color}20 100%)`,
-            `linear-gradient(225deg, ${item.color}25 0%, rgba(0,0,0,0.85) 50%, ${item.color}30 100%)`,
-            `linear-gradient(135deg, ${item.color}30 0%, rgba(0,0,0,0.8) 50%, ${item.color}20 100%)`,
-          ],
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Glowing border effect */}
@@ -733,38 +725,31 @@ function AnimatedHighlightCard({ item, index }: { item: (typeof highlights)[0]; 
         }}
       />
 
-      {/* Outer glow */}
-      <motion.div
-        className="absolute -inset-1 rounded-2xl opacity-50 blur-md transition-opacity group-hover:opacity-100"
+      {/* Outer glow - static with hover transition */}
+      <div
+        className="absolute -inset-1 rounded-2xl opacity-30 blur-md transition-opacity duration-300 group-hover:opacity-80"
         style={{ background: item.color }}
-        animate={{ opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 2, repeat: Infinity }}
       />
 
       {/* Inner shine effect */}
-      <motion.div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
+      <div
+        className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background: `radial-gradient(circle at 30% 30%, ${item.color}40 0%, transparent 60%)`,
         }}
-        transition={{ duration: 0.3 }}
       />
 
       {/* Content container */}
       <div className="relative z-10">
-        {/* Icon with glow */}
-        <motion.div
-          className="relative mb-3 inline-block"
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, delay: index * 0.15 }}
-        >
+        {/* Icon - static, no floating animation */}
+        <div className="relative mb-3 inline-block">
           <HighlightIcon type={item.iconType} color={item.color} />
           {/* Icon glow underneath */}
           <div
             className="absolute inset-0 -z-10 opacity-60 blur-xl"
             style={{ background: item.color }}
           />
-        </motion.div>
+        </div>
 
         {/* Title with text glow */}
         <h4
@@ -781,22 +766,18 @@ function AnimatedHighlightCard({ item, index }: { item: (typeof highlights)[0]; 
         <p className="text-xs font-medium text-gray-300 sm:text-sm">{item.desc}</p>
       </div>
 
-      {/* Animated corner sparks */}
-      <motion.div
-        className="absolute top-0 left-0 h-8 w-8"
+      {/* Static corner accents */}
+      <div
+        className="absolute top-0 left-0 h-8 w-8 opacity-60"
         style={{
           background: `radial-gradient(circle at top left, ${item.color} 0%, transparent 70%)`,
         }}
-        animate={{ opacity: [0.5, 1, 0.5], scale: [0.8, 1.2, 0.8] }}
-        transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.2 }}
       />
-      <motion.div
-        className="absolute right-0 bottom-0 h-8 w-8"
+      <div
+        className="absolute right-0 bottom-0 h-8 w-8 opacity-60"
         style={{
           background: `radial-gradient(circle at bottom right, ${item.color} 0%, transparent 70%)`,
         }}
-        animate={{ opacity: [0.5, 1, 0.5], scale: [0.8, 1.2, 0.8] }}
-        transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.2 + 0.75 }}
       />
     </motion.div>
   );
@@ -888,42 +869,23 @@ function FestHighlightsContent() {
               THE ULTIMATE FEST
             </h2>
           ) : (
-            <motion.h2
+            <h2
               className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
               style={{
-                background: "linear-gradient(90deg, #EC4899, #8B5CF6, #06B6D4, #EC4899)",
-                backgroundSize: "200% auto",
+                background: "linear-gradient(90deg, #EC4899, #8B5CF6, #06B6D4)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 textShadow: "0 0 40px rgba(139, 92, 246, 0.5)",
               }}
-              animate={{
-                backgroundPosition: ["0% center", "200% center"],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "linear",
-              }}
             >
               THE ULTIMATE FEST
-            </motion.h2>
+            </h2>
           )}
 
-          {/* Subtitle - Static on mobile */}
-          {isMobile ? (
-            <p className="mb-6 text-sm tracking-[0.4em] text-purple-300 uppercase sm:mb-8 sm:text-base">
-              ⚡ 4 Days of Non-Stop Energy ⚡
-            </p>
-          ) : (
-            <motion.p
-              className="mb-6 text-sm tracking-[0.4em] text-purple-300 uppercase sm:mb-8 sm:text-base"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              ⚡ 4 Days of Non-Stop Energy ⚡
-            </motion.p>
-          )}
+          {/* Subtitle - Static */}
+          <p className="mb-6 text-sm tracking-[0.4em] text-purple-300 uppercase sm:mb-8 sm:text-base">
+            ⚡ 4 Days of Non-Stop Energy ⚡
+          </p>
 
           {/* Description */}
           <div className="mx-auto mb-8 max-w-3xl px-4 sm:mb-12">
