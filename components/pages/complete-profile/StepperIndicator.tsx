@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, type LucideIcon } from "lucide-react";
 import { COLORS } from "./constants/palette";
 import { STEPS } from "./config/data";
 
@@ -6,7 +6,7 @@ interface StepConfig {
   id: number;
   title: string;
   description: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -65,9 +65,7 @@ export function StepperIndicator({
                   ) : (
                     <step.icon
                       className="h-6 w-6"
-                      style={{
-                        color: isCurrent ? COLORS.BG_DEEP : `${COLORS.GOLD}60`,
-                      }}
+                      color={isCurrent ? COLORS.BG_DEEP : `${COLORS.GOLD}60`}
                     />
                   )}
 

@@ -1,11 +1,11 @@
-import { GraduationCap, Phone, Shield, Upload } from "lucide-react";
+import { GraduationCap, Phone, Shield, Upload, type LucideIcon } from "lucide-react";
 
 interface StepConfig {
   id: number;
   key: "aadhaarUpload" | "aadhaarVerify" | "college" | "phone";
   title: string;
   description: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
 }
 
 // 4 main steps for profile completion

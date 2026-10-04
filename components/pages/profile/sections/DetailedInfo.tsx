@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   XCircle,
   BadgeCheck,
+  type LucideIcon,
 } from "lucide-react";
 import {
   COLORS,
@@ -205,7 +206,7 @@ function InfoCard({
   value,
   isVerified,
 }: {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   value: string | null;
   isVerified?: boolean;
@@ -236,7 +237,7 @@ function InfoCard({
             boxShadow: `0 4px 15px ${COLORS.GOLD}10`,
           }}
         >
-          <Icon className="h-5 w-5" style={{ color: COLORS.GOLD }} />
+          <Icon className="h-5 w-5" color={COLORS.GOLD} />
         </div>
         <div className="flex-1 min-w-0">
           <p
@@ -247,7 +248,7 @@ function InfoCard({
             {isVerified && (
               <BadgeCheck
                 className="h-3.5 w-3.5"
-                style={{ color: COLORS.SUCCESS }}
+                color={COLORS.SUCCESS}
               />
             )}
           </p>
@@ -272,7 +273,7 @@ function VerificationStep({
   isCompleted,
   description,
 }: {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   isCompleted: boolean;
   description: string;
@@ -296,7 +297,7 @@ function VerificationStep({
       >
         <Icon
           className="h-5 w-5"
-          style={{ color: isCompleted ? COLORS.SUCCESS : COLORS.GOLD }}
+          color={isCompleted ? COLORS.SUCCESS : COLORS.GOLD}
         />
       </div>
       <div className="flex-1 min-w-0">
@@ -310,10 +311,10 @@ function VerificationStep({
           {isCompleted ? (
             <CheckCircle2
               className="h-4 w-4"
-              style={{ color: COLORS.SUCCESS }}
+              color={COLORS.SUCCESS}
             />
           ) : (
-            <XCircle className="h-4 w-4" style={{ color: COLORS.ERROR }} />
+            <XCircle className="h-4 w-4" color={COLORS.ERROR} />
           )}
         </div>
         <p className="text-sm" style={{ color: `${COLORS.CREAM}50` }}>

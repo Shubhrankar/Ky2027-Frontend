@@ -1,8 +1,18 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import type { Session } from "@auth/core/types";
+import { EnhancedSession } from "./helper/types";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 const isProduction = process.env.NODE_ENV === "production";
+
+
+const authenticatedUser = {
+  role: null,
+  accountStatus: null,
+};
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -70,6 +80,9 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (response.ok || response.status === 409) {
+            const user = await response.json();
+            authenticatedUser.role = user.role;
+            authenticatedUser.accountStatus = user.accountStatus;
             return true;
           }
 
@@ -87,8 +100,6 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.name = user.name;
-        token.picture = user.image;
       }
 
       if (account) {
@@ -104,6 +115,9 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name as string;
         session.user.email = token.email as string;
         session.user.image = token.picture as string;
+        (session as EnhancedSession).user.role = authenticatedUser.role!;
+        (session as EnhancedSession).user.accountStatus = authenticatedUser.accountStatus!; 
+
       }
       return session;
     },

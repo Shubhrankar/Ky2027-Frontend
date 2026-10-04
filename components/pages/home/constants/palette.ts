@@ -38,6 +38,9 @@ export const COLORS = {
   RIVER_MID: "#15405c",
   RIVER_DEEP: "#0c2030",
 
+  // Background colors
+  BG_DEEP: "#0a0612",
+
   // Card backgrounds
   CARD_DARK_PURPLE: "#1A0A1A",
   CARD_FRAME_DARK: "#1a0d10",

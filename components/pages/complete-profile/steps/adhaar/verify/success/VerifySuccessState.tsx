@@ -8,12 +8,13 @@ import {
   CreditCard,
   CheckCircle2,
   ArrowRight,
+  type LucideIcon,
 } from "lucide-react";
 import { type AadhaarExtractedData } from "@/lib/api/hooks";
 import { COLORS } from "@/components/pages/complete-profile/constants/palette";
 
 interface InfoCardProps {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   value: string;
 }
@@ -35,7 +36,7 @@ function InfoCard({ icon: Icon, label, value }: InfoCardProps) {
             border: `1px solid ${COLORS.GOLD}25`,
           }}
         >
-          <Icon className="h-4 w-4" style={{ color: COLORS.GOLD }} />
+          <Icon className="h-4 w-4" color={COLORS.GOLD} />
         </div>
         <div>
           <p className="text-xs mb-0.5" style={{ color: `${COLORS.CREAM}50` }}>
