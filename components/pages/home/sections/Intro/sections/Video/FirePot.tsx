@@ -5,14 +5,14 @@ import { motion, useSpring } from "framer-motion";
 import { useIntro } from "../../context/IntroContext";
 
 // Speaker component with vibrant design
-function Speaker({ 
-  size, 
-  intensity, 
+function Speaker({
+  size,
+  intensity,
   isMuted,
   onToggleMute,
-  className 
-}: { 
-  size: "small" | "medium" | "large"; 
+  className,
+}: {
+  size: "small" | "medium" | "large";
   intensity: number;
   isMuted: boolean;
   onToggleMute: () => void;
@@ -27,10 +27,10 @@ function Speaker({
   const { width, height } = dimensions[size];
   const wooferSize = size === "large" ? 35 : size === "medium" ? 28 : 20;
   const tweeterSize = size === "large" ? 12 : size === "medium" ? 10 : 7;
-  
+
   const visualIntensity = isMuted ? 0.1 : intensity;
   const speakerScale = isMuted ? 1 : 1 + intensity * 0.15; // Increased from 0.08
-  
+
   // Beat shake - more aggressive movements on beats
   const shakeX = isMuted ? 0 : (Math.random() - 0.5) * intensity * 10; // Increased from 4
   const shakeY = isMuted ? 0 : intensity * 8; // Increased from 2
@@ -39,18 +39,18 @@ function Speaker({
   const uniqueId = useRef(`speaker-${size}-${Math.random().toString(36).substr(2, 9)}`).current;
 
   return (
-    <motion.div 
+    <motion.div
       className={`relative cursor-pointer ${className}`}
       onClick={onToggleMute}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.98 }}
-      animate={{ 
+      animate={{
         scale: speakerScale,
         y: isMuted ? 0 : [0, -shakeY, 0],
         x: isMuted ? 0 : [0, shakeX, 0],
         rotate: isMuted ? 0 : [0, intensity * 4, 0, -intensity * 4, 0], // Increased from 1.5
       }}
-      transition={{ 
+      transition={{
         scale: { duration: 0.08, ease: "easeOut" }, // Faster
         y: { duration: 0.1, ease: "easeOut" }, // Faster
         x: { duration: 0.1, ease: "easeOut" }, // Faster
@@ -64,7 +64,7 @@ function Speaker({
         viewBox={`0 0 ${width} ${height}`}
         className="relative z-10"
         style={{
-          filter: isMuted 
+          filter: isMuted
             ? `drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6)) grayscale(0.5) brightness(0.6)`
             : `drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5))`,
         }}
@@ -183,7 +183,9 @@ function Speaker({
                   strokeLinecap="round"
                   opacity={isMuted ? 0.2 : 0.8 + visualIntensity * 0.2}
                   style={{
-                    filter: isMuted ? "none" : `drop-shadow(0 0 ${2 + visualIntensity * 3}px ${colors[i]})`,
+                    filter: isMuted
+                      ? "none"
+                      : `drop-shadow(0 0 ${2 + visualIntensity * 3}px ${colors[i]})`,
                   }}
                 />
               );
@@ -191,13 +193,8 @@ function Speaker({
           </motion.g>
 
           {/* Woofer outer frame */}
-          <circle
-            r={wooferSize + 5}
-            fill="#15121a"
-            stroke="#4a4060"
-            strokeWidth="1"
-          />
-          
+          <circle r={wooferSize + 5} fill="#15121a" stroke="#4a4060" strokeWidth="1" />
+
           {/* Woofer surround */}
           <motion.circle
             r={wooferSize + 2}
@@ -211,7 +208,7 @@ function Speaker({
               ease: "easeOut",
             }}
           />
-          
+
           {/* Woofer cone */}
           <motion.circle
             r={wooferSize}
@@ -225,7 +222,7 @@ function Speaker({
               ease: "easeOut",
             }}
           />
-          
+
           {/* Cone ridges */}
           {[0.75, 0.5].map((ratio, i) => (
             <circle
@@ -237,7 +234,7 @@ function Speaker({
               opacity="0.6"
             />
           ))}
-          
+
           {/* Dust cap with color accent */}
           <motion.circle
             r={wooferSize * 0.3}
@@ -258,28 +255,13 @@ function Speaker({
         {/* Tweeter - NO rotating ring, just clean golden dome */}
         <g transform={`translate(${width / 2}, ${height * 0.2})`}>
           {/* Tweeter housing */}
-          <circle
-            r={tweeterSize + 4}
-            fill="#15121a"
-            stroke="#4a4060"
-            strokeWidth="1"
-          />
+          <circle r={tweeterSize + 4} fill="#15121a" stroke="#4a4060" strokeWidth="1" />
           {/* Tweeter waveguide */}
-          <circle
-            r={tweeterSize + 1}
-            fill="#252030"
-          />
+          <circle r={tweeterSize + 1} fill="#252030" />
           {/* Tweeter dome - golden */}
-          <circle
-            r={tweeterSize}
-            fill={`url(#tweeter-${uniqueId})`}
-          />
+          <circle r={tweeterSize} fill={`url(#tweeter-${uniqueId})`} />
           {/* Dome highlight */}
-          <circle
-            r={tweeterSize * 0.35}
-            fill="#FFF8DC"
-            opacity="0.5"
-          />
+          <circle r={tweeterSize * 0.35} fill="#FFF8DC" opacity="0.5" />
         </g>
 
         {/* LED power indicator */}
@@ -325,7 +307,12 @@ function Speaker({
               fill="rgba(0, 0, 0, 0.4)"
             />
             <g transform={`translate(${width / 2}, ${height / 2})`}>
-              <circle r={Math.min(width, height) * 0.22} fill="rgba(20, 15, 25, 0.8)" stroke="#FF4455" strokeWidth="2.5" />
+              <circle
+                r={Math.min(width, height) * 0.22}
+                fill="rgba(20, 15, 25, 0.8)"
+                stroke="#FF4455"
+                strokeWidth="2.5"
+              />
               <line
                 x1={-Math.min(width, height) * 0.1}
                 y1={-Math.min(width, height) * 0.1}
@@ -361,10 +348,10 @@ export function FirePot() {
   const animationFrameRef = useRef<number | null>(null);
   const isConnectedRef = useRef(false);
 
-  const springIntensity = useSpring(0.3, { 
+  const springIntensity = useSpring(0.3, {
     stiffness: 500,
     damping: 20,
-    mass: 0.3
+    mass: 0.3,
   });
 
   useEffect(() => {
@@ -384,23 +371,23 @@ export function FirePot() {
     const avgVolume = allFreqs.reduce((a, b) => a + b, 0) / allFreqs.length;
     const bass = dataArray.slice(0, 6).reduce((a, b) => a + b, 0) / 6;
     const mids = dataArray.slice(6, 20).reduce((a, b) => a + b, 0) / 14;
-    
+
     const combined = (bass * 0.5 + mids * 0.3 + avgVolume * 0.2) / 255;
     const curved = Math.pow(combined, 0.7);
     const finalIntensity = Math.max(0.15, Math.min(1, curved * 1.3));
-    
+
     setIntensity(finalIntensity);
     animationFrameRef.current = requestAnimationFrame(analyzeAudio);
   }, []);
 
   useEffect(() => {
     if (phase !== "video") return;
-    
+
     if (!audioRef?.current) {
       setIntensity(0.3);
       return;
     }
-    
+
     if (isMuted) {
       setIntensity(0.1);
       return;
@@ -410,9 +397,11 @@ export function FirePot() {
       if (isConnectedRef.current) return;
 
       try {
-        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        const AudioCtx =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
         audioContextRef.current = new AudioCtx();
-        
+
         analyzerRef.current = audioContextRef.current.createAnalyser();
         analyzerRef.current.fftSize = 64;
         analyzerRef.current.smoothingTimeConstant = 0.2;
@@ -420,7 +409,7 @@ export function FirePot() {
         sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current!);
         sourceRef.current.connect(analyzerRef.current);
         analyzerRef.current.connect(audioContextRef.current.destination);
-        
+
         isConnectedRef.current = true;
         analyzeAudio();
       } catch (error) {
@@ -430,7 +419,7 @@ export function FirePot() {
     };
 
     const audioEl = audioRef.current;
-    
+
     if (audioEl.readyState >= 2) {
       setupAnalyzer();
     } else {
@@ -457,23 +446,35 @@ export function FirePot() {
 
   return (
     <>
-      {/* Left speaker group */}
+      {/* Left speaker group - Desktop only */}
       <motion.div
-        className="absolute bottom-0 left-2 sm:left-4 z-20"
+        className="absolute bottom-0 left-2 z-20 hidden sm:left-4 sm:block"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
       >
         <div className="flex items-end gap-2 sm:gap-3">
-          <Speaker size="small" intensity={intensity} isMuted={isMuted} onToggleMute={toggleMute} className="mb-1" />
+          <Speaker
+            size="small"
+            intensity={intensity}
+            isMuted={isMuted}
+            onToggleMute={toggleMute}
+            className="mb-1"
+          />
           <Speaker size="large" intensity={intensity} isMuted={isMuted} onToggleMute={toggleMute} />
-          <Speaker size="medium" intensity={intensity} isMuted={isMuted} onToggleMute={toggleMute} className="mb-0.5" />
+          <Speaker
+            size="medium"
+            intensity={intensity}
+            isMuted={isMuted}
+            onToggleMute={toggleMute}
+            className="mb-0.5"
+          />
         </div>
       </motion.div>
 
-      {/* Right speaker - hidden on mobile */}
+      {/* Right speaker - Desktop only */}
       <motion.div
-        className="hidden sm:block absolute bottom-0 right-2 sm:right-4 z-20"
+        className="absolute right-2 bottom-0 z-20 hidden sm:right-4 sm:block"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.6 }}

@@ -22,7 +22,7 @@ export function IntroSection() {
   const cursorClass = phase === "loading" ? "intro-cursor-loading" : "intro-cursor";
 
   return (
-    <section className={`relative w-full h-screen overflow-hidden bg-black ${cursorClass}`}>
+    <section className={`relative h-screen w-full overflow-hidden bg-black ${cursorClass}`}>
       {/* Cursor trail effect */}
       <CursorTrail />
 
@@ -48,7 +48,7 @@ export function IntroSection() {
           >
             {/* Floating diamond elements */}
             <FloatingElements />
-            
+
             {/* Enter button - moved down slightly */}
             <div className="mt-16">
               <EnterButton />
@@ -58,17 +58,11 @@ export function IntroSection() {
       </AnimatePresence>
 
       {/* Hold to enter hint at bottom */}
-      <AnimatePresence>
-        {phase === "idle" && (
-          <HoldHint />
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{phase === "idle" && <HoldHint />}</AnimatePresence>
 
       {/* Skip button - only during idle and loading */}
       <AnimatePresence>
-        {(phase === "idle" || phase === "loading") && (
-          <SkipButton />
-        )}
+        {(phase === "idle" || phase === "loading") && <SkipButton />}
       </AnimatePresence>
 
       {/* Navigation drawer - shows during video phase */}
@@ -80,21 +74,21 @@ export function IntroSection() {
 function HoldHint() {
   return (
     <motion.div
-      className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20"
+      className="absolute bottom-20 left-1/2 z-20 hidden -translate-x-1/2 sm:block"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
       transition={{ delay: 1.5 }}
     >
-      <p 
-        className="text-sm text-white/80 tracking-[0.3em] font-light"
+      <p
+        className="text-sm font-light tracking-[0.3em] text-white/80"
         style={{ textShadow: "0 0 10px rgba(255, 255, 255, 0.5)" }}
       >
         HOLD TO ENTER
       </p>
-      
-      <motion.div 
-        className="flex justify-center mt-2"
+
+      <motion.div
+        className="mt-2 flex justify-center"
         animate={{ y: [0, -5, 0] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
       >
@@ -118,7 +112,7 @@ function SkipButton() {
   return (
     <motion.button
       onClick={skipIntro}
-      className="absolute bottom-8 right-8 z-30 px-4 py-2 text-sm text-white/50 hover:text-white/80 transition-colors border border-white/20 hover:border-white/40 rounded-full backdrop-blur-sm cursor-pointer"
+      className="absolute right-8 bottom-8 z-30 cursor-pointer rounded-full border border-white/20 px-4 py-2 text-sm text-white/50 backdrop-blur-sm transition-colors hover:border-white/40 hover:text-white/80"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
