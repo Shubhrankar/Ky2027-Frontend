@@ -174,6 +174,7 @@ function DiscoBall3D() {
               <pointLight position={[0, 3, 3]} intensity={1} color="#06B6D4" />
 
               <DiscoBallModel />
+              <Environment preset="sunset" />
             </Suspense>
           </Canvas>
         </div>
