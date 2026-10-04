@@ -690,9 +690,32 @@ export function SponsorsPageContent() {
         {/* Floating elements */}
         <FloatingElements />
 
-        {/* Side decorations */}
+        {/* Side decorations - Desktop */}
         <LeftSideDecor />
         <RightSideDecor />
+
+        {/* Mobile standing girls decoration */}
+        <div className="pointer-events-none fixed inset-y-0 left-0 z-[5] w-20 opacity-40 lg:hidden">
+          <div className="absolute bottom-0 left-0 h-[50vh] w-full">
+            <Image
+              src={IMAGES.sponsors.standingGirl}
+              alt=""
+              fill
+              className="object-contain object-bottom"
+              style={{ transform: "scaleX(-1)" }}
+            />
+          </div>
+        </div>
+        <div className="pointer-events-none fixed inset-y-0 right-0 z-[5] w-20 opacity-40 lg:hidden">
+          <div className="absolute right-0 bottom-0 h-[50vh] w-full">
+            <Image
+              src={IMAGES.sponsors.standingGirl}
+              alt=""
+              fill
+              className="object-contain object-bottom"
+            />
+          </div>
+        </div>
 
         <div className="relative mx-auto max-w-6xl">
           {/* Page Header */}

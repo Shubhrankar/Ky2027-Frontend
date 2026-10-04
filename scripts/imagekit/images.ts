@@ -417,6 +417,11 @@ export const IMAGES_TO_UPLOAD: ImageToUpload[] = [
     remoteName: "sponsor-stamp.png",
     folder: "/sponsors/common",
   },
+  {
+    localFile: "sponsors/standingGirl.png",
+    remoteName: "standing-girl.png",
+    folder: "/sponsors/common",
+  },
 
   // Title & Co-Title
   {

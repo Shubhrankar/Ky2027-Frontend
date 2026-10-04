@@ -3,7 +3,7 @@
 import { useEffect, useRef, Suspense } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 import { MotionZone, useMotionZone } from "@/lib/motion";
@@ -43,10 +43,12 @@ function DiscoBallModel() {
   const { scene } = useGLTF("/home/discoBall.glb");
   const groupRef = useRef<THREE.Group>(null);
   const { isAnimating } = useMotionZone();
+  const { invalidate } = useThree();
 
   useFrame(() => {
     if (groupRef.current && isAnimating) {
       groupRef.current.rotation.y += 0.005;
+      invalidate(); // Request a new frame for demand mode
     }
   });
 
@@ -160,18 +162,18 @@ function DiscoBall3D() {
           <Canvas
             camera={{ position: [0, 0, 4], fov: 50 }}
             style={{ background: "transparent" }}
-            frameloop="always"
-            dpr={[1, 1.5]}
+            frameloop="demand"
+            dpr={1}
+            gl={{
+              antialias: false,
+              powerPreference: "low-power",
+              alpha: true,
+            }}
           >
             <Suspense fallback={null}>
-              <ambientLight intensity={2} />
-              <directionalLight position={[5, 5, 5]} intensity={3} color="#ffffff" />
-              <directionalLight position={[-5, 5, 5]} intensity={2} color="#ffffff" />
-              <directionalLight position={[0, -5, 5]} intensity={1.5} color="#ffffff" />
-              <directionalLight position={[0, 5, -5]} intensity={1} color="#ffffff" />
-              <pointLight position={[3, 0, 3]} intensity={1} color="#EC4899" />
-              <pointLight position={[-3, 0, 3]} intensity={1} color="#8B5CF6" />
-              <pointLight position={[0, 3, 3]} intensity={1} color="#06B6D4" />
+              <ambientLight intensity={3} />
+              <directionalLight position={[5, 5, 5]} intensity={2} color="#ffffff" />
+              <directionalLight position={[-5, -5, 5]} intensity={1.5} color="#ffffff" />
 
               <DiscoBallModel />
               <Environment preset="sunset" />
