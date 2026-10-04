@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks";
 
 interface TrailPoint {
   id: number;
@@ -17,13 +18,13 @@ export function CursorTrail() {
   const [trails, setTrails] = useState<TrailPoint[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Detect touch device - no cursor trail needed
-    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isSmallScreen = window.innerWidth < 768;
-    setIsTouchDevice(hasTouch || isSmallScreen);
-  }, []);
+    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    setIsTouchDevice(hasTouch || isMobile);
+  }, [isMobile]);
 
   useEffect(() => {
     // Don't add listeners on touch devices
@@ -71,12 +72,12 @@ export function CursorTrail() {
   if (isTouchDevice || !isVisible) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[100]">
+    <div className="pointer-events-none fixed inset-0 z-[100]">
       <AnimatePresence>
         {trails.map((point, index) => {
           const size = 6 + (index / trails.length) * 10;
           const opacity = 0.2 + (index / trails.length) * 0.5;
-          
+
           return (
             <motion.div
               key={point.id}

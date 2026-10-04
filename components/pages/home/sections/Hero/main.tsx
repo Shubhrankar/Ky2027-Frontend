@@ -33,8 +33,7 @@ export function HeroSection() {
   const kitesRef = useRef<HTMLDivElement>(null);
 
   // Get current time-based sky configuration
-  const { gradient, showMoon, showStars, starsOpacity, timeOfDay } =
-    useTimeOfDay();
+  const { gradient, showMoon, showStars, starsOpacity, timeOfDay } = useTimeOfDay();
   const isMobile = useIsMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -104,11 +103,7 @@ export function HeroSection() {
         opacity: 1,
         duration: 0.5,
         ease: "none",
-      }).to(
-        ghatsRef.current,
-        { x: -40, opacity: 1, duration: 0.5, ease: "none" },
-        "<",
-      );
+      }).to(ghatsRef.current, { x: -40, opacity: 1, duration: 0.5, ease: "none" }, "<");
     }, containerRef);
 
     return () => ctx.revert();
@@ -117,7 +112,7 @@ export function HeroSection() {
   // Entry animation: Kites - Desktop only, flies in after temple (not at night)
   useEffect(() => {
     // Skip on mobile or if it's night time
-    if (typeof window === "undefined" || window.innerWidth < 640) return;
+    if (isMobile) return;
     if (timeOfDay === "night") return;
     if (!kitesRef.current) return;
 
@@ -145,7 +140,7 @@ export function HeroSection() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [timeOfDay]);
+  }, [timeOfDay, isMobile]);
 
   // Continuous glow: Temple & Ghats (related visual effect)
   useEffect(() => {
@@ -177,7 +172,7 @@ export function HeroSection() {
   // Parallax scroll: Celestial body & Temple (related scroll behavior) - Desktop only
   useEffect(() => {
     // Skip parallax on mobile for performance
-    if (typeof window !== "undefined" && window.innerWidth < 640) return;
+    if (isMobile) return;
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
@@ -211,12 +206,12 @@ export function HeroSection() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isMobile]);
 
   return (
     <section
       ref={containerRef}
-      className="relative h-screen overflow-hidden max-w-[100vw]"
+      className="relative h-screen max-w-[100vw] overflow-hidden"
       style={{
         background: gradient,
         transition: "background 2s ease-in-out", // Smooth transition when time changes
@@ -236,7 +231,7 @@ export function HeroSection() {
 
       {/* Varanasi Background - Mobile optimized */}
       <div
-        className="absolute bottom-[26%] sm:bottom-[27%] md:bottom-[26%] left-0 right-0 h-[25%] sm:h-[28%] md:h-[30%] z-6 pointer-events-none"
+        className="pointer-events-none absolute right-0 bottom-[26%] left-0 z-6 h-[25%] sm:bottom-[27%] sm:h-[28%] md:bottom-[26%] md:h-[30%]"
         style={{
           backgroundImage: `url('${IMAGES.hero.varanasiBack}')`,
           backgroundSize: "cover",
@@ -254,7 +249,7 @@ export function HeroSection() {
 
       {/* Enhanced Moon glow spreading into sky */}
       <div
-        className="absolute inset-0 pointer-events-none z-2"
+        className="pointer-events-none absolute inset-0 z-2"
         style={{
           background: `
             radial-gradient(ellipse 60% 40% at 50% 12%, rgba(220,230,255,0.12) 0%, transparent 50%),
@@ -265,7 +260,7 @@ export function HeroSection() {
 
       {/* Moon reflection on river hint */}
       <div
-        className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[20%] h-[25%] pointer-events-none z-14"
+        className="pointer-events-none absolute bottom-[5%] left-1/2 z-14 h-[25%] w-[20%] -translate-x-1/2"
         style={{
           background:
             "radial-gradient(ellipse 100% 50% at 50% 0%, rgba(255,255,250,0.06) 0%, transparent 60%)",
@@ -281,13 +276,13 @@ export function HeroSection() {
 
       {/* Flying Birds - Mobile optimized */}
       {/* Wrapped in MotionZone to pause SMIL animations when off-screen */}
-      <MotionZone className="absolute top-[6%] sm:top-[8%] left-0 w-full h-10 sm:h-14 md:h-18 z-30 overflow-hidden">
-        <FlyingBirds className="w-full h-full" />
+      <MotionZone className="absolute top-[6%] left-0 z-30 h-10 w-full overflow-hidden sm:top-[8%] sm:h-14 md:h-18">
+        <FlyingBirds className="h-full w-full" />
       </MotionZone>
 
       {/* Second flock - hidden on mobile for performance */}
-      <MotionZone className="hidden sm:block absolute top-[12%] sm:top-[15%] left-0 w-full h-10 sm:h-12 md:h-16 z-30 overflow-hidden opacity-60">
-        <FlyingBirds className="w-full h-full" />
+      <MotionZone className="absolute top-[12%] left-0 z-30 hidden h-10 w-full overflow-hidden opacity-60 sm:top-[15%] sm:block sm:h-12 md:h-16">
+        <FlyingBirds className="h-full w-full" />
       </MotionZone>
 
       {/* Celestial Body - Moon or Sun based on time of day */}
@@ -296,20 +291,20 @@ export function HeroSection() {
         ref={celestialRef}
         className={`absolute z-5 ${
           showMoon
-            ? "top-[2%] sm:top-[3%] left-1/2 -translate-x-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28" // Moon - centered, high
+            ? "top-[2%] left-1/2 h-16 w-16 -translate-x-1/2 sm:top-[3%] sm:h-20 sm:w-20 md:h-28 md:w-28" // Moon - centered, high
             : timeOfDay === "dawn"
-              ? "top-[12%] sm:top-[8%] right-[8%] sm:right-[12%] w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" // Dawn - right side, rising
+              ? "top-[12%] right-[8%] h-12 w-12 sm:top-[8%] sm:right-[12%] sm:h-16 sm:w-16 md:h-20 md:w-20" // Dawn - right side, rising
               : timeOfDay === "morning"
-                ? "top-[5%] sm:top-[6%] left-1/2 -translate-x-1/2 w-14 h-14 sm:w-18 sm:h-18 md:w-24 md:h-24" // Morning - centered, rising
-                : "top-[2%] sm:top-[3%] left-1/2 -translate-x-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28" // Afternoon/evening - centered, high
+                ? "top-[5%] left-1/2 h-14 w-14 -translate-x-1/2 sm:top-[6%] sm:h-18 sm:w-18 md:h-24 md:w-24" // Morning - centered, rising
+                : "top-[2%] left-1/2 h-16 w-16 -translate-x-1/2 sm:top-[3%] sm:h-20 sm:w-20 md:h-28 md:w-28" // Afternoon/evening - centered, high
         }`}
         style={{ transition: "all 1s ease-in-out" }}
       >
         {showMoon ? (
-          <Moon className="w-full h-full" isMobile={isMobile} />
+          <Moon className="h-full w-full" isMobile={isMobile} />
         ) : (
           <Sun
-            className="w-full h-full"
+            className="h-full w-full"
             isMobile={isMobile}
             variant={timeOfDay === "dawn" ? "dawn" : "day"}
           />
@@ -320,7 +315,7 @@ export function HeroSection() {
       {timeOfDay !== "night" && timeOfDay !== "dawn" && (
         <div
           ref={kitesRef}
-          className="hidden sm:block absolute top-[8%] left-[5%] w-[20vw] max-w-[280px] pointer-events-none z-50"
+          className="pointer-events-none absolute top-[8%] left-[5%] z-50 hidden w-[20vw] max-w-[280px] sm:block"
           style={{
             transform: "rotate(-10deg)",
             opacity: 0, // Start hidden, GSAP will animate it in
@@ -331,7 +326,7 @@ export function HeroSection() {
             alt="Flying Kites"
             width={350}
             height={300}
-            className="w-full h-auto"
+            className="h-auto w-full"
             style={{
               animation: "kitesFloat 4s ease-in-out infinite",
               filter: "drop-shadow(0 6px 15px rgba(0,0,0,0.25))",
@@ -346,57 +341,60 @@ export function HeroSection() {
       {/* Title - Mobile optimized */}
       <h1
         ref={titleRef}
-        className="absolute top-[22%] sm:top-[24%] md:top-[26%] left-1/2 -translate-x-1/2 text-center z-[1000] w-full px-4"
+        className="absolute top-[22%] left-1/2 z-[1000] w-full -translate-x-1/2 px-4 text-center sm:top-[24%] md:top-[26%]"
       >
         {/* Creative Text Logo */}
         <div className="relative inline-block">
           {/* Main Title */}
-          <div 
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-wide"
+          <div
+            className="text-4xl font-black tracking-wide sm:text-5xl md:text-6xl lg:text-7xl"
             style={{
               fontFamily: "var(--font-cinzel-decorative), serif",
-              background: "linear-gradient(180deg, #FFFAF0 0%, #FFD700 20%, #DAA520 45%, #B8860B 70%, #996515 100%)",
+              background:
+                "linear-gradient(180deg, #FFFAF0 0%, #FFD700 20%, #DAA520 45%, #B8860B 70%, #996515 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.4)) drop-shadow(0 0 40px rgba(255,215,0,0.6))",
+              filter:
+                "drop-shadow(0 4px 8px rgba(0,0,0,0.4)) drop-shadow(0 0 40px rgba(255,215,0,0.6))",
             }}
           >
             KASHI YATRA
           </div>
-          
+
           {/* Decorative Divider with Lotus */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-1">
-            <div className="h-[1px] w-10 sm:w-14 md:w-20 bg-gradient-to-r from-transparent via-amber-500/80 to-amber-400" />
-            <span 
-              className="text-amber-400 text-base sm:text-lg md:text-xl"
-              style={{ 
-                textShadow: "0 0 15px rgba(255,215,0,0.9), 0 0 30px rgba(255,165,0,0.5)"
+          <div className="mt-1 flex items-center justify-center gap-2 sm:gap-3">
+            <div className="h-[1px] w-10 bg-gradient-to-r from-transparent via-amber-500/80 to-amber-400 sm:w-14 md:w-20" />
+            <span
+              className="text-base text-amber-400 sm:text-lg md:text-xl"
+              style={{
+                textShadow: "0 0 15px rgba(255,215,0,0.9), 0 0 30px rgba(255,165,0,0.5)",
               }}
             >
               ✦ 🪷 ✦
             </span>
-            <div className="h-[1px] w-10 sm:w-14 md:w-20 bg-gradient-to-l from-transparent via-amber-500/80 to-amber-400" />
+            <div className="h-[1px] w-10 bg-gradient-to-l from-transparent via-amber-500/80 to-amber-400 sm:w-14 md:w-20" />
           </div>
-          
+
           {/* Year */}
-          <div 
-            className="mt-1 sm:mt-2 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold tracking-[0.3em] sm:tracking-[0.4em]"
+          <div
+            className="mt-1 text-xl font-semibold tracking-[0.3em] sm:mt-2 sm:text-2xl sm:tracking-[0.4em] md:text-3xl lg:text-4xl"
             style={{
               fontFamily: "var(--font-cinzel), serif",
               background: "linear-gradient(180deg, #FFE4B5 0%, #FFD700 50%, #FFA500 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3)) drop-shadow(0 0 20px rgba(255,165,0,0.5))",
+              filter:
+                "drop-shadow(0 2px 4px rgba(0,0,0,0.3)) drop-shadow(0 0 20px rgba(255,165,0,0.5))",
             }}
           >
             2027
           </div>
 
           {/* Mobile Tagline - Only visible on mobile */}
-          <div className="sm:hidden mt-6 px-2">
+          <div className="mt-6 px-2 sm:hidden">
             {/* Main tagline */}
             <p
-              className="text-sm tracking-wide leading-relaxed"
+              className="text-sm leading-relaxed tracking-wide"
               style={{
                 fontFamily: "'Georgia', serif",
                 fontStyle: "italic",
@@ -406,7 +404,7 @@ export function HeroSection() {
               Where the sacred Ganga meets
             </p>
             <p
-              className="text-base tracking-wide font-semibold mt-0.5"
+              className="mt-0.5 text-base font-semibold tracking-wide"
               style={{
                 fontFamily: "'Georgia', serif",
                 background: "linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%)",
@@ -421,7 +419,7 @@ export function HeroSection() {
 
             {/* Subtle divider */}
             <div
-              className="mx-auto mt-4 w-16 h-px"
+              className="mx-auto mt-4 h-px w-16"
               style={{
                 background: "linear-gradient(90deg, transparent, rgba(255,215,0,0.6), transparent)",
               }}
@@ -429,7 +427,7 @@ export function HeroSection() {
 
             {/* Date */}
             <p
-              className="mt-3 text-xs uppercase tracking-[0.2em] font-medium"
+              className="mt-3 text-xs font-medium tracking-[0.2em] uppercase"
               style={{
                 color: "rgba(255,215,0,0.7)",
               }}
@@ -446,25 +444,23 @@ export function HeroSection() {
       {/* TEMPLE PNG - Highest z-index, aligned with ghats */}
       <div
         ref={templeRef}
-        className="absolute bottom-[31%] sm:bottom-[31%] md:bottom-[28%] right-[-9%] sm:right-[-6%] md:right-[-7%] w-[55%] sm:w-[62%] md:w-[56%] lg:w-[48%] pointer-events-none"
+        className="pointer-events-none absolute right-[-9%] bottom-[31%] w-[55%] sm:right-[-6%] sm:bottom-[31%] sm:w-[62%] md:right-[-7%] md:bottom-[28%] md:w-[56%] lg:w-[48%]"
         style={{
           zIndex: Z_HERO.TEMPLE,
         }}
       >
         {/* Divine aura rings - Desktop only */}
         <div
-          className="hidden sm:block absolute top-[10%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] rounded-full pointer-events-none"
+          className="pointer-events-none absolute top-[10%] left-1/2 hidden h-[60%] w-[80%] -translate-x-1/2 rounded-full sm:block"
           style={{
-            background:
-              "radial-gradient(ellipse, rgba(255,215,0,0.15) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse, rgba(255,215,0,0.15) 0%, transparent 70%)",
             animation: "divineAura 2s ease-in-out infinite",
           }}
         />
         <div
-          className="hidden sm:block absolute top-[5%] left-1/2 -translate-x-1/2 w-[90%] h-[70%] rounded-full pointer-events-none"
+          className="pointer-events-none absolute top-[5%] left-1/2 hidden h-[70%] w-[90%] -translate-x-1/2 rounded-full sm:block"
           style={{
-            background:
-              "radial-gradient(ellipse, rgba(255,140,0,0.1) 0%, transparent 60%)",
+            background: "radial-gradient(ellipse, rgba(255,140,0,0.1) 0%, transparent 60%)",
             animation: "divineAura 2.5s ease-in-out infinite reverse",
           }}
         />
@@ -474,7 +470,7 @@ export function HeroSection() {
           {[...Array(12)].map((_, i) => (
             <div
               key={`particle-${i}`}
-              className="absolute w-2 h-2 rounded-full pointer-events-none"
+              className="pointer-events-none absolute h-2 w-2 rounded-full"
               style={{
                 left: `${20 + (i % 4) * 20}%`,
                 top: `${15 + Math.floor(i / 4) * 25}%`,
@@ -495,7 +491,7 @@ export function HeroSection() {
           alt="Kashi Vishwanath Temple"
           width={1000}
           height={1100}
-          className="w-full h-auto sm:drop-shadow-[0_0_25px_rgba(255,215,0,0.5)]"
+          className="h-auto w-full sm:drop-shadow-[0_0_25px_rgba(255,215,0,0.5)]"
           priority
         />
       </div>
