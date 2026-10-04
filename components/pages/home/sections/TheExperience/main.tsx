@@ -13,6 +13,7 @@ import { BackgroundDecor, BottomBorder } from "./desktop/BackgroundDecor";
 import { FloatingOrbs } from "./desktop/FloatingOrbs";
 import { SareeDrape } from "./desktop/SareeDrape";
 import { DesktopDJ } from "./desktop/DesktopDJ";
+import { ScrollingTextBG } from "./desktop/ScrollingTextBG";
 import { MobileDJ } from "./mobile";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -51,7 +52,7 @@ export const TheExperience = memo(function TheExperience() {
             end: "top 50%",
             scrub: 1,
           },
-        },
+        }
       );
 
       // Tiles stagger in from bottom
@@ -71,7 +72,7 @@ export const TheExperience = memo(function TheExperience() {
             end: "top 50%",
             scrub: 1,
           },
-        },
+        }
       );
 
       // DJ slides in from right
@@ -89,7 +90,7 @@ export const TheExperience = memo(function TheExperience() {
             end: "top 30%",
             scrub: 1.5,
           },
-        },
+        }
       );
 
       // Tagline fades in
@@ -107,7 +108,7 @@ export const TheExperience = memo(function TheExperience() {
             end: "top 75%",
             scrub: 1,
           },
-        },
+        }
       );
     }, sectionRef);
 
@@ -118,7 +119,7 @@ export const TheExperience = memo(function TheExperience() {
     <MotionZone>
       <section
         ref={sectionRef}
-        className="relative py-16 sm:py-20 md:py-28 overflow-hidden"
+        className="relative overflow-hidden py-16 sm:py-20 md:py-28"
         style={{
           background: `
             radial-gradient(ellipse at 20% 0%, ${JAZZ_COLORS.ROYAL_PURPLE}20 0%, transparent 50%),
@@ -127,6 +128,9 @@ export const TheExperience = memo(function TheExperience() {
           `,
         }}
       >
+        {/* Scrolling text background - Desktop only */}
+        <ScrollingTextBG />
+
         {/* Art deco pattern overlay */}
         <BackgroundDecor />
 
@@ -142,7 +146,7 @@ export const TheExperience = memo(function TheExperience() {
         {/* DJ Character - Mobile only, static, lower z-index (no animation) */}
         <MobileDJ />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
           {/* Section Title */}
           <div ref={titleRef}>
             <SectionTitle />
@@ -151,7 +155,7 @@ export const TheExperience = memo(function TheExperience() {
           {/* Bento Grid */}
           <div
             ref={tilesRef}
-            className="grid grid-cols-2 sm:grid-cols-3 auto-rows-[120px] sm:auto-rows-[140px] md:auto-rows-[160px] gap-4 sm:gap-5 md:gap-6 lg:pr-[15%]"
+            className="grid auto-rows-[120px] grid-cols-2 gap-4 sm:auto-rows-[140px] sm:grid-cols-3 sm:gap-5 md:auto-rows-[160px] md:gap-6 lg:pr-[15%]"
           >
             {EXPERIENCES.map((tile, i) => (
               <JazzTile key={tile.id} tile={tile} index={i} />
@@ -159,9 +163,9 @@ export const TheExperience = memo(function TheExperience() {
           </div>
 
           {/* Bottom tagline */}
-          <div ref={taglineRef} className="mt-10 sm:mt-14 text-center">
+          <div ref={taglineRef} className="mt-10 text-center sm:mt-14">
             <div
-              className="inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-3 sm:py-4 rounded-full"
+              className="inline-flex items-center gap-3 rounded-full px-6 py-3 sm:gap-4 sm:px-8 sm:py-4"
               style={{
                 background: `linear-gradient(135deg, ${JAZZ_COLORS.BG_ROYAL}90 0%, ${JAZZ_COLORS.BG_WINE}90 100%)`,
                 border: `1px solid ${JAZZ_COLORS.GOLD}30`,
@@ -169,7 +173,7 @@ export const TheExperience = memo(function TheExperience() {
               }}
             >
               <span
-                className="text-sm sm:text-base font-bold tracking-wider"
+                className="text-sm font-bold tracking-wider sm:text-base"
                 style={{
                   color: JAZZ_COLORS.GOLD,
                   textShadow: `0 0 10px ${JAZZ_COLORS.GOLD}50`,
@@ -179,7 +183,7 @@ export const TheExperience = memo(function TheExperience() {
               </span>
               <span style={{ color: JAZZ_COLORS.CREAM, opacity: 0.3 }}>•</span>
               <span
-                className="text-sm sm:text-base font-medium tracking-wide"
+                className="text-sm font-medium tracking-wide sm:text-base"
                 style={{ color: JAZZ_COLORS.CREAM, opacity: 0.7 }}
               >
                 IIT (BHU) Varanasi
