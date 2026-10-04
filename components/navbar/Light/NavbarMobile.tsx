@@ -60,9 +60,9 @@ const MOBILE_THEME_STYLES = {
     mandalaStroke: "%238b5cf6",
   },
   sponsor: {
-    hamburgerGradient: "linear-gradient(90deg, #166534, #4ade80)",
+    hamburgerGradient: "linear-gradient(90deg, #22c55e, #86efac)",
     panelBg:
-      "radial-gradient(ellipse at 30% 20%, rgba(20,40,20,0.98) 0%, rgba(30,60,30,0.98) 45%, rgba(15,35,15,0.98) 100%)",
+      "radial-gradient(ellipse at 30% 20%, rgba(15,35,20,0.98) 0%, rgba(20,50,25,0.98) 45%, rgba(10,30,15,0.98) 100%)",
     panelBorder: "2px solid rgba(74,222,128,0.6)",
     panelShadow:
       "0 14px 34px rgba(0,0,0,0.6), inset 0 0 24px rgba(22,163,74,0.3), inset 0 0 2px rgba(187,247,208,0.3)",
@@ -73,7 +73,7 @@ const MOBILE_THEME_STYLES = {
     accentGold: "#4ade80",
     accentBronze: "#16a34a",
     activeGradient:
-      "linear-gradient(135deg, rgba(74,222,128,0.8) 0%, rgba(34,197,94,0.9) 50%, rgba(74,222,128,0.8) 100%)",
+      "linear-gradient(135deg, rgba(74,222,128,0.8) 0%, rgba(134,239,172,0.9) 50%, rgba(74,222,128,0.8) 100%)",
     activeShadow:
       "0 0 25px rgba(74,222,128,0.8), 0 0 50px rgba(34,197,94,0.5), inset 0 0 15px rgba(187,247,208,0.5)",
     activeTextShadow: "0 0 10px rgba(74,222,128,0.9), 0 0 20px rgba(34,197,94,0.7)",

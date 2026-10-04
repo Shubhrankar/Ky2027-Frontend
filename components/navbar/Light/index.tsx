@@ -71,22 +71,22 @@ const THEME_CONFIG = {
         "radial-gradient(circle, rgba(196,181,253,0.6) 0%, rgba(139,92,246,0.35) 50%, transparent 75%)",
     },
     linkStyle: {
-      color: "#d4c4a8", // Cream/gold text to match navbar
-      activeColor: "#ffffff",
+      color: "#e8e0f0", // Light purple/cream text
+      activeColor: "#1a0a2e", // Dark purple text on active
       activeBg:
-        "linear-gradient(135deg, rgba(255,215,0,0.85) 0%, rgba(255,180,0,0.75) 50%, rgba(255,215,0,0.85) 100%)",
-      inactiveBg: "transparent", // No background for inactive links
-      activeBorder: "2px solid rgba(255,230,100,0.9)",
-      inactiveBorder: "none", // No border for inactive
+        "linear-gradient(135deg, rgba(196,181,253,0.95) 0%, rgba(167,139,250,0.9) 50%, rgba(196,181,253,0.95) 100%)",
+      inactiveBg: "rgba(139,92,246,0.15)", // Subtle glass chip
+      activeBorder: "2px solid rgba(196,181,253,1)",
+      inactiveBorder: "1px solid rgba(139,92,246,0.3)",
       activeShadow:
-        "0 0 20px rgba(255,215,0,0.7), 0 0 40px rgba(255,180,0,0.5), inset 0 0 10px rgba(255,255,200,0.4)",
-      inactiveShadow: "none",
-      activeTextShadow: "0 0 8px rgba(255,215,0,0.8), 0 1px 1px rgba(0,0,0,0.3)",
-      inactiveTextShadow: "0 1px 2px rgba(0,0,0,0.5)",
+        "0 0 20px rgba(139,92,246,0.8), 0 0 40px rgba(168,85,247,0.5), inset 0 0 10px rgba(255,255,255,0.3)",
+      inactiveShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
+      activeTextShadow: "0 1px 2px rgba(0,0,0,0.2)",
+      inactiveTextShadow: "0 1px 2px rgba(0,0,0,0.4)",
     },
-    hamburgerGradient: "linear-gradient(90deg, #d4a853, #8a5a1a)",
+    hamburgerGradient: "linear-gradient(90deg, #a78bfa, #c4b5fd)",
     mobileMenuBg:
-      "radial-gradient(ellipse at 30% 20%, rgba(30,20,50,0.98) 0%, rgba(45,27,78,0.98) 45%, rgba(26,26,46,0.98) 100%)",
+      "radial-gradient(ellipse at 30% 20%, rgba(45,27,78,0.98) 0%, rgba(30,20,50,0.98) 45%, rgba(26,26,46,0.98) 100%)",
     mobileMenuBorder: "2px solid rgba(139,92,246,0.6)",
     mobileMenuShadow:
       "0 14px 34px rgba(0,0,0,0.7), inset 0 0 24px rgba(139,92,246,0.2), inset 0 0 2px rgba(196,181,253,0.3)",
@@ -101,23 +101,22 @@ const THEME_CONFIG = {
         "radial-gradient(circle, rgba(187,247,208,0.6) 0%, rgba(74,222,128,0.35) 50%, transparent 75%)",
     },
     linkStyle: {
-      color: "#1a3a1a",
-      activeColor: "#0f2a0f",
+      color: "#1a3a1a", // Dark green text
+      activeColor: "#052e05", // Darker green on active
       activeBg:
-        "linear-gradient(135deg, rgba(74,222,128,0.85) 0%, rgba(34,197,94,0.8) 50%, rgba(74,222,128,0.85) 100%)",
-      inactiveBg:
-        "linear-gradient(135deg, rgba(74,222,128,0.25) 0%, rgba(34,197,94,0.15) 50%, rgba(22,163,74,0.25) 100%)",
+        "linear-gradient(135deg, rgba(134,239,172,0.95) 0%, rgba(74,222,128,0.9) 50%, rgba(134,239,172,0.95) 100%)",
+      inactiveBg: "rgba(74,222,128,0.2)", // Subtle green glass chip
       activeBorder: "2px solid rgba(187,247,208,1)",
-      inactiveBorder: "1px solid rgba(74,222,128,0.5)",
+      inactiveBorder: "1px solid rgba(74,222,128,0.4)",
       activeShadow:
-        "0 0 25px rgba(74,222,128,0.8), 0 0 50px rgba(34,197,94,0.6), inset 0 0 15px rgba(187,247,208,0.4), 0 2px 8px rgba(0,0,0,0.3)",
-      inactiveShadow: "0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(187,247,208,0.3)",
-      activeTextShadow: "0 0 8px rgba(74,222,128,0.8), 0 0 15px rgba(34,197,94,0.6)",
-      inactiveTextShadow: "0 1px 1px rgba(187,247,208,0.5)",
+        "0 0 20px rgba(74,222,128,0.8), 0 0 40px rgba(34,197,94,0.5), inset 0 0 10px rgba(255,255,255,0.3)",
+      inactiveShadow: "0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)",
+      activeTextShadow: "0 1px 2px rgba(0,0,0,0.15)",
+      inactiveTextShadow: "0 1px 1px rgba(255,255,255,0.3)",
     },
-    hamburgerGradient: "linear-gradient(90deg, #166534, #4ade80)",
+    hamburgerGradient: "linear-gradient(90deg, #4ade80, #86efac)",
     mobileMenuBg:
-      "radial-gradient(ellipse at 30% 20%, rgba(20,40,20,0.98) 0%, rgba(30,60,30,0.98) 45%, rgba(15,35,15,0.98) 100%)",
+      "radial-gradient(ellipse at 30% 20%, rgba(20,50,30,0.98) 0%, rgba(15,40,20,0.98) 45%, rgba(10,30,15,0.98) 100%)",
     mobileMenuBorder: "2px solid rgba(74,222,128,0.6)",
     mobileMenuShadow:
       "0 14px 34px rgba(0,0,0,0.6), inset 0 0 24px rgba(22,163,74,0.3), inset 0 0 2px rgba(187,247,208,0.3)",
@@ -130,14 +129,21 @@ export { THEME_CONFIG };
 const THEME_ASPECT_RATIOS = {
   main: 2928 / 209, // ≈ 14.01
   about: 1408 / 237, // ≈ 5.94 - shorter strip
-  sponsor: 2928 / 209, // Use main ratio for now (sponsor image may need update)
+  sponsor: 2928 / 209, // Use main ratio for consistent look
 };
 
 // Theme-specific height constraints
 const THEME_HEIGHT_CONSTRAINTS = {
   main: { minHeight: 56, maxHeight: 85 },
-  about: { minHeight: 48, maxHeight: 70 },
-  sponsor: { minHeight: 56, maxHeight: 85 },
+  about: { minHeight: 50, maxHeight: 72 },
+  sponsor: { minHeight: 56, maxHeight: 80 },
+};
+
+// Theme-specific top offset adjustments
+const THEME_TOP_OFFSETS = {
+  main: 0,
+  about: 4, // Move down slightly
+  sponsor: 0,
 };
 
 export function LightNavbar({
@@ -150,6 +156,8 @@ export function LightNavbar({
   const config = THEME_CONFIG[theme];
   const aspectRatio = THEME_ASPECT_RATIOS[theme];
   const heightConstraints = THEME_HEIGHT_CONSTRAINTS[theme];
+  const themeOffset = THEME_TOP_OFFSETS[theme];
+  const finalTopOffset = topOffset + themeOffset;
 
   useEffect(() => {
     if (position !== "fixed") return;
@@ -166,8 +174,8 @@ export function LightNavbar({
       <header
         className={`${position} ${edgePinned ? "right-0 left-0" : ""} z-[200] transition-all duration-500 ${className}`}
         style={{
-          top: position === "relative" ? undefined : topOffset,
-          marginTop: position === "relative" ? topOffset : undefined,
+          top: position === "relative" ? undefined : finalTopOffset,
+          marginTop: position === "relative" ? finalTopOffset : undefined,
           filter: scrolled
             ? "drop-shadow(0 8px 24px rgba(0,0,0,0.55))"
             : "drop-shadow(0 4px 16px rgba(0,0,0,0.35))",
