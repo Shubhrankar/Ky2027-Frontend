@@ -13,6 +13,29 @@ import { NavbarTheme, THEME_CONFIG } from "./index";
  * Theme-aware Desktop Navbar
  * Hidden on mobile (sm:flex)
  */
+
+// Theme-specific layout adjustments
+const THEME_LAYOUT = {
+  main: {
+    navTranslateY: "8%",
+    secondaryTranslateY: "11%",
+    primaryLeft: "22%",
+    primaryRight: "26%",
+  },
+  about: {
+    navTranslateY: "0%", // Center vertically
+    secondaryTranslateY: "0%",
+    primaryLeft: "20%",
+    primaryRight: "22%",
+  },
+  sponsor: {
+    navTranslateY: "8%",
+    secondaryTranslateY: "11%",
+    primaryLeft: "22%",
+    primaryRight: "26%",
+  },
+};
+
 export const NavbarDesktopLight = memo(function NavbarDesktopLight({
   theme = "main",
 }: {
@@ -23,14 +46,19 @@ export const NavbarDesktopLight = memo(function NavbarDesktopLight({
 
   const config = THEME_CONFIG[theme];
   const linkStyle = config.linkStyle;
+  const layout = THEME_LAYOUT[theme];
 
   return (
     <>
       {/* PRIMARY NAV — centered on the bar midline */}
       <nav
-        className="absolute inset-y-0 right-[26%] left-[22%] z-10 hidden items-center justify-center gap-4 sm:flex"
+        className="absolute inset-y-0 z-10 hidden items-center justify-center gap-4 sm:flex"
         aria-label="Primary"
-        style={{ transform: "translateY(8%)" }}
+        style={{
+          transform: `translateY(${layout.navTranslateY})`,
+          left: layout.primaryLeft,
+          right: layout.primaryRight,
+        }}
       >
         {primaryLinks.map((link) => {
           const active = isActive(link.href);
@@ -61,7 +89,7 @@ export const NavbarDesktopLight = memo(function NavbarDesktopLight({
       {/* SECONDARY LINKS (CONTACT + LOGIN/Avatar) with spiritual icons */}
       <div
         className={`absolute inset-y-0 z-10 hidden items-center gap-4 sm:flex ${isAuthenticated ? "right-[0.5%]" : "right-[3%]"}`}
-        style={{ transform: "translateY(11%)" }}
+        style={{ transform: `translateY(${layout.secondaryTranslateY})` }}
       >
         {secondaryLinks.map((link) => {
           const active = isActive(link.href);

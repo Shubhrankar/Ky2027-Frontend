@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { IMAGES } from "@/lib/images";
 import { NavbarDesktopLight } from "./NavbarDesktop";
 import { NavbarMobileLight } from "./NavbarMobile";
-import { NAV_ASPECT } from "../config/links.config";
 import { NavBadgeLight } from "./NavBadge";
 import { NavbarProvider } from "../config/NavbarContext";
 
@@ -72,21 +71,20 @@ const THEME_CONFIG = {
         "radial-gradient(circle, rgba(196,181,253,0.6) 0%, rgba(139,92,246,0.35) 50%, transparent 75%)",
     },
     linkStyle: {
-      color: "#e0d4fc",
+      color: "#d4c4a8", // Cream/gold text to match navbar
       activeColor: "#ffffff",
       activeBg:
-        "linear-gradient(135deg, rgba(139,92,246,0.9) 0%, rgba(99,102,241,0.85) 50%, rgba(139,92,246,0.9) 100%)",
-      inactiveBg:
-        "linear-gradient(135deg, rgba(139,92,246,0.2) 0%, rgba(99,102,241,0.15) 50%, rgba(79,70,229,0.2) 100%)",
-      activeBorder: "2px solid rgba(196,181,253,1)",
-      inactiveBorder: "1px solid rgba(139,92,246,0.5)",
+        "linear-gradient(135deg, rgba(255,215,0,0.85) 0%, rgba(255,180,0,0.75) 50%, rgba(255,215,0,0.85) 100%)",
+      inactiveBg: "transparent", // No background for inactive links
+      activeBorder: "2px solid rgba(255,230,100,0.9)",
+      inactiveBorder: "none", // No border for inactive
       activeShadow:
-        "0 0 25px rgba(139,92,246,0.8), 0 0 50px rgba(99,102,241,0.6), inset 0 0 15px rgba(196,181,253,0.4), 0 2px 8px rgba(0,0,0,0.4)",
-      inactiveShadow: "0 2px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(196,181,253,0.2)",
-      activeTextShadow: "0 0 10px rgba(139,92,246,0.9), 0 0 20px rgba(99,102,241,0.7)",
+        "0 0 20px rgba(255,215,0,0.7), 0 0 40px rgba(255,180,0,0.5), inset 0 0 10px rgba(255,255,200,0.4)",
+      inactiveShadow: "none",
+      activeTextShadow: "0 0 8px rgba(255,215,0,0.8), 0 1px 1px rgba(0,0,0,0.3)",
       inactiveTextShadow: "0 1px 2px rgba(0,0,0,0.5)",
     },
-    hamburgerGradient: "linear-gradient(90deg, #8b5cf6, #a78bfa)",
+    hamburgerGradient: "linear-gradient(90deg, #d4a853, #8a5a1a)",
     mobileMenuBg:
       "radial-gradient(ellipse at 30% 20%, rgba(30,20,50,0.98) 0%, rgba(45,27,78,0.98) 45%, rgba(26,26,46,0.98) 100%)",
     mobileMenuBorder: "2px solid rgba(139,92,246,0.6)",
@@ -128,6 +126,20 @@ const THEME_CONFIG = {
 
 export { THEME_CONFIG };
 
+// Theme-specific aspect ratios based on actual image dimensions
+const THEME_ASPECT_RATIOS = {
+  main: 2928 / 209, // ≈ 14.01
+  about: 1408 / 237, // ≈ 5.94 - shorter strip
+  sponsor: 2928 / 209, // Use main ratio for now (sponsor image may need update)
+};
+
+// Theme-specific height constraints
+const THEME_HEIGHT_CONSTRAINTS = {
+  main: { minHeight: 56, maxHeight: 85 },
+  about: { minHeight: 48, maxHeight: 70 },
+  sponsor: { minHeight: 56, maxHeight: 85 },
+};
+
 export function LightNavbar({
   className = "",
   position = "fixed",
@@ -136,6 +148,8 @@ export function LightNavbar({
 }: LightNavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const config = THEME_CONFIG[theme];
+  const aspectRatio = THEME_ASPECT_RATIOS[theme];
+  const heightConstraints = THEME_HEIGHT_CONSTRAINTS[theme];
 
   useEffect(() => {
     if (position !== "fixed") return;
@@ -165,9 +179,9 @@ export function LightNavbar({
           <div
             className="relative w-full"
             style={{
-              aspectRatio: `${NAV_ASPECT}`,
-              minHeight: 56,
-              maxHeight: 85,
+              aspectRatio: `${aspectRatio}`,
+              minHeight: heightConstraints.minHeight,
+              maxHeight: heightConstraints.maxHeight,
             }}
           >
             {/* Background carved bar */}

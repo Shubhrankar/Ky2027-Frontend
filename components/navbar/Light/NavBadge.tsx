@@ -17,11 +17,11 @@ const BADGE_STYLES = {
   },
   about: {
     position: "left-[16%] top-[52%]",
-    size: "h-[116%] sm:h-[124%]",
+    size: "h-[116%] sm:h-[195%]",
   },
   sponsor: {
     position: "left-[16%] top-[52%]",
-    size: "h-[116%] sm:h-[124%]",
+    size: "h-[116%] sm:h-[186%]",
   },
 };
 
