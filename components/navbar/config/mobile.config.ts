@@ -51,7 +51,7 @@ export const MOBILE_THEME_STYLES: Record<NavbarTheme, MobileThemeStyle> = {
     mandalaStroke: "%238b5cf6",
   },
   sponsor: {
-    hamburgerGradient: "linear-gradient(90deg, #052e05, #166534)", // Very dark green
+    hamburgerGradient: "linear-gradient(90deg, #5c4033, #8b5a2b)", // Dark brown - visible on light bg
     panelBg:
       "radial-gradient(ellipse at 30% 20%, rgba(15,35,20,0.98) 0%, rgba(20,50,25,0.98) 45%, rgba(10,30,15,0.98) 100%)",
     panelBorder: "2px solid rgba(74,222,128,0.6)",

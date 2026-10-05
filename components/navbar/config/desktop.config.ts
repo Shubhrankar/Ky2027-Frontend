@@ -100,7 +100,7 @@ export const THEME_CONFIG: Record<NavbarTheme, ThemeVisualConfig> = {
       inactiveTextShadow: "0 1px 1px rgba(255,255,255,0.3)",
     },
     backgroundFilter: "brightness(0.85) saturate(1.1)", // Reduce whiteness
-    hamburgerGradient: "linear-gradient(90deg, #052e05, #166534)", // Very dark green
+    hamburgerGradient: "linear-gradient(90deg, #5c4033, #8b5a2b)", // Dark brown - visible on light bg
     mobileMenuBg:
       "radial-gradient(ellipse at 30% 20%, rgba(20,50,30,0.98) 0%, rgba(15,40,20,0.98) 45%, rgba(10,30,15,0.98) 100%)",
     mobileMenuBorder: "2px solid rgba(74,222,128,0.6)",
