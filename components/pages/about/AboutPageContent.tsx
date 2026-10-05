@@ -17,23 +17,26 @@ import { NeonGridBackground, LaserBeams } from "./decors";
 export function AboutPageContent() {
   return (
     <>
-      {/* Fixed navbar - Light theme */}
+      {/* Fixed navbar - About theme (purple/blue concert) */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <LightNavbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="about" />
       </div>
 
       {/* Subtle background */}
       <NeonGridBackground />
-      
+
       {/* Laser beams effect from top to bottom */}
       <LaserBeams />
 
-      <main className="relative min-h-screen pt-20 sm:pt-24 z-10">
+      <main className="relative z-10 min-h-screen pt-16 sm:pt-24">
         <HeroSection />
         <LegacySection />
         <StatsSection />
         <EssenceSection />
-        <VisionSection />
+        {/* Vision section - hidden on mobile */}
+        <div className="hidden sm:block">
+          <VisionSection />
+        </div>
         <CTASection />
       </main>
     </>

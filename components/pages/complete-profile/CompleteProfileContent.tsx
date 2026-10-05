@@ -1,12 +1,13 @@
 "use client";
 
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@apollo/client/react";
+import { LightNavbar } from "@/components/navbar/Navbar";
 import {
   MyAccountProgressQuery,
   MyAccountProgressResponseType,
 } from "@/lib/api/graphql/queries/user.queries";
-import { useQuery } from "@apollo/client/react";
-import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import { StepperIndicator } from "./StepperIndicator";
 import { STEPS } from "./config/data";
@@ -17,12 +18,24 @@ import { AadhaarUploadStep } from "./steps/adhaar/upload";
 import { AadhaarVerifyStep } from "./steps/adhaar/verify";
 import { CollegeDetailsStep } from "./steps/college/CollegeDetailsStep";
 import { PhoneVerificationStep } from "./steps/phone/PhoneVerificationStep";
+import { CongratulationsPage, hasWelcomeBeenShown } from "./CongratulationsPage";
+
+// ═══════════════════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════════════════
+
+const TOTAL_STEPS = 4;
 
 // ═══════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════════
+
 export function CompleteProfileContent() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<null | number>(null);
+  const [showCongratulations, setShowCongratulations] = useState(false);
+  const [checkedWelcome, setCheckedWelcome] = useState(false);
+
   const {
     data,
     loading: stepLoading,
@@ -32,15 +45,30 @@ export function CompleteProfileContent() {
     fetchPolicy: "cache-first",
   });
 
+  // Check if profile is complete and handle welcome page logic
   useEffect(() => {
     if (data?.myAccount?.progress.currentStep !== undefined) {
-      setCurrentStep(data.myAccount.progress.currentStep);
+      const step = data.myAccount.progress.currentStep;
+      setCurrentStep(step);
+
+      // Profile is complete when currentStep > TOTAL_STEPS (all steps done)
+      if (step > TOTAL_STEPS) {
+        // Check if welcome has already been shown
+        if (hasWelcomeBeenShown()) {
+          // Redirect to profile page - no entry
+          router.replace("/profile");
+        } else {
+          // Show congratulations page
+          setShowCongratulations(true);
+        }
+      }
+      setCheckedWelcome(true);
     }
-  }, [data]);
+  }, [data, router]);
 
   // Render loading or error content inside the styled wrapper
   const renderContent = () => {
-    if (stepLoading) {
+    if (stepLoading || !checkedWelcome) {
       return <CompleteProfileLoader />;
     }
 
@@ -48,12 +76,17 @@ export function CompleteProfileContent() {
       return <ErrorState />;
     }
 
+    // Show congratulations page if profile is complete and welcome not shown yet
+    if (showCongratulations) {
+      return <CongratulationsPage />;
+    }
+
     return (
       <>
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="mb-10 text-center">
           <h1
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3"
+            className="mb-3 text-3xl font-bold sm:text-4xl lg:text-5xl"
             style={{
               background: `linear-gradient(135deg, ${COLORS.CREAM} 0%, ${COLORS.GOLD_LIGHT} 50%, ${COLORS.GOLD} 100%)`,
               WebkitBackgroundClip: "text",
@@ -79,7 +112,7 @@ export function CompleteProfileContent() {
 
         {/* Step Content Card */}
         <div
-          className="rounded-3xl overflow-hidden"
+          className="overflow-hidden rounded-3xl"
           style={{
             background: `linear-gradient(145deg, ${COLORS.BG_WINE}60 0%, ${COLORS.BG_ROYAL}80 100%)`,
             border: `1px solid ${COLORS.GOLD}20`,
@@ -96,18 +129,10 @@ export function CompleteProfileContent() {
 
           <div className="p-6 sm:p-10">
             {/* Step Content */}
-            {currentStep === 1 && (
-              <AadhaarUploadStep refetchProgress={refetchProgress} />
-            )}
-            {currentStep === 2 && (
-              <AadhaarVerifyStep refetchProgress={refetchProgress} />
-            )}
-            {currentStep === 3 && (
-              <CollegeDetailsStep refetchProgress={refetchProgress} />
-            )}
-            {currentStep === 4 && (
-              <PhoneVerificationStep refetchProgress={refetchProgress} />
-            )}
+            {currentStep === 1 && <AadhaarUploadStep refetchProgress={refetchProgress} />}
+            {currentStep === 2 && <AadhaarVerifyStep refetchProgress={refetchProgress} />}
+            {currentStep === 3 && <CollegeDetailsStep refetchProgress={refetchProgress} />}
+            {currentStep === 4 && <PhoneVerificationStep refetchProgress={refetchProgress} />}
           </div>
         </div>
 
@@ -121,12 +146,12 @@ export function CompleteProfileContent() {
     <>
       {/* Fixed navbar */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
       {/* Main content with background - always rendered */}
       <main
-        className="min-h-screen pt-28 sm:pt-32 pb-12 px-4"
+        className="min-h-screen px-4 pt-28 pb-12 sm:pt-32"
         style={{
           background: `
             radial-gradient(ellipse at 20% 0%, rgba(212,168,83,0.12) 0%, transparent 50%),
@@ -135,9 +160,7 @@ export function CompleteProfileContent() {
           `,
         }}
       >
-        <div className="max-w-4xl mx-auto">
-          {renderContent()}
-        </div>
+        <div className="mx-auto max-w-4xl">{renderContent()}</div>
       </main>
     </>
   );

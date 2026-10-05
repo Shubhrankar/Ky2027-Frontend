@@ -1,0 +1,11 @@
+# Kashi Yatra 2027 - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://kashiyatra.in/sitemap.xml
+
+# Disallow admin/private routes
+Disallow: /api/
+Disallow: /complete-profile
+Disallow: /profile

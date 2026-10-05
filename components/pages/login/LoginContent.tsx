@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Navbar";
 import { PageLoader } from "@/components/loader";
 import { useSignIn } from "@/lib/api/hooks";
 import { ROYAL_COLORS } from "./constants";
@@ -37,11 +37,11 @@ export function LoginContent() {
 
       {/* Fixed navbar */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
       <main
-        className="min-h-screen pt-28 sm:pt-32 pb-12 px-4 flex items-center justify-center"
+        className="flex min-h-screen items-center justify-center px-4 pt-28 pb-12 sm:pt-32"
         style={{
           background: `
             radial-gradient(ellipse at 30% 20%, ${ROYAL_COLORS.ROYAL_PURPLE}15 0%, transparent 50%),
@@ -54,13 +54,13 @@ export function LoginContent() {
         <BackgroundEffects />
 
         {/* Main Content Container */}
-        <div className="relative w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="relative mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <MysticGateSection />
           <LoginCard onGoogleLogin={handleSignIn} />
         </div>
 
         {/* Bottom decorative text - Desktop only */}
-        <div className="hidden sm:block fixed bottom-6 left-1/2 -translate-x-1/2 text-center">
+        <div className="fixed bottom-6 left-1/2 hidden -translate-x-1/2 text-center sm:block">
           <p
             className="text-xs tracking-[0.3em] uppercase"
             style={{ color: `${ROYAL_COLORS.GOLD}40` }}

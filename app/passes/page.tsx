@@ -1,20 +1,23 @@
-"use client";
+import { Metadata } from "next";
+import { PassesPageContent } from "./PassesPageContent";
 
-import { PassesSection } from "@/components/pages/home/sections";
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+export const metadata: Metadata = {
+  title: "Passes",
+  description:
+    "Get your Kashi Yatra 2027 passes - Yatri, Swarnim & Darbar tiers. Access Pro Nites, all events, merchandise & exclusive perks at IIT BHU's biggest fest.",
+  keywords: [
+    "Kashi Yatra passes",
+    "IIT BHU fest passes",
+    "pro nite passes",
+    "cultural fest tickets",
+    "Kashi Yatra 2027 registration",
+  ],
+  openGraph: {
+    title: "Get Your Kashi Yatra 2027 Pass",
+    description: "Yatri, Swarnim & Darbar passes - Pro Nites, events, merchandise & more!",
+  },
+};
 
 export default function PassesPage() {
-  return (
-    <main className="min-h-screen">
-      {/* Fixed navbar - always visible on passes page */}
-      <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
-      </div>
-
-      {/* Add top padding to account for fixed navbar */}
-      <div className="pt-24 sm:pt-28">
-        <PassesSection />
-      </div>
-    </main>
-  );
+  return <PassesPageContent />;
 }

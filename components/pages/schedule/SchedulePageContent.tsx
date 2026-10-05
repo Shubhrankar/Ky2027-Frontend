@@ -1,6 +1,6 @@
 "use client";
 
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Navbar";
 import { CampusMap, EventSearch, WhatsOnSidebar } from "./sections";
 
 // ═══════════════════════════════════════════════════════════════════
@@ -14,7 +14,7 @@ export function SchedulePageContent() {
     <>
       {/* Fixed navbar - always visible (matches events/passes/about/contact internal pages) */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
       <main

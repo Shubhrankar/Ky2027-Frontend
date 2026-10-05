@@ -1,19 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { useIntro } from "../../context/IntroContext";
+import { useIsMobile } from "@/hooks";
 
 export function BlastEffect() {
   const { phase, startVideo } = useIntro();
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isSmallScreen = window.innerWidth < 768;
-    setIsMobile(hasTouch || isSmallScreen);
-
     if (typeof window !== "undefined") {
       audioRef.current = new Audio("/audio/explosion.mp3");
       audioRef.current.volume = 0.6;
@@ -26,24 +23,29 @@ export function BlastEffect() {
         audioRef.current.currentTime = 0;
         audioRef.current.play().catch(() => {});
       }
-      
+
       // Give the blast time to feel impactful
-      const timer = setTimeout(() => {
-        startVideo();
-      }, isMobile ? 1000 : 1500);
+      const timer = setTimeout(
+        () => {
+          startVideo();
+        },
+        isMobile ? 1000 : 1500
+      );
       return () => clearTimeout(timer);
     }
   }, [phase, startVideo, isMobile]);
 
   // Pre-compute spark positions for performance
-  const sparkData = useMemo(() => 
-    [...Array(24)].map((_, i) => ({
-      angle: (i / 24) * Math.PI * 2 + (Math.random() - 0.5) * 0.2,
-      distance: 28 + Math.random() * 30,
-      size: 4 + Math.random() * 4,
-      delay: Math.random() * 0.1,
-      duration: 0.7 + Math.random() * 0.3,
-    })), []
+  const sparkData = useMemo(
+    () =>
+      [...Array(24)].map((_, i) => ({
+        angle: (i / 24) * Math.PI * 2 + (Math.random() - 0.5) * 0.2,
+        distance: 28 + Math.random() * 30,
+        size: 4 + Math.random() * 4,
+        delay: Math.random() * 0.1,
+        duration: 0.7 + Math.random() * 0.3,
+      })),
+    []
   );
 
   if (phase !== "blasting") return null;
@@ -51,7 +53,7 @@ export function BlastEffect() {
   // MOBILE: Ultra-minimal - just flash and fade, no particles
   if (isMobile) {
     return (
-      <div className="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
+      <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden">
         {/* Quick white flash */}
         <motion.div
           className="absolute inset-0 bg-white"
@@ -59,18 +61,19 @@ export function BlastEffect() {
           animate={{ opacity: [0, 1, 0] }}
           transition={{ duration: 0.4, times: [0, 0.15, 1], ease: "easeOut" }}
         />
-        
+
         {/* Golden glow that fades */}
         <motion.div
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(circle at center, #FFD700 0%, #FF8C00 30%, transparent 60%)",
+            background:
+              "radial-gradient(circle at center, #FFD700 0%, #FF8C00 30%, transparent 60%)",
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 0.9, 0] }}
           transition={{ duration: 0.7, times: [0, 0.2, 1], ease: "easeOut" }}
         />
-        
+
         {/* Single expanding ring - no box-shadow */}
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-400"
@@ -84,7 +87,7 @@ export function BlastEffect() {
 
   // DESKTOP: Optimized cinematic blast
   return (
-    <div className="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
+    <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden">
       {/* Initial bright white flash */}
       <motion.div
         className="absolute inset-0 bg-white"
@@ -97,7 +100,8 @@ export function BlastEffect() {
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
-          background: "radial-gradient(circle, #FFFFFF 0%, #FFD700 30%, #FF8C00 60%, transparent 100%)",
+          background:
+            "radial-gradient(circle, #FFFFFF 0%, #FFD700 30%, #FF8C00 60%, transparent 100%)",
         }}
         initial={{ width: 0, height: 0, opacity: 1 }}
         animate={{
@@ -114,7 +118,7 @@ export function BlastEffect() {
           key={`ring-${i}`}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
-            border: `${3 - i * 0.5}px solid ${i === 0 ? '#FFD700' : i === 1 ? '#FFA500' : '#FF8C00'}`,
+            border: `${3 - i * 0.5}px solid ${i === 0 ? "#FFD700" : i === 1 ? "#FFA500" : "#FF8C00"}`,
             boxShadow: i === 0 ? "0 0 40px 15px rgba(255, 200, 100, 0.5)" : undefined,
           }}
           initial={{ width: 0, height: 0, opacity: 1 }}
@@ -135,13 +139,14 @@ export function BlastEffect() {
           style={{
             width: "5px",
             height: "130vh",
-            background: "linear-gradient(to top, transparent 0%, rgba(255, 215, 0, 0.8) 30%, rgba(255, 215, 0, 0.8) 70%, transparent 100%)",
+            background:
+              "linear-gradient(to top, transparent 0%, rgba(255, 215, 0, 0.8) 30%, rgba(255, 215, 0, 0.8) 70%, transparent 100%)",
             transform: `translate(-50%, -100%) rotate(${angle}deg)`,
           }}
           initial={{ scaleY: 0, opacity: 0 }}
-          animate={{ 
-            scaleY: [0, 1.3, 1], 
-            opacity: [0, 1, 0] 
+          animate={{
+            scaleY: [0, 1.3, 1],
+            opacity: [0, 1, 0],
           }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         />
@@ -164,10 +169,10 @@ export function BlastEffect() {
             y: Math.sin(spark.angle) * spark.distance + "vh",
             opacity: 0,
           }}
-          transition={{ 
-            duration: spark.duration, 
-            ease: "easeOut", 
-            delay: spark.delay 
+          transition={{
+            duration: spark.duration,
+            ease: "easeOut",
+            delay: spark.delay,
           }}
         />
       ))}
@@ -178,13 +183,14 @@ export function BlastEffect() {
         style={{
           width: "25vw",
           height: "25vw",
-          background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,215,0,0.5) 40%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,215,0,0.5) 40%, transparent 70%)",
           filter: "blur(15px)",
         }}
         initial={{ scale: 0, opacity: 0 }}
-        animate={{ 
-          scale: [0, 2, 2.5], 
-          opacity: [0, 1, 0] 
+        animate={{
+          scale: [0, 2, 2.5],
+          opacity: [0, 1, 0],
         }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       />

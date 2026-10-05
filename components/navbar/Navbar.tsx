@@ -1,26 +1,23 @@
 "use client";
 
-import { LightNavbar } from "@/components/navbar/Light";
+import { ThemedNavbar, LightNavbar } from "@/components/navbar";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
 
 /**
  * Navbar Exports
- * 
+ *
  * Usage:
- *   import { Navbar, LightNavbar } from "@/components/navbar/Navbar";
- *   
+ *   import { Navbar, ThemedNavbar } from "@/components/navbar/Navbar";
+ *
  *   // Default scroll-aware navbar
  *   <Navbar />
- *   
- *   // Or use directly
- *   <LightNavbar position="fixed" topOffset={18} />
+ *
+ *   // Or use themed navbar directly
+ *   <ThemedNavbar position="fixed" topOffset={18} theme="main" />
  */
 
 // Re-export themed navbar
-export { LightNavbar } from "@/components/navbar/Light";
-
-// Also export from Design for backwards compatibility
-export { NavbarDesign } from "@/components/navbar/Design";
+export { ThemedNavbar, LightNavbar } from "@/components/navbar";
 
 /**
  * Navbar (Default)
@@ -43,9 +40,7 @@ export function Navbar() {
     <div
       className="fixed inset-x-0 top-0 z-[200]"
       style={{
-        transform: visible
-          ? "translateY(0) translateZ(0)"
-          : "translateY(-120%) translateZ(0)",
+        transform: visible ? "translateY(0) translateZ(0)" : "translateY(-120%) translateZ(0)",
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? "auto" : "none",
         willChange: "transform, opacity",
@@ -54,7 +49,7 @@ export function Navbar() {
       }}
       aria-hidden={!visible}
     >
-      <LightNavbar position="relative" topOffset={18} />
+      <ThemedNavbar position="relative" topOffset={18} theme="main" />
     </div>
   );
 }

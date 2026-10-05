@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Navbar";
 import { FEST_DAYS, type ScheduledEvent, type Venue } from "../config/campusMap.config";
 import { CampusMap } from "./CampusMap";
 
@@ -24,7 +24,7 @@ export function VenuePageContent({ venue, events }: VenuePageContentProps) {
     <>
       {/* Fixed navbar - always visible (matches events/passes/about/contact internal pages) */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
       <main className="relative min-h-[100dvh] bg-[#080b18] pt-24 text-white sm:pt-28 lg:h-[100dvh] lg:overflow-hidden">

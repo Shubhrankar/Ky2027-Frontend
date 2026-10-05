@@ -23,12 +23,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!venue) {
     return {
-      title: "Venue Not Found | Kashi Yatra 2027",
+      title: "Venue Not Found",
     };
   }
 
   return {
-    title: `${venue.name} | Schedule | Kashi Yatra 2027`,
+    title: `${venue.name} | Schedule`,
     description: `All Kashi Yatra 2027 events happening at ${venue.name}, IIT (BHU) Varanasi.`,
   };
 }

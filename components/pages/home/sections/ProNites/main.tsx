@@ -14,7 +14,7 @@ import {
 } from "./common";
 import { FloatingSoundParticles, AnimatedSpeakers, VerticalNeonText } from "./common/decor";
 import { MotionZone } from "@/lib/motion";
-import { usePrefersReducedMotion } from "@/hooks";
+import { useIsMobile, usePrefersReducedMotion } from "@/hooks";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,12 +28,13 @@ export const ProNitesSection = memo(function ProNitesSection() {
   const headlinersRef = useRef<HTMLDivElement>(null);
   const featuringRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const isMobile = useIsMobile(640);
 
   // GSAP ScrollTrigger animations - Desktop only
   useEffect(() => {
     if (prefersReducedMotion) return;
     // Skip scroll animations on mobile for performance
-    if (typeof window !== "undefined" && window.innerWidth < 640) return;
+    if (isMobile) return;
 
     const ctx = gsap.context(() => {
       // Title fade in and slide up
@@ -58,7 +59,7 @@ export const ProNitesSection = memo(function ProNitesSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isMobile]);
 
   const headliners = ARTISTS.filter((a) => a.isHeadliner);
   const previousLineups = ARTISTS.filter((a) => !a.isHeadliner);

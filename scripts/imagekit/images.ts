@@ -53,25 +53,36 @@ export const IMAGES_TO_UPLOAD: ImageToUpload[] = [
   { localFile: "home/hero/common/kites.png", remoteName: "kites.png", folder: "/hero/common" },
 
   // ============================================
-  // NAVBAR - Light and Dark variants
+  // NAVBAR - Page-specific variants
   // ============================================
-  // Light theme (golden/cream)
-  { localFile: "navbar/common/navBg.png", remoteName: "nav-bg.png", folder: "/navbar/common" },
+  // Main/Home navbar (golden/cream theme)
+  { localFile: "navbar/navMain/navBg.png", remoteName: "nav-bg.png", folder: "/navbar/main" },
   {
-    localFile: "navbar/common/navBadge.png",
-    remoteName: "nav-badge.png",
-    folder: "/navbar/common",
+    localFile: "navbar/navMain/NavBadgeHome.png",
+    remoteName: "nav-badge-home.png",
+    folder: "/navbar/main",
   },
-  // Dark theme (dark blue/teal)
+  // About page navbar (purple/blue concert theme)
   {
-    localFile: "navbar/navBarBgDark.png",
-    remoteName: "nav-bar-bg-dark.png",
-    folder: "/navbar/dark",
+    localFile: "navbar/navAbout/navbarAbout.png",
+    remoteName: "navbar-about.png",
+    folder: "/navbar/about",
   },
   {
-    localFile: "navbar/navBarBadgeDark.png",
-    remoteName: "nav-bar-badge-dark.png",
-    folder: "/navbar/dark",
+    localFile: "navbar/navAbout/NavBadgeAbout.png",
+    remoteName: "nav-badge-about.png",
+    folder: "/navbar/about",
+  },
+  // Sponsors page navbar (green/gold nature theme)
+  {
+    localFile: "navbar/navSponsor/navSponsor.png",
+    remoteName: "nav-sponsor.png",
+    folder: "/navbar/sponsor",
+  },
+  {
+    localFile: "navbar/navSponsor/NavBadgeSponsor.png",
+    remoteName: "nav-badge-sponsor.png",
+    folder: "/navbar/sponsor",
   },
 
   // ============================================
@@ -420,6 +431,16 @@ export const IMAGES_TO_UPLOAD: ImageToUpload[] = [
   {
     localFile: "sponsors/standingGirl.png",
     remoteName: "standing-girl.png",
+    folder: "/sponsors/common",
+  },
+  {
+    localFile: "sponsor/leftTreeBranch_nobg.png",
+    remoteName: "left-tree-branch.png",
+    folder: "/sponsors/common",
+  },
+  {
+    localFile: "sponsors/sponsorPresentor.png",
+    remoteName: "sponsor-presentor.png",
     folder: "/sponsors/common",
   },
 

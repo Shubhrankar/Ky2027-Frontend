@@ -791,7 +791,6 @@ function FestHighlightsContent() {
 
   useEffect(() => {
     if (prefersReducedMotion || isMobile) return;
-    if (typeof window !== "undefined" && window.innerWidth < 640) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
