@@ -38,9 +38,9 @@ const MOBILE_THEME_STYLES = {
     mandalaStroke: "%235a3410",
   },
   about: {
-    hamburgerGradient: "linear-gradient(90deg, #8b5cf6, #a78bfa)",
+    hamburgerGradient: "linear-gradient(90deg, #8a5a1a, #d4a853)",
     panelBg:
-      "radial-gradient(ellipse at 30% 20%, rgba(30,20,50,0.98) 0%, rgba(45,27,78,0.98) 45%, rgba(26,26,46,0.98) 100%)",
+      "radial-gradient(ellipse at 30% 20%, rgba(45,27,78,0.98) 0%, rgba(30,20,50,0.98) 45%, rgba(26,26,46,0.98) 100%)",
     panelBorder: "2px solid rgba(139,92,246,0.6)",
     panelShadow:
       "0 14px 34px rgba(0,0,0,0.7), inset 0 0 24px rgba(139,92,246,0.2), inset 0 0 2px rgba(196,181,253,0.3)",

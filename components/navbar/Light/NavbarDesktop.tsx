@@ -24,17 +24,17 @@ const THEME_LAYOUT = {
     secondaryRight: "3%", // Default for main
   },
   about: {
-    navTranslateY: "0%", // Center vertically
-    secondaryTranslateY: "0%",
-    primaryLeft: "20%",
-    primaryRight: "22%", // Reverted to original
-    secondaryRight: "5%", // Move secondary section more to the left
+    navTranslateY: "8%", // Same as main
+    secondaryTranslateY: "11%", // Same as main
+    primaryLeft: "22%", // Same as main
+    primaryRight: "26%", // Same as main
+    secondaryRight: "3%", // Same as main
   },
   sponsor: {
     navTranslateY: "8%",
     secondaryTranslateY: "11%",
     primaryLeft: "22%",
-    primaryRight: "26%", // Reverted to original
+    primaryRight: "26%",
     secondaryRight: "5%", // Move secondary section more to the left
   },
 };

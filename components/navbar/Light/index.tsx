@@ -71,20 +71,22 @@ const THEME_CONFIG = {
         "radial-gradient(circle, rgba(196,181,253,0.6) 0%, rgba(139,92,246,0.35) 50%, transparent 75%)",
     },
     linkStyle: {
-      color: "#e8e0f0", // Light purple/cream text
-      activeColor: "#1a0a2e", // Dark purple text on active
+      color: "#3a1505", // Dark brown text like main
+      activeColor: "#3a1505", // Dark text on gold active
       activeBg:
-        "linear-gradient(135deg, rgba(196,181,253,0.95) 0%, rgba(167,139,250,0.9) 50%, rgba(196,181,253,0.95) 100%)",
-      inactiveBg: "rgba(139,92,246,0.15)", // Subtle glass chip
-      activeBorder: "2px solid rgba(196,181,253,1)",
-      inactiveBorder: "1px solid rgba(139,92,246,0.3)",
+        "linear-gradient(135deg, rgba(255,215,0,0.85) 0%, rgba(255,180,0,0.75) 30%, rgba(255,230,100,0.9) 50%, rgba(255,180,0,0.75) 70%, rgba(255,215,0,0.85) 100%)",
+      inactiveBg:
+        "linear-gradient(135deg, rgba(255,215,0,0.28) 0%, rgba(212,168,83,0.18) 50%, rgba(184,134,11,0.28) 100%)",
+      activeBorder: "2px solid rgba(255,230,100,1)",
+      inactiveBorder: "1px solid rgba(255,215,0,0.55)",
       activeShadow:
-        "0 0 20px rgba(139,92,246,0.8), 0 0 40px rgba(168,85,247,0.5), inset 0 0 10px rgba(255,255,255,0.3)",
-      inactiveShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
-      activeTextShadow: "0 1px 2px rgba(0,0,0,0.2)",
-      inactiveTextShadow: "0 1px 2px rgba(0,0,0,0.4)",
+        "0 0 25px rgba(255,215,0,0.9), 0 0 50px rgba(255,180,0,0.7), 0 0 80px rgba(255,215,0,0.5), inset 0 0 20px rgba(255,255,200,0.5), 0 2px 8px rgba(0,0,0,0.3)",
+      inactiveShadow: "0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,245,200,0.35)",
+      activeTextShadow:
+        "0 0 8px rgba(255,215,0,0.8), 0 0 15px rgba(255,180,0,0.6), 0 1px 1px rgba(255,245,215,0.9)",
+      inactiveTextShadow: "0 1px 1px rgba(255,245,215,0.7)",
     },
-    hamburgerGradient: "linear-gradient(90deg, #a78bfa, #c4b5fd)",
+    hamburgerGradient: "linear-gradient(90deg, #8a5a1a, #d4a853)",
     mobileMenuBg:
       "radial-gradient(ellipse at 30% 20%, rgba(45,27,78,0.98) 0%, rgba(30,20,50,0.98) 45%, rgba(26,26,46,0.98) 100%)",
     mobileMenuBorder: "2px solid rgba(139,92,246,0.6)",
@@ -128,21 +130,21 @@ export { THEME_CONFIG };
 // Theme-specific aspect ratios based on actual image dimensions
 const THEME_ASPECT_RATIOS = {
   main: 2928 / 209, // ≈ 14.01
-  about: 1408 / 237, // ≈ 5.94 - shorter strip
+  about: 2928 / 200, // ≈ 14.64 - similar to main for consistency
   sponsor: 2928 / 160, // ≈ 18.3 - thinner strip for sponsor
 };
 
 // Theme-specific height constraints
 const THEME_HEIGHT_CONSTRAINTS = {
   main: { minHeight: 56, maxHeight: 85 },
-  about: { minHeight: 50, maxHeight: 72 },
+  about: { minHeight: 52, maxHeight: 78 }, // Similar to main
   sponsor: { minHeight: 50, maxHeight: 68 }, // Much shorter
 };
 
 // Theme-specific top offset adjustments
 const THEME_TOP_OFFSETS = {
   main: 0,
-  about: 4, // Move down slightly
+  about: 0, // Same as main now
   sponsor: 0,
 };
 
