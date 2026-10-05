@@ -36,19 +36,19 @@ export const DROPDOWN_THEMES: Record<NavbarTheme, DropdownThemeConfig> = {
   about: {
     trigger: {
       background:
-        "linear-gradient(135deg, rgba(255,215,0,0.25) 0%, rgba(212,168,83,0.2) 50%, rgba(184,134,11,0.25) 100%)",
-      border: "2px solid rgba(255,215,0,0.6)",
+        "linear-gradient(135deg, rgba(139,92,246,0.3) 0%, rgba(168,85,247,0.25) 50%, rgba(139,92,246,0.3) 100%)",
+      border: "2px solid rgba(196,181,253,0.6)",
       boxShadow:
-        "0 0 15px rgba(255,215,0,0.4), 0 0 30px rgba(255,180,0,0.2), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,245,200,0.4)",
+        "0 0 15px rgba(139,92,246,0.4), 0 0 30px rgba(168,85,247,0.2), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)",
     },
     avatarRing: {
-      background: "linear-gradient(135deg, #ffd700 0%, #d4a853 50%, #8b6914 100%)",
-      boxShadow: "0 0 12px rgba(255,215,0,0.6), 0 0 20px rgba(255,180,0,0.3)",
+      background: "linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%)",
+      boxShadow: "0 0 12px rgba(139,92,246,0.6), 0 0 20px rgba(168,85,247,0.3)",
     },
-    avatarBg: "linear-gradient(135deg, #d4a853 0%, #b8860b 50%, #8b6914 100%)",
-    textColor: "#3a1505",
-    initialsColor: "#1a0a05",
-    textShadow: "0 1px 1px rgba(255,245,215,0.7)",
+    avatarBg: "linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%)",
+    textColor: "#f5f0ff",
+    initialsColor: "#1a0a2e",
+    textShadow: "0 1px 2px rgba(0,0,0,0.5), 0 0 10px rgba(139,92,246,0.3)",
     dropdown: {
       background: "linear-gradient(145deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%)",
       border: "1px solid rgba(139,92,246,0.4)",
