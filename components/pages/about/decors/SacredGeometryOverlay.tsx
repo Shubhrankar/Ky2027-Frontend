@@ -3,6 +3,7 @@
 import { memo, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { COLORS } from "@/components/pages/home/constants/palette";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // SACRED GEOMETRY OVERLAY - Sri Yantra inspired animations
@@ -24,7 +25,12 @@ const downwardTriangles = [
 ];
 
 // Lotus petal path generator
-const createLotusPath = (centerX: number, centerY: number, radius: number, petalCount: number): string => {
+const createLotusPath = (
+  centerX: number,
+  centerY: number,
+  radius: number,
+  petalCount: number
+): string => {
   let path = "";
   for (let i = 0; i < petalCount; i++) {
     const angle = (i * 360) / petalCount - 90;
@@ -39,7 +45,7 @@ const createLotusPath = (centerX: number, centerY: number, radius: number, petal
     const cy1 = centerY + Math.sin(controlAngle1) * radius * 0.7;
     const cx2 = centerX + Math.cos(controlAngle2) * radius * 0.7;
     const cy2 = centerY + Math.sin(controlAngle2) * radius * 0.7;
-    
+
     path += `M${x1},${y1} Q${cx1},${cy1} ${x2},${y2} Q${cx2},${cy2} ${x1},${y1} `;
   }
   return path;
@@ -52,12 +58,16 @@ export const SacredGeometryOverlay = memo(function SacredGeometryOverlay({
   className?: string;
   position?: "center" | "hero" | "cta";
 }) {
+  const { shouldAnimate } = useAnimationPolicy();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Don't render animated sacred geometry if animations should be reduced
+  if (shouldAnimate) return null;
 
   const positionClasses = {
     center: "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
@@ -66,16 +76,16 @@ export const SacredGeometryOverlay = memo(function SacredGeometryOverlay({
   };
 
   return (
-    <div 
+    <div
       className={`pointer-events-none ${positionClasses[position]} ${className}`}
       style={{ width: "min(90vw, 600px)", height: "min(90vw, 600px)" }}
     >
       <motion.svg
         viewBox="0 0 100 100"
-        className="w-full h-full"
+        className="h-full w-full"
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ 
-          opacity: isVisible ? 1 : 0, 
+        animate={{
+          opacity: isVisible ? 1 : 0,
           scale: isVisible ? 1 : 0.8,
           rotate: [0, 360],
         }}
@@ -207,12 +217,12 @@ export const SacredGeometryOverlay = memo(function SacredGeometryOverlay({
           r="2"
           fill="url(#binduGlow)"
           initial={{ scale: 0 }}
-          animate={{ 
+          animate={{
             scale: [1, 1.3, 1],
           }}
-          transition={{ 
+          transition={{
             scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-            delay: 3.5 
+            delay: 3.5,
           }}
         />
 
@@ -230,8 +240,8 @@ export const SacredGeometryOverlay = memo(function SacredGeometryOverlay({
       </motion.svg>
 
       {/* Ambient glow */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
+      <div
+        className="pointer-events-none absolute inset-0"
         style={{
           background: `radial-gradient(circle, ${COLORS.BRIGHT_GOLD}08 0%, transparent 50%)`,
         }}

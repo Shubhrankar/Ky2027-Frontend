@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 import { Z_INDEX } from "../constants/theme";
 
 // ============================================
@@ -40,7 +41,7 @@ export const FloatingParticles = memo(function FloatingParticles({
 
   return (
     <div
-      className="absolute inset-0 pointer-events-none overflow-hidden"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
       style={{ zIndex: Z_INDEX.particles }}
     >
       {PARTICLES.map((p) => (

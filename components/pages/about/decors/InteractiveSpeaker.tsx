@@ -2,6 +2,7 @@
 
 import { memo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // INTERACTIVE SPEAKER - Concert speaker SVG that pulses
@@ -25,8 +26,9 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
   className = "",
   side = "left",
 }: InteractiveSpeakerProps) {
+  const { shouldAnimate } = useAnimationPolicy();
   const [isActive, setIsActive] = useState(false);
-  const [isPulsing, setIsPulsing] = useState(true);
+  const [isPulsing, setIsPulsing] = useState(!shouldAnimate);
 
   const flip = side === "right" ? -1 : 1;
   // Use different accent colors for left/right speakers
@@ -35,9 +37,9 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
   return (
     <motion.div
       className={`relative cursor-pointer ${className}`}
-      style={{ 
-        width: size, 
-        height: size * 1.4, 
+      style={{
+        width: size,
+        height: size * 1.4,
         transform: `scaleX(${flip})`,
         filter: `drop-shadow(0 0 20px ${accentColor}30)`,
       }}
@@ -48,8 +50,8 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
       whileTap={{ scale: 0.95 }}
     >
       {/* Ambient neon glow behind speaker */}
-      <div 
-        className="absolute inset-0 rounded-lg pointer-events-none transition-opacity duration-300"
+      <div
+        className="pointer-events-none absolute inset-0 rounded-lg transition-opacity duration-300"
         style={{
           background: `radial-gradient(ellipse at center, ${accentColor}20 0%, transparent 70%)`,
           filter: "blur(20px)",
@@ -65,7 +67,7 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
             {[1, 2, 3].map((i) => (
               <motion.div
                 key={i}
-                className="absolute rounded-full pointer-events-none"
+                className="pointer-events-none absolute rounded-full"
                 style={{
                   left: "50%",
                   top: "35%",
@@ -95,7 +97,7 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
         viewBox="0 0 80 112"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full relative"
+        className="relative h-full w-full"
       >
         <defs>
           <linearGradient id={`speakerBody-${side}`} x1="0%" y1="0%" x2="100%" y2="100%">
@@ -103,7 +105,7 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
             <stop offset="50%" stopColor="#1a1a1a" />
             <stop offset="100%" stopColor="#0a0a0a" />
           </linearGradient>
-          
+
           <filter id={`speakerGlow-${side}`} x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="2" result="blur" />
             <feMerge>
@@ -120,7 +122,7 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          
+
           <radialGradient id={`coneGradient-${side}`} cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#444" />
             <stop offset="70%" stopColor="#222" />
@@ -161,9 +163,13 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
 
         {/* Top tweeter */}
         <motion.g
-          animate={isPulsing ? {
-            scale: [1, 1.05, 1],
-          } : {}}
+          animate={
+            isPulsing
+              ? {
+                  scale: [1, 1.05, 1],
+                }
+              : {}
+          }
           transition={{ duration: 0.2, repeat: Infinity }}
           style={{ transformOrigin: "40px 28px" }}
         >
@@ -176,15 +182,26 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
             strokeWidth="2"
             filter={isActive ? `url(#neonGlow-${side})` : undefined}
           />
-          <circle cx="40" cy="28" r="6" fill="#222" stroke={isActive ? `${accentColor}60` : "#444"} strokeWidth="1" />
+          <circle
+            cx="40"
+            cy="28"
+            r="6"
+            fill="#222"
+            stroke={isActive ? `${accentColor}60` : "#444"}
+            strokeWidth="1"
+          />
           <circle cx="40" cy="28" r="2" fill={isActive ? accentColor : "#555"} />
         </motion.g>
 
         {/* Main woofer */}
         <motion.g
-          animate={isPulsing ? {
-            scale: [1, 1.08, 1],
-          } : {}}
+          animate={
+            isPulsing
+              ? {
+                  scale: [1, 1.08, 1],
+                }
+              : {}
+          }
           transition={{ duration: 0.15, repeat: Infinity }}
           style={{ transformOrigin: "40px 65px" }}
         >
@@ -198,9 +215,30 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
             filter={isActive ? `url(#neonGlow-${side})` : undefined}
           />
           {/* Cone rings */}
-          <circle cx="40" cy="65" r="16" fill="none" stroke={isActive ? `${accentColor}40` : "#333"} strokeWidth="1" />
-          <circle cx="40" cy="65" r="10" fill="none" stroke={isActive ? `${accentColor}40` : "#333"} strokeWidth="1" />
-          <circle cx="40" cy="65" r="5" fill="#222" stroke={isActive ? `${accentColor}60` : "#444"} strokeWidth="1" />
+          <circle
+            cx="40"
+            cy="65"
+            r="16"
+            fill="none"
+            stroke={isActive ? `${accentColor}40` : "#333"}
+            strokeWidth="1"
+          />
+          <circle
+            cx="40"
+            cy="65"
+            r="10"
+            fill="none"
+            stroke={isActive ? `${accentColor}40` : "#333"}
+            strokeWidth="1"
+          />
+          <circle
+            cx="40"
+            cy="65"
+            r="5"
+            fill="#222"
+            stroke={isActive ? `${accentColor}60` : "#444"}
+            strokeWidth="1"
+          />
           <circle cx="40" cy="65" r="2" fill={isActive ? accentColor : "#555"} />
         </motion.g>
 
@@ -223,9 +261,13 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
           cy="100"
           r="3"
           fill={isPulsing ? NEON.LIME : "#333"}
-          animate={isPulsing ? {
-            opacity: [1, 0.5, 1],
-          } : {}}
+          animate={
+            isPulsing
+              ? {
+                  opacity: [1, 0.5, 1],
+                }
+              : {}
+          }
           transition={{ duration: 0.5, repeat: Infinity }}
           style={{
             filter: isPulsing ? `drop-shadow(0 0 8px ${NEON.LIME})` : undefined,
@@ -248,10 +290,10 @@ export const InteractiveSpeaker = memo(function InteractiveSpeaker({
 
       {/* Hover tooltip */}
       <motion.div
-        className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs whitespace-nowrap font-bold"
+        className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs font-bold whitespace-nowrap"
         initial={{ opacity: 0 }}
         animate={{ opacity: isActive ? 1 : 0 }}
-        style={{ 
+        style={{
           color: accentColor,
           transform: `scaleX(${flip}) translateX(-50%)`,
           textShadow: `0 0 10px ${accentColor}`,

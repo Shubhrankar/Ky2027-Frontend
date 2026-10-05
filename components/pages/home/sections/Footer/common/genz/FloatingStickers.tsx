@@ -2,9 +2,15 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 import { FLOATING_STICKERS } from "../constants";
 
 export const FloatingStickers = memo(function FloatingStickers() {
+  const { shouldAnimate } = useAnimationPolicy();
+
+  // Don't render floating stickers if animations should be reduced
+  if (shouldAnimate) return null;
+
   const positions = [
     { top: "15%", left: "5%" },
     { top: "25%", right: "8%" },

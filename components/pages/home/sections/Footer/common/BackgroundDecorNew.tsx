@@ -4,6 +4,7 @@ import { memo } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useMotionZone } from "@/lib/motion";
+import { useAnimationPolicy } from "@/hooks";
 import { FOOTER_COLORS, FOOTER_GRADIENTS } from "./constants";
 import { IMAGES } from "@/lib/images";
 
@@ -12,14 +13,18 @@ import { IMAGES } from "@/lib/images";
 // ═══════════════════════════════════════════════════════════════════
 export const FooterDancer = memo(function FooterDancer() {
   const { isAnimating } = useMotionZone();
-  
+
   return (
     <motion.div
-      className="absolute right-[1%] top-[5%] w-[280px] h-[400px] sm:w-[350px] sm:h-[500px] lg:w-[420px] lg:h-[600px] pointer-events-none z-10 hidden md:block"
+      className="pointer-events-none absolute top-[5%] right-[1%] z-10 hidden h-[400px] w-[280px] sm:h-[500px] sm:w-[350px] md:block lg:h-[600px] lg:w-[420px]"
       style={{ willChange: "transform" }}
-      animate={isAnimating ? {
-        y: [0, -15, 0],
-      } : {}}
+      animate={
+        isAnimating
+          ? {
+              y: [0, -15, 0],
+            }
+          : {}
+      }
       transition={{
         duration: 5,
         repeat: Infinity,
@@ -27,14 +32,14 @@ export const FooterDancer = memo(function FooterDancer() {
       }}
     >
       {/* Glow behind dancer - using opacity gradient instead of blur for performance */}
-      <div 
+      <div
         className="absolute inset-0 opacity-25"
         style={{
           background: `radial-gradient(ellipse at center, ${FOOTER_COLORS.NEON_PINK}60 0%, ${FOOTER_COLORS.NEON_PURPLE}40 30%, transparent 60%)`,
           transform: "translateZ(0)", // Force GPU layer
         }}
       />
-      
+
       {/* Dancer image - simplified shadow */}
       <Image
         src={IMAGES.footer.footerDancer}
@@ -55,7 +60,7 @@ export const FooterDancer = memo(function FooterDancer() {
 // ═══════════════════════════════════════════════════════════════════
 const ConcertFloor = memo(function ConcertFloor() {
   return (
-    <div className="absolute bottom-0 left-0 right-0 h-[40%] pointer-events-none overflow-hidden">
+    <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-[40%] overflow-hidden">
       <Image
         src="/home/footer/desktop/concertFloor.png"
         alt=""
@@ -68,7 +73,7 @@ const ConcertFloor = memo(function ConcertFloor() {
         }}
       />
       {/* Overlay glow */}
-      <div 
+      <div
         className="absolute inset-0"
         style={{
           background: `radial-gradient(ellipse at center bottom, ${FOOTER_COLORS.NEON_PURPLE}20 0%, transparent 70%)`,
@@ -83,9 +88,9 @@ const ConcertFloor = memo(function ConcertFloor() {
 // ═══════════════════════════════════════════════════════════════════
 const GlitchLines = memo(function GlitchLines() {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* Scan lines overlay - static */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage: `repeating-linear-gradient(
@@ -106,40 +111,48 @@ const GlitchLines = memo(function GlitchLines() {
 // ═══════════════════════════════════════════════════════════════════
 const SpotlightCones = memo(function SpotlightCones() {
   const { isAnimating } = useMotionZone();
-  
+
   return (
-    <div className="hidden sm:block absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 hidden overflow-hidden sm:block">
       {/* Left spotlight */}
       <motion.div
-        className="absolute bottom-0 left-[8%] w-[300px] h-[100%] origin-bottom"
+        className="absolute bottom-0 left-[8%] h-[100%] w-[300px] origin-bottom"
         style={{
           background: `linear-gradient(0deg, ${FOOTER_COLORS.NEON_CYAN}30 0%, ${FOOTER_COLORS.NEON_CYAN}08 30%, transparent 100%)`,
           clipPath: "polygon(45% 100%, 55% 100%, 100% 0%, 0% 0%)",
           willChange: "transform",
           transform: "translateZ(0)",
         }}
-        animate={isAnimating ? {
-          rotate: [-15, 15, -15],
-        } : {}}
+        animate={
+          isAnimating
+            ? {
+                rotate: [-15, 15, -15],
+              }
+            : {}
+        }
         transition={{
           duration: 12,
           repeat: Infinity,
           ease: "easeInOut",
         }}
       />
-      
+
       {/* Right spotlight */}
       <motion.div
-        className="absolute bottom-0 right-[8%] w-[300px] h-[100%] origin-bottom"
+        className="absolute right-[8%] bottom-0 h-[100%] w-[300px] origin-bottom"
         style={{
           background: `linear-gradient(0deg, ${FOOTER_COLORS.NEON_PINK}30 0%, ${FOOTER_COLORS.NEON_PINK}08 30%, transparent 100%)`,
           clipPath: "polygon(45% 100%, 55% 100%, 100% 0%, 0% 0%)",
           willChange: "transform",
           transform: "translateZ(0)",
         }}
-        animate={isAnimating ? {
-          rotate: [15, -15, 15],
-        } : {}}
+        animate={
+          isAnimating
+            ? {
+                rotate: [15, -15, 15],
+              }
+            : {}
+        }
         transition={{
           duration: 12,
           repeat: Infinity,
@@ -156,7 +169,7 @@ const SpotlightCones = memo(function SpotlightCones() {
 // ═══════════════════════════════════════════════════════════════════
 const CrowdSilhouette = memo(function CrowdSilhouette() {
   return (
-    <div className="absolute bottom-0 left-0 right-0 h-[150px] sm:h-[180px] pointer-events-none z-[5]">
+    <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-[5] h-[150px] sm:h-[180px]">
       <Image
         src="/home/proNites/common/silhoutte.png"
         alt=""
@@ -176,7 +189,7 @@ const CrowdSilhouette = memo(function CrowdSilhouette() {
 // ═══════════════════════════════════════════════════════════════════
 const AmbientParticles = memo(function AmbientParticles() {
   const { isAnimating } = useMotionZone();
-  
+
   // Reduced to 6 particles for better performance
   const particles = Array.from({ length: 6 }, (_, i) => ({
     id: i,
@@ -188,7 +201,7 @@ const AmbientParticles = memo(function AmbientParticles() {
   }));
 
   return (
-    <div className="hidden sm:block absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 hidden overflow-hidden sm:block">
       {particles.map((p) => (
         <motion.div
           key={p.id}
@@ -203,9 +216,13 @@ const AmbientParticles = memo(function AmbientParticles() {
             opacity: 0.5,
             willChange: "transform",
           }}
-          animate={isAnimating ? {
-            y: [0, -400],
-          } : {}}
+          animate={
+            isAnimating
+              ? {
+                  y: [0, -400],
+                }
+              : {}
+          }
           transition={{
             duration: p.duration,
             repeat: Infinity,
@@ -225,7 +242,7 @@ export const BackgroundDecor = memo(function BackgroundDecor() {
   return (
     <>
       {/* Concert floor background - Desktop only */}
-      <div className="hidden sm:block absolute bottom-0 left-0 right-0 h-[50%] pointer-events-none">
+      <div className="pointer-events-none absolute right-0 bottom-0 left-0 hidden h-[50%] sm:block">
         <Image
           src={IMAGES.footer.concertFloor}
           alt=""
@@ -236,19 +253,19 @@ export const BackgroundDecor = memo(function BackgroundDecor() {
           }}
         />
       </div>
-      
+
       {/* Spotlight beams - Desktop only (handled inside component) */}
       <SpotlightCones />
-      
+
       {/* Footer dancer on the right - Desktop only (handled inside component) */}
       <FooterDancer />
-      
+
       {/* Ambient floating particles - Desktop only (handled inside component) */}
       <AmbientParticles />
-      
+
       {/* Top edge glow - Both mobile and desktop */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-1"
+      <div
+        className="absolute top-0 right-0 left-0 h-1"
         style={{
           background: `linear-gradient(90deg, 
             transparent 0%, 
@@ -272,21 +289,21 @@ export const AmbientGlow = memo(function AmbientGlow() {
     <>
       {/* Center bottom glow */}
       <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-32 pointer-events-none"
+        className="pointer-events-none absolute bottom-0 left-1/2 h-32 w-[80%] -translate-x-1/2"
         style={{
           background: `radial-gradient(ellipse at bottom, ${FOOTER_COLORS.NEON_PINK}20 0%, transparent 70%)`,
         }}
       />
-      
+
       {/* Side vignettes */}
       <div
-        className="absolute top-0 left-0 w-[20%] h-full pointer-events-none"
+        className="pointer-events-none absolute top-0 left-0 h-full w-[20%]"
         style={{
           background: `linear-gradient(90deg, ${FOOTER_COLORS.BG_DEEP} 0%, transparent 100%)`,
         }}
       />
       <div
-        className="absolute top-0 right-0 w-[20%] h-full pointer-events-none"
+        className="pointer-events-none absolute top-0 right-0 h-full w-[20%]"
         style={{
           background: `linear-gradient(-90deg, ${FOOTER_COLORS.BG_DEEP} 0%, transparent 100%)`,
         }}

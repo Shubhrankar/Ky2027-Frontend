@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useIntro } from "../../context/IntroContext";
+import { useAnimationPolicy } from "@/hooks";
 
 export function ContinueButton() {
   const { phase, completeIntro } = useIntro();
@@ -26,7 +27,7 @@ export function ContinueButton() {
 
   return (
     <motion.div
-      className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20"
+      className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
@@ -64,17 +65,17 @@ export function ContinueButton() {
               <stop offset="50%" stopColor="#FFA500" />
               <stop offset="100%" stopColor="#DAA520" />
             </linearGradient>
-            
+
             <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="rgba(40, 30, 50, 0.9)" />
               <stop offset="100%" stopColor="rgba(20, 15, 30, 0.95)" />
             </linearGradient>
 
             <filter id="glow">
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="2" result="coloredBlur" />
               <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
           </defs>
@@ -96,7 +97,7 @@ export function ContinueButton() {
             strokeWidth="2"
             strokeLinecap="round"
           />
-          
+
           {/* Corner ornaments - top right */}
           <path
             d="M248 18 L248 12 L242 12"
@@ -105,7 +106,7 @@ export function ContinueButton() {
             strokeWidth="2"
             strokeLinecap="round"
           />
-          
+
           {/* Corner ornaments - bottom left */}
           <path
             d="M12 52 L12 58 L18 58"
@@ -114,7 +115,7 @@ export function ContinueButton() {
             strokeWidth="2"
             strokeLinecap="round"
           />
-          
+
           {/* Corner ornaments - bottom right */}
           <path
             d="M248 52 L248 58 L242 58"
@@ -161,7 +162,7 @@ export function ContinueButton() {
 
         {/* Shimmer effect on hover */}
         <motion.div
-          className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          className="pointer-events-none absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
             background: "linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent)",
           }}

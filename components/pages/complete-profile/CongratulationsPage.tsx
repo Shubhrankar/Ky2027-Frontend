@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { PartyPopper, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
+import { useAnimationPolicy } from "@/hooks";
 import { COLORS } from "./constants/palette";
 
 // ═══════════════════════════════════════════════════════════════════

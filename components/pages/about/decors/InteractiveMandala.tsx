@@ -3,6 +3,7 @@
 import { memo, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/components/pages/home/constants/palette";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // INTERACTIVE MANDALA - Click/hover responsive sacred geometry
@@ -21,34 +22,38 @@ export const InteractiveMandala = memo(function InteractiveMandala({
   size?: number;
   className?: string;
 }) {
+  const { shouldAnimate } = useAnimationPolicy();
   const [isHovered, setIsHovered] = useState(false);
   const [ripples, setRipples] = useState<RippleState[]>([]);
   const [rippleCounter, setRippleCounter] = useState(0);
-  const [rotationSpeed, setRotationSpeed] = useState(120);
+  const [rotationSpeed, setRotationSpeed] = useState(shouldAnimate ? 0 : 120);
 
-  const handleClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    
-    setRipples(prev => [...prev, { id: rippleCounter, x, y }]);
-    setRippleCounter(prev => prev + 1);
-    
-    // Speed up rotation momentarily
-    setRotationSpeed(30);
-    setTimeout(() => setRotationSpeed(120), 2000);
-    
-    // Clean up ripple after animation
-    setTimeout(() => {
-      setRipples(prev => prev.filter(r => r.id !== rippleCounter));
-    }, 2000);
-  }, [rippleCounter]);
+  const handleClick = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+      setRipples((prev) => [...prev, { id: rippleCounter, x, y }]);
+      setRippleCounter((prev) => prev + 1);
+
+      // Speed up rotation momentarily
+      setRotationSpeed(30);
+      setTimeout(() => setRotationSpeed(120), 2000);
+
+      // Clean up ripple after animation
+      setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== rippleCounter));
+      }, 2000);
+    },
+    [rippleCounter]
+  );
 
   const petalCount = 12;
   const layerCount = 3;
 
   return (
-    <div 
+    <div
       className={`relative cursor-pointer ${className}`}
       style={{ width: size, height: size }}
       onMouseEnter={() => setIsHovered(true)}
@@ -70,7 +75,7 @@ export const InteractiveMandala = memo(function InteractiveMandala({
 
       <svg
         viewBox="0 0 100 100"
-        className="w-full h-full"
+        className="h-full w-full"
         onClick={handleClick}
         style={{
           animation: `spin ${rotationSpeed}s linear infinite`,
@@ -84,12 +89,12 @@ export const InteractiveMandala = memo(function InteractiveMandala({
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          
+
           <linearGradient id="petalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor={COLORS.BRIGHT_GOLD} />
             <stop offset="100%" stopColor={COLORS.SAFFRON} />
           </linearGradient>
-          
+
           <radialGradient id="centerGlow">
             <stop offset="0%" stopColor={COLORS.BRIGHT_GOLD} stopOpacity="0.8" />
             <stop offset="70%" stopColor={COLORS.SAFFRON} stopOpacity="0.3" />
@@ -113,7 +118,7 @@ export const InteractiveMandala = memo(function InteractiveMandala({
         {Array.from({ length: layerCount }).map((_, layerIndex) => {
           const layerRadius = 35 - layerIndex * 10;
           const layerOpacity = isHovered ? 0.4 - layerIndex * 0.1 : 0.2 - layerIndex * 0.05;
-          
+
           return (
             <g key={layerIndex}>
               {/* Petal ring */}
@@ -124,7 +129,7 @@ export const InteractiveMandala = memo(function InteractiveMandala({
                 const y1 = 50 + Math.sin(radians) * (layerRadius - 5);
                 const x2 = 50 + Math.cos(radians) * layerRadius;
                 const y2 = 50 + Math.sin(radians) * layerRadius;
-                
+
                 return (
                   <g key={`${layerIndex}-${i}`}>
                     {/* Petal line */}
@@ -138,7 +143,7 @@ export const InteractiveMandala = memo(function InteractiveMandala({
                       opacity={layerOpacity}
                       filter="url(#mandalaGlow)"
                     />
-                    
+
                     {/* Petal node */}
                     <circle
                       cx={x2}
@@ -151,7 +156,7 @@ export const InteractiveMandala = memo(function InteractiveMandala({
                   </g>
                 );
               })}
-              
+
               {/* Connecting ring */}
               <circle
                 cx="50"
@@ -224,7 +229,7 @@ export const InteractiveMandala = memo(function InteractiveMandala({
 
       {/* Instruction text */}
       <motion.p
-        className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs whitespace-nowrap pointer-events-none"
+        className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs whitespace-nowrap"
         animate={{ opacity: isHovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
         style={{ color: `${COLORS.BRIGHT_GOLD}80` }}

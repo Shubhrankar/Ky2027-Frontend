@@ -1,38 +1,40 @@
 "use client";
 
-import { usePrefersReducedMotion } from "@/hooks";
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import { useAnimationPolicy } from "@/hooks";
+import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 
 /**
  * MotionZone Context
- * 
+ *
  * Provides animation state to descendants. Framer-motion components
  * can read this to honor the zone's pause state.
  */
 interface MotionZoneContextValue {
   /** Whether animations should be running */
   isAnimating: boolean;
+  /** Whether device is mobile (for layout decisions) */
+  isMobile: boolean;
 }
 
-const MotionZoneContext = createContext<MotionZoneContextValue>({ isAnimating: true });
+const MotionZoneContext = createContext<MotionZoneContextValue>({
+  isAnimating: true,
+  isMobile: false,
+});
 
 /**
  * Hook for descendants to read the zone's animation state.
  * Useful for framer-motion components that need to conditionally animate.
- * 
+ *
  * @example
- * const { isAnimating } = useMotionZone();
+ * const { isAnimating, isMobile } = useMotionZone();
+ *
+ * // Animation decision
  * <motion.div animate={isAnimating ? { scale: [1, 1.1, 1] } : {}} />
+ *
+ * // Layout decision (independent of animation policy)
+ * {!isMobile && <DecorativeElement />}
  */
 export function useMotionZone() {
-
   const context = useContext(MotionZoneContext);
   if (context === undefined) {
     throw new Error("useMotionZone must be used within a MotionZone");
@@ -42,8 +44,8 @@ export function useMotionZone() {
 
 interface MotionZoneProps {
   children: ReactNode;
-  /** 
-   * Root margin for IntersectionObserver. 
+  /**
+   * Root margin for IntersectionObserver.
    * Default "10%" means animations resume when within 10% of viewport.
    */
   rootMargin?: string;
@@ -70,15 +72,15 @@ interface MotionZoneProps {
  * MotionZone — a container that pauses ambient animations when:
  * - The zone is off-screen (IntersectionObserver)
  * - User prefers reduced motion (prefers-reduced-motion: reduce)
- * 
+ *
  * Gates three animation mechanisms:
  * - SVG SMIL: calls pauseAnimations()/unpauseAnimations() on SVG descendants
  * - CSS @keyframes: sets animation-play-state: paused via inline style
  * - Framer-motion: provides context that descendants can read
- * 
+ *
  * Use for decorative/ambient animation clusters (diyas, birds, particles).
  * Do NOT wrap interactive controls (buttons, cards with hover feedback).
- * 
+ *
  * @example
  * <MotionZone>
  *   <River />  // All SMIL animations inside pause when off-screen
@@ -93,11 +95,11 @@ export function MotionZone({
   alwaysVisible = false,
 }: MotionZoneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const { shouldAnimate, isMobile } = useAnimationPolicy();
   const [isInView, setIsInView] = useState(true);
 
-  // Compute whether animations should run
-  const isAnimating = isInView && !prefersReducedMotion;
+  // Compute whether animations should run (policy + in-view)
+  const isAnimating = shouldAnimate && isInView;
 
   // Track in-view state via IntersectionObserver
   useEffect(() => {
@@ -146,7 +148,7 @@ export function MotionZone({
   }, [isAnimating]);
 
   // Context value for framer-motion descendants
-  const contextValue = { isAnimating };
+  const contextValue = { isAnimating, isMobile };
 
   return (
     <MotionZoneContext.Provider value={contextValue}>

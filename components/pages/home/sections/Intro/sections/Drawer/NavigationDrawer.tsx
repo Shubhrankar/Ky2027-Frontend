@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useIntro } from "../../context/IntroContext";
+import { useAnimationPolicy } from "@/hooks";
 
 /**
  * Navigation drawer that slides up from bottom

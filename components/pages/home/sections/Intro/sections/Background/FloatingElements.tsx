@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useIntro } from "../../context/IntroContext";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 /**
  * Floating diamond elements
@@ -13,22 +13,30 @@ import { useIsMobile } from "@/hooks";
  */
 export function FloatingElements() {
   const { phase, loadProgress } = useIntro();
-  const isMobile = useIsMobile();
-  
+  const { isMobile } = useAnimationPolicy();
+
   const isLoading = phase === "loading";
   const intensity = loadProgress / 100;
 
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div className="pointer-events-none absolute inset-0">
       <GeometricShards isLoading={isLoading} intensity={intensity} isMobile={isMobile} />
     </div>
   );
 }
 
-function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolean; intensity: number; isMobile: boolean }) {
+function GeometricShards({
+  isLoading,
+  intensity,
+  isMobile,
+}: {
+  isLoading: boolean;
+  intensity: number;
+  isMobile: boolean;
+}) {
   const orbitRadius = isMobile ? 100 : 130;
   const diamondSize = isMobile ? 18 : 22;
-  
+
   // Full set for desktop, reduced for mobile
   const allShards = [
     { idleX: -400, idleY: -250 },
@@ -40,7 +48,7 @@ function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolea
     { idleX: -480, idleY: 0 },
     { idleX: -200, idleY: -290 },
   ];
-  
+
   // Mobile: only 4 diamonds at cardinal positions
   const mobileShards = [
     { idleX: -150, idleY: -150 },
@@ -48,7 +56,7 @@ function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolea
     { idleX: 150, idleY: 150 },
     { idleX: -150, idleY: 150 },
   ];
-  
+
   const shards = isMobile ? mobileShards : allShards;
   const angleStep = isMobile ? 90 : 45; // 4 positions vs 8
 
@@ -61,7 +69,7 @@ function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolea
         const angleRad = (angleDeg * Math.PI) / 180;
         const orbitX = Math.cos(angleRad) * orbitRadius;
         const orbitY = Math.sin(angleRad) * orbitRadius;
-        
+
         return (
           <motion.div
             key={`shard-${i}`}
@@ -88,10 +96,10 @@ function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolea
               {/* Opacity - smooth */}
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ 
+                animate={{
                   opacity: isLoading ? 0.7 + intensity * 0.3 : 0.55,
                 }}
-                transition={{ 
+                transition={{
                   duration: 0.8,
                   ease: "easeInOut",
                 }}
@@ -99,19 +107,19 @@ function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolea
                 {/* Idle pulsing - only active when NOT loading, DESKTOP ONLY */}
                 <motion.div
                   animate={{
-                    opacity: (isLoading || isMobile) ? 1 : [1, 0.7, 1],
+                    opacity: isLoading || isMobile ? 1 : [1, 0.7, 1],
                   }}
                   transition={{
                     duration: 4 + i * 0.3,
-                    repeat: (isLoading || isMobile) ? 0 : Infinity,
+                    repeat: isLoading || isMobile ? 0 : Infinity,
                     ease: "easeInOut",
                   }}
                 >
                   {/* Idle floating - only when NOT loading, DESKTOP ONLY */}
                   <motion.div
                     animate={{
-                      x: (isLoading || isMobile) ? 0 : [0, 6, -4, 0],
-                      y: (isLoading || isMobile) ? 0 : [0, -6, 4, 0],
+                      x: isLoading || isMobile ? 0 : [0, 6, -4, 0],
+                      y: isLoading || isMobile ? 0 : [0, -6, 4, 0],
                     }}
                     transition={{
                       duration: 8 + i * 0.5,
@@ -128,10 +136,10 @@ function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolea
                         }}
                         transition={{ duration: 0.3 }}
                       >
-                        <DiamondSVG 
-                          size={diamondSize} 
-                          index={i} 
-                          isLoading={isLoading} 
+                        <DiamondSVG
+                          size={diamondSize}
+                          index={i}
+                          isLoading={isLoading}
                           intensity={intensity}
                           isMobile={isMobile}
                         />
@@ -166,10 +174,10 @@ function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolea
                             scale: { duration: 0.3 },
                           }}
                         >
-                          <DiamondSVG 
-                            size={diamondSize} 
-                            index={i} 
-                            isLoading={isLoading} 
+                          <DiamondSVG
+                            size={diamondSize}
+                            index={i}
+                            isLoading={isLoading}
                             intensity={intensity}
                             isMobile={isMobile}
                           />
@@ -187,29 +195,33 @@ function GeometricShards({ isLoading, intensity, isMobile }: { isLoading: boolea
   );
 }
 
-function DiamondSVG({ 
-  size, 
-  index, 
-  isLoading, 
+function DiamondSVG({
+  size,
+  index,
+  isLoading,
   intensity,
   isMobile,
-}: { 
-  size: number; 
-  index: number; 
-  isLoading: boolean; 
+}: {
+  size: number;
+  index: number;
+  isLoading: boolean;
   intensity: number;
   isMobile: boolean;
 }) {
   // Simpler glow on mobile
-  const glowSize = isMobile 
-    ? (isLoading ? 5 + intensity * 5 : 4) 
-    : (isLoading ? 8 + intensity * 15 : 6);
+  const glowSize = isMobile
+    ? isLoading
+      ? 5 + intensity * 5
+      : 4
+    : isLoading
+      ? 8 + intensity * 15
+      : 6;
   const glowOpacity = isLoading ? 0.6 + intensity * 0.4 : 0.45;
-  
+
   return (
-    <svg 
-      width={size} 
-      height={size * 1.5} 
+    <svg
+      width={size}
+      height={size * 1.5}
       viewBox="0 0 30 45"
       style={{
         marginLeft: -size / 2,
@@ -224,14 +236,14 @@ function DiamondSVG({
           <stop offset="100%" stopColor="#FFEC8B" stopOpacity={isLoading ? 0.9 : 0.55} />
         </linearGradient>
       </defs>
-      
+
       <path
         d="M15 0 L30 20 L15 45 L0 20 Z"
         fill={`url(#dg-${index})`}
         stroke={isLoading ? "rgba(255, 236, 139, 0.9)" : "rgba(255, 236, 139, 0.5)"}
         strokeWidth="1"
       />
-      
+
       {/* Inner detail - DESKTOP ONLY */}
       {!isMobile && (
         <path

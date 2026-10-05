@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useCallback, useState } from "react";
 import { useIntro } from "../../context/IntroContext";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 const HOLD_DURATION = 3500; // 3.5 seconds
 
@@ -18,7 +18,7 @@ export function EnterButton() {
     skipIntro,
   } = useIntro();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   const handleMouseDown = useCallback(() => {
     if (phase !== "idle") return;

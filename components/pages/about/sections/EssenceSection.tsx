@@ -4,7 +4,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { IMAGES } from "@/lib/images";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // SLIDER SECTION - Infinite Marquee Sliders
@@ -132,7 +132,7 @@ const MotionMarquee = ({
 };
 
 export const EssenceSection = memo(function EssenceSection() {
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   return (
     <section className="relative overflow-hidden py-12 sm:py-24">

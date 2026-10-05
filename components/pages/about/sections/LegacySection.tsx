@@ -4,7 +4,7 @@ import Image from "next/image";
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { IMAGES } from "@/lib/images";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // LEGACY SECTION - Bold GenZ Concert Vibes
@@ -153,7 +153,7 @@ const MusicNotesSVG = ({
 );
 
 export const LegacySection = memo(function LegacySection() {
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   return (
     <section className="relative overflow-hidden px-4 py-16 sm:px-6 sm:py-32">

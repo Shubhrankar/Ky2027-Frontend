@@ -4,7 +4,7 @@ import Link from "next/link";
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { GlitchText, NeonText, InteractiveSpeaker, WaveformVisualizer } from "../decors";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // CTA SECTION - Concert themed
@@ -88,7 +88,7 @@ const StaticWaveform = ({ width = 200, height = 40 }: { width?: number; height?:
 };
 
 export const CTASection = memo(function CTASection() {
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   return (
     <section className="relative overflow-hidden px-4 py-16 text-center sm:px-6 sm:py-32">

@@ -2,9 +2,15 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 import { FOOTER_COLORS } from "../constants";
 
 export const PulseRings = memo(function PulseRings() {
+  const { shouldAnimate } = useAnimationPolicy();
+
+  // Don't render pulse rings if animations should be reduced
+  if (shouldAnimate) return null;
+
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
       {[0, 1].map((i) => (

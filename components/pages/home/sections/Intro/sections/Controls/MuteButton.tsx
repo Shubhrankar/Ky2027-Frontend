@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
 import { useIntro } from "../../context/IntroContext";
+import { useAnimationPolicy } from "@/hooks";
 
 /**
  * Mute button for intro audio
@@ -19,7 +20,7 @@ export function MuteButton() {
       {showButton && (
         <motion.button
           onClick={toggleMute}
-          className="fixed bottom-8 right-8 z-50 p-3 rounded-full backdrop-blur-sm transition-colors cursor-pointer"
+          className="fixed right-8 bottom-8 z-50 cursor-pointer rounded-full p-3 backdrop-blur-sm transition-colors"
           style={{
             background: "rgba(0, 0, 0, 0.5)",
             border: "1px solid rgba(255, 200, 100, 0.3)",

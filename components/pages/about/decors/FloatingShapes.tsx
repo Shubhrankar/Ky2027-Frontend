@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // FLOATING SHAPES - Geometric neon shapes floating around
@@ -31,7 +32,7 @@ interface Shape {
 const generateShapes = (count: number): Shape[] => {
   const types: Shape["type"][] = ["triangle", "circle", "square", "hexagon", "star", "cross"];
   const colors = [NEON.CYAN, NEON.MAGENTA, NEON.LIME, NEON.PINK, NEON.PURPLE, NEON.ORANGE];
-  
+
   return Array.from({ length: count }, (_, i) => ({
     id: i,
     type: types[i % types.length],
@@ -46,25 +47,25 @@ const generateShapes = (count: number): Shape[] => {
 };
 
 // Shape SVG components
-const ShapeSVG = memo(function ShapeSVG({ 
-  type, 
-  size, 
-  color 
-}: { 
-  type: Shape["type"]; 
-  size: number; 
+const ShapeSVG = memo(function ShapeSVG({
+  type,
+  size,
+  color,
+}: {
+  type: Shape["type"];
+  size: number;
   color: string;
 }) {
   const strokeWidth = 1.5;
-  
+
   switch (type) {
     case "triangle":
       return (
         <svg width={size} height={size} viewBox="0 0 24 24">
-          <polygon 
-            points="12,2 22,20 2,20" 
-            fill="none" 
-            stroke={color} 
+          <polygon
+            points="12,2 22,20 2,20"
+            fill="none"
+            stroke={color}
             strokeWidth={strokeWidth}
             style={{ filter: `drop-shadow(0 0 4px ${color})` }}
           />
@@ -73,12 +74,12 @@ const ShapeSVG = memo(function ShapeSVG({
     case "circle":
       return (
         <svg width={size} height={size} viewBox="0 0 24 24">
-          <circle 
-            cx="12" 
-            cy="12" 
-            r="10" 
-            fill="none" 
-            stroke={color} 
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+            fill="none"
+            stroke={color}
             strokeWidth={strokeWidth}
             style={{ filter: `drop-shadow(0 0 4px ${color})` }}
           />
@@ -87,13 +88,13 @@ const ShapeSVG = memo(function ShapeSVG({
     case "square":
       return (
         <svg width={size} height={size} viewBox="0 0 24 24">
-          <rect 
-            x="3" 
-            y="3" 
-            width="18" 
-            height="18" 
-            fill="none" 
-            stroke={color} 
+          <rect
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+            fill="none"
+            stroke={color}
             strokeWidth={strokeWidth}
             style={{ filter: `drop-shadow(0 0 4px ${color})` }}
           />
@@ -102,10 +103,10 @@ const ShapeSVG = memo(function ShapeSVG({
     case "hexagon":
       return (
         <svg width={size} height={size} viewBox="0 0 24 24">
-          <polygon 
-            points="12,2 21,7 21,17 12,22 3,17 3,7" 
-            fill="none" 
-            stroke={color} 
+          <polygon
+            points="12,2 21,7 21,17 12,22 3,17 3,7"
+            fill="none"
+            stroke={color}
             strokeWidth={strokeWidth}
             style={{ filter: `drop-shadow(0 0 4px ${color})` }}
           />
@@ -114,10 +115,10 @@ const ShapeSVG = memo(function ShapeSVG({
     case "star":
       return (
         <svg width={size} height={size} viewBox="0 0 24 24">
-          <polygon 
-            points="12,2 15,9 22,9 16,14 18,22 12,17 6,22 8,14 2,9 9,9" 
-            fill="none" 
-            stroke={color} 
+          <polygon
+            points="12,2 15,9 22,9 16,14 18,22 12,17 6,22 8,14 2,9 9,9"
+            fill="none"
+            stroke={color}
             strokeWidth={strokeWidth}
             style={{ filter: `drop-shadow(0 0 4px ${color})` }}
           />
@@ -126,10 +127,10 @@ const ShapeSVG = memo(function ShapeSVG({
     case "cross":
       return (
         <svg width={size} height={size} viewBox="0 0 24 24">
-          <path 
-            d="M12 2v20M2 12h20" 
-            fill="none" 
-            stroke={color} 
+          <path
+            d="M12 2v20M2 12h20"
+            fill="none"
+            stroke={color}
             strokeWidth={strokeWidth}
             strokeLinecap="round"
             style={{ filter: `drop-shadow(0 0 4px ${color})` }}
@@ -148,10 +149,14 @@ export const FloatingShapes = memo(function FloatingShapes({
   count?: number;
   className?: string;
 }) {
+  const { shouldAnimate } = useAnimationPolicy();
   const shapes = generateShapes(count);
 
+  // Don't render floating shapes if animations should be reduced
+  if (shouldAnimate) return null;
+
   return (
-    <div className={`fixed inset-0 pointer-events-none z-[1] overflow-hidden ${className}`}>
+    <div className={`pointer-events-none fixed inset-0 z-[1] overflow-hidden ${className}`}>
       {shapes.map((shape) => (
         <motion.div
           key={shape.id}
@@ -160,8 +165,8 @@ export const FloatingShapes = memo(function FloatingShapes({
             left: `${shape.x}%`,
             top: `${shape.y}%`,
           }}
-          initial={{ 
-            opacity: 0, 
+          initial={{
+            opacity: 0,
             rotate: shape.rotation,
             scale: 0,
           }}
@@ -206,10 +211,15 @@ export const DecorativeShapes = memo(function DecorativeShapes({
     { type: "cross" as const, x: 90, y: 80, size: 28, color: NEON.ORANGE, rotation: 22 },
   ];
 
-  const shapes = position === "left" ? leftShapes : position === "right" ? rightShapes : [...leftShapes, ...rightShapes];
+  const shapes =
+    position === "left"
+      ? leftShapes
+      : position === "right"
+        ? rightShapes
+        : [...leftShapes, ...rightShapes];
 
   return (
-    <div className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}>
+    <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
       {shapes.map((shape, i) => (
         <motion.div
           key={i}

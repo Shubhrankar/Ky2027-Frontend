@@ -7,19 +7,19 @@ import { BanarasiVibesMobile } from "./mobile";
 import { BanarasiVibesDesktop } from "./desktop";
 import { IMAGES } from "@/lib/images";
 import { MotionZone, useMotionZone } from "@/lib/motion";
-import { usePrefersReducedMotion } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 // Inner component that can access MotionZone context
 function BanarasiVibesContent() {
   const { isAnimating } = useMotionZone();
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const { shouldAnimate } = useAnimationPolicy();
   const sectionRef = useRef<HTMLDivElement>(null);
   const gateRef = useRef<HTMLDivElement>(null);
   const rickshawRef = useRef<HTMLDivElement>(null);
   const rickshawAnimRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (!shouldAnimate) return;
 
     const ctx = gsap.context(() => {
       // BHU Gate rising from bottom
@@ -53,7 +53,7 @@ function BanarasiVibesContent() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion]);
+  }, [shouldAnimate]);
 
   // Pause/resume rickshaw animation based on MotionZone context
   useEffect(() => {
@@ -181,7 +181,7 @@ function BanarasiVibesContent() {
       {/* Desktop-only elements */}
       <BanarasiVibesDesktop
         isAnimating={isAnimating}
-        prefersReducedMotion={prefersReducedMotion}
+        shouldAnimate={shouldAnimate}
         rickshawRef={rickshawRef}
       />
 

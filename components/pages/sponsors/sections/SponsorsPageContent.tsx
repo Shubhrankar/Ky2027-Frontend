@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { LightNavbar } from "@/components/navbar/Navbar";
+import { useAnimationPolicy } from "@/hooks";
 import { IMAGES } from "@/lib/images";
 import {
   SPONSORS_2026,

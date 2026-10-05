@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import type { PassConfig } from "../config/passes.config";
 import { ANIMATION } from "../config/passes.config";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 import {
   COLORS,
   SHADOWS,
@@ -30,17 +30,17 @@ interface PassCardProps {
 function PassIcon({ passId, isMobile }: { passId: string; isMobile: boolean }) {
   const icons: Record<string, React.ReactNode> = {
     yatri: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
         <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9H15V22H13V16H11V22H9V9H3V7H21V9Z" />
       </svg>
     ),
     darbar: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
         <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.55 18.55 20 18 20H6C5.45 20 5 19.55 5 19V18H19V19Z" />
       </svg>
     ),
     swarnim: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
         <path d="M12 1L9 9H2L7 14L5 22L12 17L19 22L17 14L22 9H15L12 1Z" />
       </svg>
     ),
@@ -82,24 +82,8 @@ function AnimatedMandala({
       transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
     >
       {/* Outer circles */}
-      <circle
-        cx="100"
-        cy="100"
-        r="95"
-        fill="none"
-        stroke={color}
-        strokeWidth="0.5"
-        opacity="0.3"
-      />
-      <circle
-        cx="100"
-        cy="100"
-        r="85"
-        fill="none"
-        stroke={color}
-        strokeWidth="0.3"
-        opacity="0.2"
-      />
+      <circle cx="100" cy="100" r="95" fill="none" stroke={color} strokeWidth="0.5" opacity="0.3" />
+      <circle cx="100" cy="100" r="85" fill="none" stroke={color} strokeWidth="0.3" opacity="0.2" />
       <circle
         cx="100"
         cy="100"
@@ -109,15 +93,7 @@ function AnimatedMandala({
         strokeWidth="0.5"
         opacity="0.25"
       />
-      <circle
-        cx="100"
-        cy="100"
-        r="65"
-        fill="none"
-        stroke={color}
-        strokeWidth="0.3"
-        opacity="0.2"
-      />
+      <circle cx="100" cy="100" r="65" fill="none" stroke={color} strokeWidth="0.3" opacity="0.2" />
 
       {/* Radial lines */}
       {[...Array(12)].map((_, i) => (
@@ -172,38 +148,26 @@ function AnimatedMandala({
 function RoyalPrice({ price }: { price: number }) {
   return (
     <div className="relative inline-flex items-center">
-      <span
-        className="w-8 h-[1px] mr-2"
-        style={{ background: GRADIENT_LINE_GOLD_LEFT }}
-      />
+      <span className="mr-2 h-[1px] w-8" style={{ background: GRADIENT_LINE_GOLD_LEFT }} />
       <div
-        className="px-4 py-2 rounded-lg"
+        className="rounded-lg px-4 py-2"
         style={{
           background: `linear-gradient(180deg, rgba(${hexToRgb(COLORS.GOLD)}, 0.15) 0%, rgba(${hexToRgb(COLORS.GOLD_BROWN)}, 0.08) 100%)`,
           border: `1px solid rgba(${hexToRgb(COLORS.GOLD)}, 0.4)`,
           boxShadow: `0 2px 10px rgba(${hexToRgb(COLORS.GOLD)}, 0.2)`,
         }}
       >
-        <span
-          className="text-sm font-semibold tracking-wide"
-          style={{ color: COLORS.GOLD }}
-        >
+        <span className="text-sm font-semibold tracking-wide" style={{ color: COLORS.GOLD }}>
           Price
         </span>
         <span className="mx-2 font-light" style={{ color: COLORS.BRIGHT_GOLD }}>
           :
         </span>
-        <span
-          className="text-2xl font-bold"
-          style={GRADIENT_TEXT_GOLD_VERTICAL}
-        >
+        <span className="text-2xl font-bold" style={GRADIENT_TEXT_GOLD_VERTICAL}>
           ₹{price.toLocaleString("en-IN")}
         </span>
       </div>
-      <span
-        className="w-8 h-[1px] ml-2"
-        style={{ background: GRADIENT_LINE_GOLD_RIGHT }}
-      />
+      <span className="ml-2 h-[1px] w-8" style={{ background: GRADIENT_LINE_GOLD_RIGHT }} />
     </div>
   );
 }
@@ -233,7 +197,7 @@ function RoyalButton({
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
       onClick={onClick}
-      className="relative w-full py-3 px-4 font-bold uppercase tracking-wider text-sm overflow-hidden rounded-lg"
+      className="relative w-full overflow-hidden rounded-lg px-4 py-3 text-sm font-bold tracking-wider uppercase"
       style={{
         background: GRADIENT_BUTTON_ROYAL,
         border: `2px solid ${COLORS.BRIGHT_GOLD}`,
@@ -263,10 +227,10 @@ function CornerOrnament({ position }: { position: "tl" | "tr" | "bl" | "br" }) {
 
   return (
     <div
-      className={`absolute ${positions[position]} w-10 h-10 pointer-events-none`}
+      className={`absolute ${positions[position]} pointer-events-none h-10 w-10`}
       style={{ transform: `rotate(${rotations[position]}deg)` }}
     >
-      <svg viewBox="0 0 50 50" className="w-full h-full">
+      <svg viewBox="0 0 50 50" className="h-full w-full">
         <path
           d="M5 5 Q5 25 25 25 Q15 15 5 5"
           fill="none"
@@ -274,13 +238,7 @@ function CornerOrnament({ position }: { position: "tl" | "tr" | "bl" | "br" }) {
           strokeWidth="1.5"
           opacity="0.6"
         />
-        <path
-          d="M2 2 Q2 28 28 28"
-          fill="none"
-          stroke={COLORS.GOLD}
-          strokeWidth="1"
-          opacity="0.4"
-        />
+        <path d="M2 2 Q2 28 28 28" fill="none" stroke={COLORS.GOLD} strokeWidth="1" opacity="0.4" />
         <ellipse
           cx="10"
           cy="10"
@@ -294,13 +252,7 @@ function CornerOrnament({ position }: { position: "tl" | "tr" | "bl" | "br" }) {
         />
         <circle cx="6" cy="6" r="2" fill={COLORS.GOLD} opacity="0.6" />
         <defs>
-          <linearGradient
-            id="goldGradCorner"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
+          <linearGradient id="goldGradCorner" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor={COLORS.BRIGHT_GOLD} />
             <stop offset="100%" stopColor={COLORS.GOLD_BROWN} />
           </linearGradient>
@@ -332,22 +284,20 @@ function CardBackground() {
 
 function RoyalFrame({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative w-full h-full">
+    <div className="relative h-full w-full">
       <div
         className="absolute inset-0 rounded-[14px]"
         style={{ background: GRADIENT_FRAME_GOLD, padding: "3px" }}
       >
         <div
-          className="w-full h-full rounded-[11px]"
+          className="h-full w-full rounded-[11px]"
           style={{ background: GRADIENT_FRAME_DARK, padding: "2px" }}
         >
           <div
-            className="w-full h-full rounded-[9px]"
+            className="h-full w-full rounded-[9px]"
             style={{ background: GRADIENT_FRAME_GOLD, padding: "2px" }}
           >
-            <div className="relative w-full h-full rounded-[7px] overflow-hidden">
-              {children}
-            </div>
+            <div className="relative h-full w-full overflow-hidden rounded-[7px]">{children}</div>
           </div>
         </div>
       </div>
@@ -358,13 +308,9 @@ function RoyalFrame({ children }: { children: React.ReactNode }) {
 // ============================================
 // Main PassCard Component
 // ============================================
-export const PassCard = memo(function PassCard({
-  pass,
-  index,
-  onSelect,
-}: PassCardProps) {
+export const PassCard = memo(function PassCard({ pass, index, onSelect }: PassCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   const handleMouseEnter = () => setIsFlipped(true);
   const handleMouseLeave = () => setIsFlipped(false);
@@ -379,7 +325,7 @@ export const PassCard = memo(function PassCard({
       {/* Popular badge */}
       {pass.popular && (
         <div
-          className="absolute -top-3 left-1/2 -translate-x-1/2 z-30 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap"
+          className="absolute -top-3 left-1/2 z-30 -translate-x-1/2 rounded-full px-4 py-1.5 text-xs font-bold tracking-wider whitespace-nowrap uppercase"
           style={{
             background: GRADIENT_BADGE_GOLD,
             color: COLORS.CARD_DARK_PURPLE,
@@ -393,7 +339,7 @@ export const PassCard = memo(function PassCard({
       {/* Static card frame */}
       <RoyalFrame>
         <div
-          className="relative w-full h-full flex flex-col"
+          className="relative flex h-full w-full flex-col"
           style={{ boxShadow: SHADOWS.CARD_ROYAL }}
         >
           <CardBackground />
@@ -404,8 +350,8 @@ export const PassCard = memo(function PassCard({
 
           {/* Internal flip container */}
           <div
-            className="relative flex-1 flex items-center justify-center p-3 cursor-pointer z-10"
-            style={{ 
+            className="relative z-10 flex flex-1 cursor-pointer items-center justify-center p-3"
+            style={{
               perspective: "800px",
               WebkitPerspective: "800px",
             }}
@@ -413,8 +359,8 @@ export const PassCard = memo(function PassCard({
             onMouseLeave={handleMouseLeave}
           >
             <motion.div
-              className="relative w-full h-full"
-              style={{ 
+              className="relative h-full w-full"
+              style={{
                 transformStyle: "preserve-3d",
                 WebkitTransformStyle: "preserve-3d",
               }}
@@ -452,7 +398,7 @@ export const PassCard = memo(function PassCard({
                         alt={pass.name}
                         width={220}
                         height={280}
-                        className="object-contain max-h-[260px] w-auto relative z-10"
+                        className="relative z-10 max-h-[260px] w-auto object-contain"
                         priority={index === 0}
                       />
                     </div>
@@ -491,13 +437,13 @@ export const PassCard = memo(function PassCard({
                         alt={pass.name}
                         width={220}
                         height={280}
-                        className="object-contain max-h-[260px] w-auto relative z-10"
+                        className="relative z-10 max-h-[260px] w-auto object-contain"
                         priority={index === 0}
                       />
                     </motion.div>
                   </motion.div>
                 )}
-                <p className="absolute bottom-1 text-gray-500 text-xs flex items-center gap-1">
+                <p className="absolute bottom-1 flex items-center gap-1 text-xs text-gray-500">
                   <svg
                     width="12"
                     height="12"
@@ -515,7 +461,7 @@ export const PassCard = memo(function PassCard({
 
               {/* ===== BACK: Glamorous Benefits with Mandala ===== */}
               <div
-                className="absolute inset-0 flex flex-col rounded-lg overflow-hidden"
+                className="absolute inset-0 flex flex-col overflow-hidden rounded-lg"
                 style={{
                   backfaceVisibility: "hidden",
                   WebkitBackfaceVisibility: "hidden",
@@ -541,7 +487,7 @@ export const PassCard = memo(function PassCard({
                 />
 
                 {/* Animated Mandala Background - only animate when flipped and not on mobile */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
                   <AnimatedMandala
                     color={pass.accentColor}
                     size={280}
@@ -551,7 +497,7 @@ export const PassCard = memo(function PassCard({
 
                 {/* Gold border glow */}
                 <div
-                  className="absolute inset-0 rounded-lg pointer-events-none"
+                  className="pointer-events-none absolute inset-0 rounded-lg"
                   style={{
                     border: `1px solid rgba(${hexToRgb(COLORS.GOLD)}, 0.4)`,
                     boxShadow: `inset 0 0 30px rgba(${hexToRgb(COLORS.GOLD)}, 0.1)`,
@@ -559,22 +505,22 @@ export const PassCard = memo(function PassCard({
                 />
 
                 {/* Content */}
-                <div className="relative z-10 flex flex-col h-full p-4">
+                <div className="relative z-10 flex h-full flex-col p-4">
                   {/* Header with decorative lines */}
-                  <div className="text-center mb-3">
-                    <div className="flex items-center justify-center gap-2 mb-1">
+                  <div className="mb-3 text-center">
+                    <div className="mb-1 flex items-center justify-center gap-2">
                       <span
-                        className="w-8 h-[1px]"
+                        className="h-[1px] w-8"
                         style={{ background: GRADIENT_LINE_GOLD_LEFT }}
                       />
                       <span style={{ color: pass.accentColor }}>✦</span>
                       <span
-                        className="w-8 h-[1px]"
+                        className="h-[1px] w-8"
                         style={{ background: GRADIENT_LINE_GOLD_RIGHT }}
                       />
                     </div>
                     <h3
-                      className="text-xl font-bold uppercase tracking-wider"
+                      className="text-xl font-bold tracking-wider uppercase"
                       style={{
                         fontFamily: "var(--font-ethereal), serif",
                         background: `linear-gradient(180deg, ${pass.accentColor} 0%, ${COLORS.BRIGHT_GOLD} 50%, ${pass.accentColor} 100%)`,
@@ -596,10 +542,7 @@ export const PassCard = memo(function PassCard({
                           key={i}
                           className={`flex items-start gap-2.5 text-sm ${benefit.highlight ? "text-yellow-200" : "text-gray-200"}`}
                         >
-                          <span
-                            style={{ color: COLORS.BRIGHT_GOLD }}
-                            className="mt-0.5"
-                          >
+                          <span style={{ color: COLORS.BRIGHT_GOLD }} className="mt-0.5">
                             ✦
                           </span>
                           <span className="leading-tight">{benefit.text}</span>
@@ -629,14 +572,14 @@ export const PassCard = memo(function PassCard({
                           </motion.span>
                           <span className="leading-tight">{benefit.text}</span>
                         </motion.li>
-                      ),
+                      )
                     )}
                   </ul>
 
                   {/* QR with ornate frame */}
-                  <div className="flex justify-center my-3">
+                  <div className="my-3 flex justify-center">
                     <div
-                      className="relative w-16 h-16 rounded flex items-center justify-center"
+                      className="relative flex h-16 w-16 items-center justify-center rounded"
                       style={{
                         background: `linear-gradient(135deg, rgba(${hexToRgb(COLORS.GOLD)}, 0.1) 0%, rgba(0,0,0,0.3) 100%)`,
                         border: `2px solid rgba(${hexToRgb(COLORS.GOLD)}, 0.5)`,
@@ -663,7 +606,7 @@ export const PassCard = memo(function PassCard({
                   </div>
 
                   {/* Flip back hint */}
-                  <p className="text-center text-gray-400 text-xs flex items-center justify-center gap-1">
+                  <p className="flex items-center justify-center gap-1 text-center text-xs text-gray-400">
                     <svg
                       width="12"
                       height="12"
@@ -683,8 +626,8 @@ export const PassCard = memo(function PassCard({
           </div>
 
           {/* Bottom section */}
-          <div className="relative z-10 px-4 pb-4 pt-1">
-            <div className="flex justify-center mb-3">
+          <div className="relative z-10 px-4 pt-1 pb-4">
+            <div className="mb-3 flex justify-center">
               <RoyalPrice price={pass.price} />
             </div>
             <RoyalButton

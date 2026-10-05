@@ -6,12 +6,13 @@ import gsap from "gsap";
 import { PassCard, PassesHeading } from "../common";
 import { PASSES, ANIMATION } from "../config/passes.config";
 import { Z_INDEX } from "../constants/theme";
-import { useIsMobile, usePrefersReducedMotion } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
+import { COLORS, GRADIENT_BORDER_ORNATE } from "@/components/pages/home/constants/palette";
 import {
-  COLORS,
-  GRADIENT_BORDER_ORNATE,
-} from "@/components/pages/home/constants/palette";
-import { BanarasiPatternAnimated, GeometricPattern, VignetteOverlay } from "../desktop/BackgroundDecor";
+  BanarasiPatternAnimated,
+  GeometricPattern,
+  VignetteOverlay,
+} from "../desktop/BackgroundDecor";
 import { MandalaRing } from "../desktop/MandalaRing";
 import { FloatingParticles } from "../desktop/FloatingParticles";
 
@@ -35,13 +36,12 @@ export function PassesSection() {
   const mandalaRightRef = useRef<HTMLDivElement>(null);
   const mandalaCenterRef = useRef<HTMLDivElement>(null);
 
-  const isMobile = useIsMobile();
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const { isMobile, shouldAnimate } = useAnimationPolicy();
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
   useEffect(() => {
-    // Skip GSAP animations if user prefers reduced motion
-    if (prefersReducedMotion) return;
+    // Skip GSAP animations if animations should be reduced
+    if (!shouldAnimate) return;
 
     const ctx = gsap.context(() => {
       // Only run mandala animations when in view
@@ -68,7 +68,7 @@ export function PassesSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [isInView, prefersReducedMotion]);
+  }, [isInView, shouldAnimate]);
 
   const handleSelect = useCallback((passId: string) => {
     console.log(`Selected pass: ${passId}`);
@@ -77,7 +77,7 @@ export function PassesSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen py-8 md:py-16 overflow-hidden"
+      className="relative min-h-screen overflow-hidden py-8 md:py-16"
       style={{
         background: `
           linear-gradient(180deg,
@@ -96,7 +96,7 @@ export function PassesSection() {
     >
       {/* Top ornate border */}
       <div
-        className="absolute top-0 left-0 right-0"
+        className="absolute top-0 right-0 left-0"
         style={{
           height: "80px",
           background: `linear-gradient(180deg, rgba(212, 168, 83, 0.12) 0%, transparent 100%)`,
@@ -114,10 +114,10 @@ export function PassesSection() {
       {!isMobile && (
         <div
           ref={mandalaLeftRef}
-          className="absolute -left-[15%] top-[15%] w-[350px] h-[350px] md:w-[500px] md:h-[500px] pointer-events-none"
+          className="pointer-events-none absolute top-[15%] -left-[15%] h-[350px] w-[350px] md:h-[500px] md:w-[500px]"
           style={{ zIndex: Z_INDEX.mandala, opacity: 0.08, color: COLORS.GOLD }}
         >
-          <MandalaRing className="w-full h-full" />
+          <MandalaRing className="h-full w-full" />
         </div>
       )}
 
@@ -125,14 +125,14 @@ export function PassesSection() {
       {!isMobile && (
         <div
           ref={mandalaRightRef}
-          className="absolute -right-[15%] bottom-[10%] w-[400px] h-[400px] md:w-[550px] md:h-[550px] pointer-events-none"
+          className="pointer-events-none absolute -right-[15%] bottom-[10%] h-[400px] w-[400px] md:h-[550px] md:w-[550px]"
           style={{
             zIndex: Z_INDEX.mandala,
             opacity: 0.06,
             color: COLORS.BRIGHT_GOLD,
           }}
         >
-          <MandalaRing className="w-full h-full" />
+          <MandalaRing className="h-full w-full" />
         </div>
       )}
 
@@ -140,10 +140,10 @@ export function PassesSection() {
       {!isMobile && (
         <div
           ref={mandalaCenterRef}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] pointer-events-none"
+          className="pointer-events-none absolute top-1/2 left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 md:h-[800px] md:w-[800px]"
           style={{ zIndex: 1, opacity: 0.03, color: COLORS.GOLD }}
         >
-          <MandalaRing className="w-full h-full" />
+          <MandalaRing className="h-full w-full" />
         </div>
       )}
 
@@ -155,7 +155,7 @@ export function PassesSection() {
 
       {/* Content */}
       <motion.div
-        className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24"
+        className="relative mx-auto max-w-7xl px-4 pt-20 sm:px-6 md:pt-24 lg:px-8"
         style={{ zIndex: Z_INDEX.cards }}
         variants={containerVariants}
         initial="hidden"
@@ -167,7 +167,7 @@ export function PassesSection() {
 
         {/* Hover instruction */}
         <motion.p
-          className="text-center text-gray-500 text-sm mb-8 hidden sm:block"
+          className="mb-8 hidden text-center text-sm text-gray-500 sm:block"
           variants={{
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { delay: 0.5 } },
@@ -177,20 +177,15 @@ export function PassesSection() {
         </motion.p>
 
         {/* Pass cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 lg:gap-10 justify-items-center items-end">
+        <div className="grid grid-cols-1 items-end justify-items-center gap-8 sm:grid-cols-3 sm:gap-6 lg:gap-10">
           {PASSES.map((pass, index) => (
-            <PassCard
-              key={pass.id}
-              pass={pass}
-              index={index}
-              onSelect={handleSelect}
-            />
+            <PassCard key={pass.id} pass={pass} index={index} onSelect={handleSelect} />
           ))}
         </div>
 
         {/* Mobile tap instruction */}
         <motion.p
-          className="text-center text-gray-500 text-sm mt-8 sm:hidden"
+          className="mt-8 text-center text-sm text-gray-500 sm:hidden"
           variants={{
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { delay: 0.5 } },
@@ -201,20 +196,19 @@ export function PassesSection() {
 
         {/* Footer note */}
         <motion.p
-          className="text-center text-gray-600 text-sm mt-12"
+          className="mt-12 text-center text-sm text-gray-600"
           variants={{
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { delay: 0.8 } },
           }}
         >
-          * All passes include entry to the 3-day festival. Prices inclusive of
-          all taxes.
+          * All passes include entry to the 3-day festival. Prices inclusive of all taxes.
         </motion.p>
       </motion.div>
 
       {/* Bottom ornate border */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-[3px]"
+        className="absolute right-0 bottom-0 left-0 h-[3px]"
         style={{ background: GRADIENT_BORDER_ORNATE }}
       />
     </section>

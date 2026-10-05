@@ -2,6 +2,7 @@
 
 import { memo, useState } from "react";
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // GLITCH TEXT - GenZ funky animated text
@@ -27,11 +28,15 @@ export const GlitchText = memo(function GlitchText({
   as: Tag = "h1",
   color = "gradient",
 }: GlitchTextProps) {
+  const { shouldAnimate } = useAnimationPolicy();
   const [isHovered, setIsHovered] = useState(false);
 
   const colorStyles = {
     cyan: { color: NEON.CYAN, textShadow: `0 0 10px ${NEON.CYAN}, 0 0 20px ${NEON.CYAN}50` },
-    magenta: { color: NEON.MAGENTA, textShadow: `0 0 10px ${NEON.MAGENTA}, 0 0 20px ${NEON.MAGENTA}50` },
+    magenta: {
+      color: NEON.MAGENTA,
+      textShadow: `0 0 10px ${NEON.MAGENTA}, 0 0 20px ${NEON.MAGENTA}50`,
+    },
     lime: { color: NEON.LIME, textShadow: `0 0 10px ${NEON.LIME}, 0 0 20px ${NEON.LIME}50` },
     pink: { color: NEON.PINK, textShadow: `0 0 10px ${NEON.PINK}, 0 0 20px ${NEON.PINK}50` },
     gradient: {
@@ -42,6 +47,9 @@ export const GlitchText = memo(function GlitchText({
     },
   };
 
+  // Skip glitch effect if animations should be reduced
+  const showGlitch = isHovered && !shouldAnimate;
+
   return (
     <motion.div
       className={`relative inline-block ${className}`}
@@ -49,19 +57,16 @@ export const GlitchText = memo(function GlitchText({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Main text */}
-      <Tag
-        className="relative z-10 font-black uppercase tracking-wider"
-        style={colorStyles[color]}
-      >
+      <Tag className="relative z-10 font-black tracking-wider uppercase" style={colorStyles[color]}>
         {text}
       </Tag>
 
-      {/* Glitch layers - only on hover */}
-      {isHovered && (
+      {/* Glitch layers - only on hover and if motion allowed */}
+      {showGlitch && (
         <>
           {/* Cyan offset layer */}
           <motion.span
-            className="absolute inset-0 font-black uppercase tracking-wider pointer-events-none"
+            className="pointer-events-none absolute inset-0 font-black tracking-wider uppercase"
             style={{
               color: NEON.CYAN,
               opacity: 0.8,
@@ -83,7 +88,7 @@ export const GlitchText = memo(function GlitchText({
 
           {/* Magenta offset layer */}
           <motion.span
-            className="absolute inset-0 font-black uppercase tracking-wider pointer-events-none"
+            className="pointer-events-none absolute inset-0 font-black tracking-wider uppercase"
             style={{
               color: NEON.MAGENTA,
               opacity: 0.8,
@@ -108,7 +113,7 @@ export const GlitchText = memo(function GlitchText({
       {/* Glitch line */}
       {isHovered && (
         <motion.div
-          className="absolute left-0 right-0 h-[2px] pointer-events-none"
+          className="pointer-events-none absolute right-0 left-0 h-[2px]"
           style={{
             background: NEON.CYAN,
             boxShadow: `0 0 10px ${NEON.CYAN}`,
@@ -152,7 +157,9 @@ export const NeonText = memo(function NeonText({
       className={className}
       style={{
         color: colors[color],
-        textShadow: glow ? `0 0 10px ${colors[color]}, 0 0 20px ${colors[color]}50, 0 0 40px ${colors[color]}30` : undefined,
+        textShadow: glow
+          ? `0 0 10px ${colors[color]}, 0 0 20px ${colors[color]}50, 0 0 40px ${colors[color]}30`
+          : undefined,
       }}
     >
       {children}

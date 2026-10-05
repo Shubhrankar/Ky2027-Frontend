@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useIntro } from "../../context/IntroContext";
+import { useAnimationPolicy } from "@/hooks";
 
 export function VideoPlayer() {
   const { phase } = useIntro();
@@ -26,16 +27,16 @@ export function VideoPlayer() {
     >
       <video
         ref={videoRef}
-        className="w-full h-full object-cover"
+        className="h-full w-full object-cover"
         src="/intro/concertStage.webm"
         loop
         muted
         playsInline
       />
-      
+
       {/* Gradient overlays for better UI visibility */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
+      <div
+        className="pointer-events-none absolute inset-0"
         style={{
           background: `
             linear-gradient(to bottom, 
@@ -44,13 +45,13 @@ export function VideoPlayer() {
               transparent 60%, 
               rgba(0,0,0,0.6) 100%
             )
-          `
+          `,
         }}
       />
 
       {/* Title overlay - Custom Text with Decorations */}
       <motion.div
-        className="absolute top-[5%] sm:top-[8%] left-1/2 -translate-x-1/2 w-full px-4"
+        className="absolute top-[5%] left-1/2 w-full -translate-x-1/2 px-4 sm:top-[8%]"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.8 }}
@@ -88,9 +89,33 @@ export function VideoPlayer() {
             <circle cx="35" cy="15" r="3" fill="#DAA520" />
             <circle cx="25" cy="20" r="3" fill="#FFD700" />
             {/* Strings */}
-            <line x1="28" y1="25" x2="28" y2="55" stroke="#FFF8DC" strokeWidth="0.5" opacity="0.6" />
-            <line x1="30" y1="25" x2="30" y2="55" stroke="#FFF8DC" strokeWidth="0.5" opacity="0.6" />
-            <line x1="32" y1="25" x2="32" y2="55" stroke="#FFF8DC" strokeWidth="0.5" opacity="0.6" />
+            <line
+              x1="28"
+              y1="25"
+              x2="28"
+              y2="55"
+              stroke="#FFF8DC"
+              strokeWidth="0.5"
+              opacity="0.6"
+            />
+            <line
+              x1="30"
+              y1="25"
+              x2="30"
+              y2="55"
+              stroke="#FFF8DC"
+              strokeWidth="0.5"
+              opacity="0.6"
+            />
+            <line
+              x1="32"
+              y1="25"
+              x2="32"
+              y2="55"
+              stroke="#FFF8DC"
+              strokeWidth="0.5"
+              opacity="0.6"
+            />
             {/* Decorative swirl */}
             <path
               d="M15 40 Q5 50 15 60"
@@ -112,14 +137,16 @@ export function VideoPlayer() {
           <div className="text-center">
             {/* KASHI YATRA */}
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-wider"
+              className="text-4xl font-black tracking-wider sm:text-5xl md:text-6xl lg:text-7xl"
               style={{
                 fontFamily: "var(--font-cinzel-decorative), serif",
-                background: "linear-gradient(180deg, #FFF8DC 0%, #FFD700 25%, #DAA520 50%, #B8860B 75%, #8B6914 100%)",
+                background:
+                  "linear-gradient(180deg, #FFF8DC 0%, #FFD700 25%, #DAA520 50%, #B8860B 75%, #8B6914 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-                filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.5)) drop-shadow(0 0 30px rgba(255,215,0,0.4))",
+                filter:
+                  "drop-shadow(0 4px 8px rgba(0,0,0,0.5)) drop-shadow(0 0 30px rgba(255,215,0,0.4))",
               }}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -129,19 +156,19 @@ export function VideoPlayer() {
             </motion.h1>
 
             {/* Decorative line with lotus */}
-            <motion.div 
-              className="flex items-center justify-center gap-2 sm:gap-4 mt-2"
+            <motion.div
+              className="mt-2 flex items-center justify-center gap-2 sm:gap-4"
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
               transition={{ delay: 0.9, duration: 0.5 }}
             >
-              <div 
+              <div
                 className="h-[1px] w-12 sm:w-20 md:w-28"
                 style={{
                   background: "linear-gradient(90deg, transparent, #FFD700, #DAA520)",
                 }}
               />
-              <span 
+              <span
                 className="text-lg sm:text-xl"
                 style={{
                   color: "#FFD700",
@@ -150,7 +177,7 @@ export function VideoPlayer() {
               >
                 ✦ 🪷 ✦
               </span>
-              <div 
+              <div
                 className="h-[1px] w-12 sm:w-20 md:w-28"
                 style={{
                   background: "linear-gradient(90deg, #DAA520, #FFD700, transparent)",
@@ -160,7 +187,7 @@ export function VideoPlayer() {
 
             {/* Tagline */}
             <motion.p
-              className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg tracking-[0.2em] sm:tracking-[0.3em] italic"
+              className="mt-2 text-sm tracking-[0.2em] italic sm:mt-3 sm:text-base sm:tracking-[0.3em] md:text-lg"
               style={{
                 fontFamily: "Georgia, serif",
                 color: "rgba(255, 248, 220, 0.9)",
@@ -211,7 +238,7 @@ export function VideoPlayer() {
             />
             {/* Syahi (black center) */}
             <circle cx="20" cy="30" r="5" fill="#2a2a2a" stroke="#FFD700" strokeWidth="0.5" />
-            
+
             {/* Bayan (left drum) - smaller */}
             <ellipse
               cx="45"
@@ -239,11 +266,15 @@ export function VideoPlayer() {
             />
             {/* Syahi */}
             <circle cx="45" cy="40" r="4" fill="#2a2a2a" stroke="#DAA520" strokeWidth="0.5" />
-            
+
             {/* Music notes */}
-            <text x="10" y="18" fill="#FFD700" fontSize="12" opacity="0.8">♪</text>
-            <text x="45" y="25" fill="#DAA520" fontSize="10" opacity="0.7">♫</text>
-            
+            <text x="10" y="18" fill="#FFD700" fontSize="12" opacity="0.8">
+              ♪
+            </text>
+            <text x="45" y="25" fill="#DAA520" fontSize="10" opacity="0.7">
+              ♫
+            </text>
+
             <defs>
               <linearGradient id="goldGradRight" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#FFF8DC" />
