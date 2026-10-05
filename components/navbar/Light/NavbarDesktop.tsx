@@ -27,14 +27,14 @@ const THEME_LAYOUT = {
     navTranslateY: "8%", // Same as main
     secondaryTranslateY: "11%", // Same as main
     primaryLeft: "22%", // Same as main
-    primaryRight: "26%", // Same as main
-    secondaryRight: "3%", // Same as main
+    primaryRight: "28%", // Give more space on right
+    secondaryRight: "4%", // Move slightly left
   },
   sponsor: {
     navTranslateY: "8%",
     secondaryTranslateY: "11%",
     primaryLeft: "22%",
-    primaryRight: "26%",
+    primaryRight: "28%", // Give more space on right
     secondaryRight: "5%", // Move secondary section more to the left
   },
 };

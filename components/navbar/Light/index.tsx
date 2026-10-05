@@ -130,14 +130,14 @@ export { THEME_CONFIG };
 // Theme-specific aspect ratios based on actual image dimensions
 const THEME_ASPECT_RATIOS = {
   main: 2928 / 209, // ≈ 14.01
-  about: 2928 / 200, // ≈ 14.64 - similar to main for consistency
+  about: 2928 / 209, // Same as main for consistency
   sponsor: 2928 / 160, // ≈ 18.3 - thinner strip for sponsor
 };
 
 // Theme-specific height constraints
 const THEME_HEIGHT_CONSTRAINTS = {
   main: { minHeight: 56, maxHeight: 85 },
-  about: { minHeight: 52, maxHeight: 78 }, // Similar to main
+  about: { minHeight: 56, maxHeight: 85 }, // Same as main
   sponsor: { minHeight: 50, maxHeight: 68 }, // Much shorter
 };
 
