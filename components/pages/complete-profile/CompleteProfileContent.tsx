@@ -1,12 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@apollo/client/react";
 import { LightNavbar } from "@/components/navbar/Navbar";
 import {
   MyAccountProgressQuery,
   MyAccountProgressResponseType,
 } from "@/lib/api/graphql/queries/user.queries";
-import { useQuery } from "@apollo/client/react";
-import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import { StepperIndicator } from "./StepperIndicator";
 import { STEPS } from "./config/data";
@@ -17,12 +18,24 @@ import { AadhaarUploadStep } from "./steps/adhaar/upload";
 import { AadhaarVerifyStep } from "./steps/adhaar/verify";
 import { CollegeDetailsStep } from "./steps/college/CollegeDetailsStep";
 import { PhoneVerificationStep } from "./steps/phone/PhoneVerificationStep";
+import { CongratulationsPage, hasWelcomeBeenShown } from "./CongratulationsPage";
+
+// ═══════════════════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════════════════
+
+const TOTAL_STEPS = 4;
 
 // ═══════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════════
+
 export function CompleteProfileContent() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<null | number>(null);
+  const [showCongratulations, setShowCongratulations] = useState(false);
+  const [checkedWelcome, setCheckedWelcome] = useState(false);
+
   const {
     data,
     loading: stepLoading,
@@ -32,20 +45,40 @@ export function CompleteProfileContent() {
     fetchPolicy: "cache-first",
   });
 
+  // Check if profile is complete and handle welcome page logic
   useEffect(() => {
     if (data?.myAccount?.progress.currentStep !== undefined) {
-      setCurrentStep(data.myAccount.progress.currentStep);
+      const step = data.myAccount.progress.currentStep;
+      setCurrentStep(step);
+
+      // Profile is complete when currentStep > TOTAL_STEPS (all steps done)
+      if (step > TOTAL_STEPS) {
+        // Check if welcome has already been shown
+        if (hasWelcomeBeenShown()) {
+          // Redirect to profile page - no entry
+          router.replace("/profile");
+        } else {
+          // Show congratulations page
+          setShowCongratulations(true);
+        }
+      }
+      setCheckedWelcome(true);
     }
-  }, [data]);
+  }, [data, router]);
 
   // Render loading or error content inside the styled wrapper
   const renderContent = () => {
-    if (stepLoading) {
+    if (stepLoading || !checkedWelcome) {
       return <CompleteProfileLoader />;
     }
 
     if (error) {
       return <ErrorState />;
+    }
+
+    // Show congratulations page if profile is complete and welcome not shown yet
+    if (showCongratulations) {
+      return <CongratulationsPage />;
     }
 
     return (

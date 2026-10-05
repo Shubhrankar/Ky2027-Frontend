@@ -8,11 +8,7 @@ import { BACKEND_URL, sharedFeatureConfig } from "../constants";
 // TYPES
 // ═══════════════════════════════════════════════════════════════════
 
-export interface OtpSendData {
-  info: string;
-}
-
-export interface OtpVerifyData {
+export interface PhoneUpdateData {
   info: string;
 }
 
@@ -20,13 +16,8 @@ export interface OtpVerifyData {
 // SCHEMAS
 // ═══════════════════════════════════════════════════════════════════
 
-const SendOtpSchema = z.object({
+const UpdatePhoneSchema = z.object({
   phoneNumber: z.string().min(10).max(15),
-});
-
-const VerifyOtpSchema = z.object({
-  phoneNumber: z.string().min(10).max(15),
-  otp: z.string().length(6),
 });
 
 // ═══════════════════════════════════════════════════════════════════
@@ -34,50 +25,25 @@ const VerifyOtpSchema = z.object({
 // ═══════════════════════════════════════════════════════════════════
 
 /**
- * Hook for sending OTP to phone number
- */
-export function useSendOtp() {
-  const { mutate, isPending, isSuccess, isError, error } = useApiMutation<OtpSendData>({
-    url: "/user/otp/getOtp",
-    method: "post",
-    baseURL: BACKEND_URL,
-    featureConfig: sharedFeatureConfig,
-    bodyValidator: { bodySchema: SendOtpSchema },
-    toastConfig: {
-      successConfig: { message: "OTP sent to your phone!" },
-      errorConfig: { message: "Failed to send OTP. Please try again." },
-    },
-  });
-
-  return {
-    sendOtp: mutate,
-    isPending,
-    isSuccess,
-    isError,
-    error,
-  };
-}
-
-/**
- * Hook for verifying OTP
+ * Hook for updating phone number (no OTP verification)
  * @param userId - User ID for cache invalidation
  */
-export function useVerifyOtp(userId?: string) {
-  const { mutate, isPending, isSuccess, isError, error } = useApiMutation<OtpVerifyData>({
-    url: "/user/otp/verifyOtp",
-    method: "post",
+export function useUpdatePhone(userId?: string) {
+  const { mutate, isPending, isSuccess, isError, error } = useApiMutation<PhoneUpdateData>({
+    url: "/user/profile",
+    method: "patch",
     baseURL: BACKEND_URL,
     featureConfig: sharedFeatureConfig,
-    bodyValidator: { bodySchema: VerifyOtpSchema },
+    bodyValidator: { bodySchema: UpdatePhoneSchema },
     invalidateQueryName: ["account-progress", userId!],
     toastConfig: {
-      successConfig: { message: "Phone verified successfully!" },
-      errorConfig: { message: "Invalid OTP. Please try again." },
+      successConfig: { message: "Phone number saved successfully!" },
+      errorConfig: { message: "Failed to save phone number. Please try again." },
     },
   });
 
   return {
-    verifyOtp: mutate,
+    updatePhone: mutate,
     isPending,
     isSuccess,
     isError,

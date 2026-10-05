@@ -10,8 +10,8 @@ export {
   type AadhaarExtractedData,
 } from "./profile/useAadhaar";
 
-// OTP hooks
-export { useSendOtp, useVerifyOtp } from "./useOtp";
+// Phone hook (no OTP)
+export { useUpdatePhone } from "./usePhone";
 
 // College hooks
 export { useCollegeSearch, type College } from "./profile/useColleges";

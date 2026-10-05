@@ -14,6 +14,7 @@ import {
   THEME_TOP_OFFSETS,
   THEME_LAYOUT,
 } from "./config/desktop.config";
+import { MOBILE_THEME_STYLES } from "./config/mobile.config";
 
 export type { NavbarTheme };
 
@@ -41,12 +42,34 @@ export function ThemedNavbar({
   theme = "main",
 }: ThemedNavbarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
   const config = THEME_CONFIG[theme];
   const aspectRatio = THEME_ASPECT_RATIOS[theme];
-  const dimensions = THEME_DIMENSIONS[theme];
+  const desktopDimensions = THEME_DIMENSIONS[theme];
+  const mobileDimensions = MOBILE_THEME_STYLES[theme];
   const layout = THEME_LAYOUT[theme];
   const themeOffset = THEME_TOP_OFFSETS[theme];
   const finalTopOffset = topOffset + themeOffset;
+
+  // Use mobile dimensions on small screens
+  const dimensions = isMobile
+    ? {
+        minHeight: mobileDimensions.minHeight,
+        maxHeight: mobileDimensions.maxHeight,
+        maxWidth: mobileDimensions.maxWidth,
+      }
+    : desktopDimensions;
+
+  const navbarOffsetY = isMobile ? mobileDimensions.navbarOffsetY : layout.navbarOffsetY;
+
+  useEffect(() => {
+    // Check if mobile on mount and resize
+    const checkMobile = () => setIsMobile(window.innerWidth < 640); // sm breakpoint
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     if (position !== "fixed") return;
@@ -82,7 +105,7 @@ export function ThemedNavbar({
               aspectRatio: `${aspectRatio}`,
               minHeight: dimensions.minHeight,
               maxHeight: dimensions.maxHeight,
-              transform: `translateY(${layout.navbarOffsetY})`,
+              transform: `translateY(${navbarOffsetY})`,
             }}
           >
             {/* Background carved bar */}

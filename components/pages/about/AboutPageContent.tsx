@@ -28,12 +28,15 @@ export function AboutPageContent() {
       {/* Laser beams effect from top to bottom */}
       <LaserBeams />
 
-      <main className="relative z-10 min-h-screen pt-20 sm:pt-24">
+      <main className="relative z-10 min-h-screen pt-16 sm:pt-24">
         <HeroSection />
         <LegacySection />
         <StatsSection />
         <EssenceSection />
-        <VisionSection />
+        {/* Vision section - hidden on mobile */}
+        <div className="hidden sm:block">
+          <VisionSection />
+        </div>
         <CTASection />
       </main>
     </>

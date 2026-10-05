@@ -6,7 +6,14 @@ import type { NavbarTheme, MobileThemeStyle } from "../types";
 
 export const MOBILE_THEME_STYLES: Record<NavbarTheme, MobileThemeStyle> = {
   main: {
-    hamburgerGradient: "linear-gradient(90deg, #8a5a1a, #d4a853)",
+    hamburgerGradient: "linear-gradient(90deg, #3d2814, #5c3d1a, #4a3015)", // Dark brown - high contrast
+    hamburgerShadow: "0 0 8px rgba(0,0,0,0.6), 0 0 4px rgba(58,21,5,0.8)", // Dark shadow for visibility
+    hamburgerTop: "58%",
+    // Mobile navbar dimensions
+    navbarOffsetY: "0px",
+    minHeight: 48,
+    maxHeight: 65,
+    maxWidth: 1600,
     panelBg:
       "radial-gradient(ellipse at 30% 20%, rgba(245,222,164,0.98) 0%, rgba(214,176,110,0.98) 45%, rgba(168,124,64,0.98) 100%)",
     panelBorder: "2px solid rgba(255,215,0,0.55)",
@@ -30,6 +37,13 @@ export const MOBILE_THEME_STYLES: Record<NavbarTheme, MobileThemeStyle> = {
   },
   about: {
     hamburgerGradient: "linear-gradient(90deg, #8a5a1a, #d4a853)",
+    hamburgerShadow: "0 0 4px rgba(138,90,26,0.5)",
+    hamburgerTop: "50%", // Slightly higher position for about theme
+    // Mobile navbar dimensions
+    navbarOffsetY: "0px",
+    minHeight: 48,
+    maxHeight: 65,
+    maxWidth: 1600,
     panelBg:
       "radial-gradient(ellipse at 30% 20%, rgba(45,27,78,0.98) 0%, rgba(30,20,50,0.98) 45%, rgba(26,26,46,0.98) 100%)",
     panelBorder: "2px solid rgba(139,92,246,0.6)",
@@ -51,7 +65,14 @@ export const MOBILE_THEME_STYLES: Record<NavbarTheme, MobileThemeStyle> = {
     mandalaStroke: "%238b5cf6",
   },
   sponsor: {
-    hamburgerGradient: "linear-gradient(90deg, #5c4033, #8b5a2b)", // Dark brown - visible on light bg
+    hamburgerGradient: "linear-gradient(90deg, #1a5a1a, #2d7a2d)", // Dark green
+    hamburgerShadow: "0 0 8px rgba(74,222,128,0.9), 0 0 16px rgba(34,197,94,0.6)", // Strong green glow
+    hamburgerTop: "58%",
+    // Mobile navbar dimensions
+    navbarOffsetY: "0px",
+    minHeight: 42,
+    maxHeight: 55,
+    maxWidth: 1600,
     panelBg:
       "radial-gradient(ellipse at 30% 20%, rgba(15,35,20,0.98) 0%, rgba(20,50,25,0.98) 45%, rgba(10,30,15,0.98) 100%)",
     panelBorder: "2px solid rgba(74,222,128,0.6)",

@@ -117,7 +117,7 @@ export const THEME_LAYOUT: Record<NavbarTheme, DesktopLayoutConfig> = {
     secondaryLinksY: "11%", // Secondary links offset
     primaryLeft: "22%",
     primaryRight: "26%",
-    secondaryRight: "3%",
+    secondaryRight: "3.7%",
     secondaryRightAuth: "0.5%",
   },
   about: {

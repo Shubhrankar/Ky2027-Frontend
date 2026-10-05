@@ -187,7 +187,7 @@ export const HeroSection = memo(function HeroSection() {
   const isMobile = useIsMobile();
 
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden px-4 sm:px-6">
+    <section className="relative flex min-h-[70vh] items-center overflow-hidden px-4 sm:min-h-screen sm:px-6">
       {/* Background gradient orbs */}
       <div
         className="pointer-events-none absolute top-1/4 left-1/4 h-[300px] w-[300px] rounded-full opacity-20 sm:h-[500px] sm:w-[500px]"
@@ -304,14 +304,14 @@ export const HeroSection = memo(function HeroSection() {
 
       {/* MOBILE DECORATIONS - Static, minimal */}
       {isMobile && (
-        <div className="absolute top-24 right-0 left-0 flex justify-between px-4 opacity-30 lg:hidden">
+        <div className="absolute top-16 right-0 left-0 flex justify-between px-4 opacity-30 lg:hidden">
           <StaticMusicNote className="h-12 w-12" />
           <StaticEqualizer className="h-10 w-16" />
         </div>
       )}
 
       {/* Center Content */}
-      <div className="relative z-10 mx-auto w-full max-w-4xl py-16 text-center sm:py-20">
+      <div className="relative z-10 mx-auto w-full max-w-4xl py-8 text-center sm:py-20">
         {/* Eyebrow badge */}
         {isMobile ? (
           <div

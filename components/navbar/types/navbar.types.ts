@@ -66,6 +66,13 @@ export type BadgeStyleConfig = {
 // Mobile theme style configuration
 export type MobileThemeStyle = {
   hamburgerGradient: string;
+  hamburgerShadow: string; // Glow/shadow effect for hamburger lines
+  hamburgerTop: string; // Vertical position of hamburger (e.g., "58%", "50%")
+  // Mobile navbar dimensions
+  navbarOffsetY: string; // Translate entire navbar vertically on mobile
+  minHeight: number;
+  maxHeight: number;
+  maxWidth: number;
   panelBg: string;
   panelBorder: string;
   panelShadow: string;

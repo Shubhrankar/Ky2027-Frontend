@@ -3,19 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IMAGES } from "@/lib/images";
-import {
-  Phone,
-  GraduationCap,
-  ArrowRight,
-  Sparkles,
-  BadgeCheck,
-} from "lucide-react";
-import {
-  COLORS,
-  UserData,
-  ProgressData,
-  ProfileUser,
-} from "../constants/palette";
+import { ArrowRight, Sparkles, BadgeCheck } from "lucide-react";
+import { COLORS, UserData, ProgressData, ProfileUser } from "../constants/palette";
 
 // ═══════════════════════════════════════════════════════════════════
 // PROFILE HERO SECTION
@@ -39,7 +28,7 @@ export function ProfileHero({ userData, user, progress }: ProfileHeroProps) {
 
   return (
     <div
-      className="relative rounded-3xl overflow-hidden mb-8"
+      className="relative mb-8 overflow-hidden rounded-3xl"
       style={{
         background: `linear-gradient(135deg, ${COLORS.BG_WINE}80 0%, ${COLORS.BG_ROYAL}90 50%, ${COLORS.BG_WINE}80 100%)`,
         border: `2px solid ${COLORS.GOLD}30`,
@@ -81,7 +70,7 @@ export function ProfileHero({ userData, user, progress }: ProfileHeroProps) {
       />
 
       {/* Floating Diya Decoration */}
-      <div className="absolute top-6 right-16 w-10 h-10 opacity-40 animate-pulse">
+      <div className="absolute top-6 right-16 h-10 w-10 animate-pulse opacity-40">
         <Image
           src={IMAGES.contact.floatingDiya}
           alt=""
@@ -91,22 +80,13 @@ export function ProfileHero({ userData, user, progress }: ProfileHeroProps) {
         />
       </div>
 
-      <div className="relative px-8 sm:px-12 py-12">
-        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10">
+      <div className="relative px-8 py-12 sm:px-12">
+        <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-start">
           {/* Avatar Section */}
-          <AvatarSection
-            userData={userData}
-            user={user}
-            progress={progress}
-            initials={initials}
-          />
+          <AvatarSection userData={userData} user={user} progress={progress} initials={initials} />
 
           {/* User Info Section */}
-          <UserInfoSection
-            userData={userData}
-            user={user}
-            progress={progress}
-          />
+          <UserInfoSection userData={userData} user={user} progress={progress} />
         </div>
       </div>
 
@@ -137,7 +117,7 @@ function AvatarSection({
         {/* Progress Ring around avatar (when incomplete) */}
         {progress && !progress.isProfileComplete && (
           <div className="absolute -inset-6">
-            <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+            <svg className="h-full w-full -rotate-90" viewBox="0 0 100 100">
               <circle
                 cx="50"
                 cy="50"
@@ -156,8 +136,7 @@ function AvatarSection({
                 strokeLinecap="round"
                 strokeDasharray={2 * Math.PI * 47}
                 strokeDashoffset={
-                  2 * Math.PI * 47 -
-                  (progress.completionPercentage / 100) * 2 * Math.PI * 47
+                  2 * Math.PI * 47 - (progress.completionPercentage / 100) * 2 * Math.PI * 47
                 }
                 className="transition-all duration-1000 ease-out"
                 style={{
@@ -203,7 +182,7 @@ function AvatarSection({
           }}
         >
           <div
-            className="h-28 w-28 sm:h-32 sm:w-32 rounded-full overflow-hidden flex items-center justify-center ring-4 ring-[#0a0612]"
+            className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full ring-4 ring-[#0a0612] sm:h-32 sm:w-32"
             style={{
               background:
                 userData?.avatarUrl || user.image
@@ -237,7 +216,7 @@ function AvatarSection({
         {/* Verified badge with glow */}
         {progress?.isProfileComplete && (
           <div
-            className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full flex items-center justify-center"
+            className="absolute -right-1 -bottom-1 flex h-9 w-9 items-center justify-center rounded-full"
             style={{
               background: `linear-gradient(135deg, ${COLORS.SUCCESS}, #16a34a)`,
               boxShadow: `0 0 20px ${COLORS.SUCCESS}50`,
@@ -250,7 +229,7 @@ function AvatarSection({
         {/* Percentage badge (when incomplete) */}
         {progress && !progress.isProfileComplete && (
           <div
-            className="absolute -bottom-2 -right-2 w-11 h-11 rounded-full flex items-center justify-center"
+            className="absolute -right-2 -bottom-2 flex h-11 w-11 items-center justify-center rounded-full"
             style={{
               background: `linear-gradient(135deg, ${COLORS.BG_DEEP}, ${COLORS.BG_ROYAL})`,
               border: `2px solid ${COLORS.GOLD}`,
@@ -266,7 +245,7 @@ function AvatarSection({
 
       {/* Royal Status Badge */}
       <div
-        className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-full"
+        className="mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5"
         style={{
           background: progress?.isProfileComplete
             ? `linear-gradient(135deg, ${COLORS.SUCCESS}15, ${COLORS.SUCCESS}08)`
@@ -276,34 +255,28 @@ function AvatarSection({
         }}
       >
         <div
-          className="w-2 h-2 rounded-full animate-pulse"
+          className="h-2 w-2 animate-pulse rounded-full"
           style={{
-            background: progress?.isProfileComplete
-              ? COLORS.SUCCESS
-              : COLORS.WARNING,
+            background: progress?.isProfileComplete ? COLORS.SUCCESS : COLORS.WARNING,
             boxShadow: `0 0 8px ${progress?.isProfileComplete ? COLORS.SUCCESS : COLORS.WARNING}`,
           }}
         />
         <span
           className="text-sm font-medium tracking-wide"
           style={{
-            color: progress?.isProfileComplete
-              ? COLORS.SUCCESS
-              : COLORS.WARNING,
+            color: progress?.isProfileComplete ? COLORS.SUCCESS : COLORS.WARNING,
           }}
         >
-          {progress?.isProfileComplete
-            ? "Verified Pilgrim"
-            : "Profile Incomplete"}
+          {progress?.isProfileComplete ? "Verified Pilgrim" : "Profile Incomplete"}
         </span>
       </div>
 
       {/* Pending steps chips (when incomplete) */}
       {progress && !progress.isProfileComplete && (
-        <div className="flex flex-wrap justify-center gap-1.5 mt-3 max-w-[200px]">
+        <div className="mt-3 flex max-w-[200px] flex-wrap justify-center gap-1.5">
           {!progress.steps.aadhaarVerified && (
             <span
-              className="px-2.5 py-1 rounded-full text-[10px] font-medium"
+              className="rounded-full px-2.5 py-1 text-[10px] font-medium"
               style={{
                 background: `${COLORS.ERROR}15`,
                 color: `${COLORS.ERROR}cc`,
@@ -315,7 +288,7 @@ function AvatarSection({
           )}
           {!progress.steps.college && (
             <span
-              className="px-2.5 py-1 rounded-full text-[10px] font-medium"
+              className="rounded-full px-2.5 py-1 text-[10px] font-medium"
               style={{
                 background: `${COLORS.ERROR}15`,
                 color: `${COLORS.ERROR}cc`,
@@ -327,7 +300,7 @@ function AvatarSection({
           )}
           {!progress.steps.phone && (
             <span
-              className="px-2.5 py-1 rounded-full text-[10px] font-medium"
+              className="rounded-full px-2.5 py-1 text-[10px] font-medium"
               style={{
                 background: `${COLORS.ERROR}15`,
                 color: `${COLORS.ERROR}cc`,
@@ -350,19 +323,16 @@ function UserInfoSection({ userData, user, progress }: ProfileHeroProps) {
   return (
     <div className="flex-1 text-center lg:text-left">
       {/* Decorative Title Line */}
-      <div className="flex items-center justify-center lg:justify-start gap-3 mb-3">
+      <div className="mb-3 flex items-center justify-center gap-3 lg:justify-start">
         <div className="h-px w-8 bg-gradient-to-r from-transparent to-[#d4a853]" />
-        <span
-          className="text-xs tracking-[0.3em] uppercase"
-          style={{ color: `${COLORS.GOLD}80` }}
-        >
+        <span className="text-xs tracking-[0.3em] uppercase" style={{ color: `${COLORS.GOLD}80` }}>
           Yatri Profile
         </span>
         <div className="h-px w-8 bg-gradient-to-l from-transparent to-[#d4a853]" />
       </div>
 
       <h1
-        className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6"
+        className="mb-6 text-2xl font-bold sm:text-3xl lg:text-4xl"
         style={{
           background: `linear-gradient(135deg, ${COLORS.CREAM} 0%, ${COLORS.GOLD_LIGHT} 30%, ${COLORS.GOLD} 60%, ${COLORS.GOLD_LIGHT} 100%)`,
           WebkitBackgroundClip: "text",
@@ -375,70 +345,12 @@ function UserInfoSection({ userData, user, progress }: ProfileHeroProps) {
         {userData?.firstName || user.name || "Traveler"}
       </h1>
 
-      {/* Ornate Quick Info Pills - Phone & College only */}
-      {(userData?.phone || userData?.college) && (
-        <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-6">
-          {userData?.phone && (
-            <div
-              className="flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 hover:scale-105"
-              style={{
-                background: `linear-gradient(135deg, ${COLORS.BG_DEEP}80, ${COLORS.BG_ROYAL}60)`,
-                border: `1px solid ${COLORS.GOLD}25`,
-                boxShadow: `0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 ${COLORS.GOLD}10`,
-              }}
-            >
-              <Phone className="h-4 w-4" style={{ color: COLORS.GOLD }} />
-              <span
-                className="text-sm font-medium"
-                style={{ color: COLORS.CREAM }}
-              >
-                {userData.phone}
-              </span>
-              {progress?.steps.phone && (
-                <BadgeCheck
-                  className="h-4 w-4"
-                  style={{ color: COLORS.SUCCESS }}
-                />
-              )}
-            </div>
-          )}
-
-          {userData?.college && (
-            <div
-              className="flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 hover:scale-105"
-              style={{
-                background: `linear-gradient(135deg, ${COLORS.BG_DEEP}80, ${COLORS.BG_ROYAL}60)`,
-                border: `1px solid ${COLORS.GOLD}25`,
-                boxShadow: `0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 ${COLORS.GOLD}10`,
-              }}
-            >
-              <GraduationCap
-                className="h-4 w-4"
-                style={{ color: COLORS.GOLD }}
-              />
-              <span
-                className="text-sm font-medium max-w-[200px] truncate"
-                style={{ color: COLORS.CREAM }}
-              >
-                {userData.college}
-              </span>
-              {progress?.steps.college && (
-                <BadgeCheck
-                  className="h-4 w-4"
-                  style={{ color: COLORS.SUCCESS }}
-                />
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Complete Profile Button - Royal CTA */}
       {!progress?.isProfileComplete && (
         <div className="flex justify-center lg:justify-start">
           <Link href="/complete-profile">
             <button
-              className="group relative flex items-center gap-3 px-8 py-4 rounded-2xl font-bold tracking-wide transition-all duration-300 hover:scale-105 overflow-hidden"
+              className="group relative flex items-center gap-3 overflow-hidden rounded-2xl px-8 py-4 font-bold tracking-wide transition-all duration-300 hover:scale-105"
               style={{
                 background: `linear-gradient(135deg, #1a0a12 0%, #2d1520 50%, #1a0a12 100%)`,
                 color: COLORS.GOLD,
@@ -453,7 +365,7 @@ function UserInfoSection({ userData, user, progress }: ProfileHeroProps) {
             >
               {/* Animated border glow */}
               <div
-                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 style={{
                   background: `linear-gradient(135deg, ${COLORS.GOLD}10, transparent, ${COLORS.GOLD}10)`,
                   boxShadow: `inset 0 0 20px ${COLORS.GOLD}15`,
@@ -461,7 +373,7 @@ function UserInfoSection({ userData, user, progress }: ProfileHeroProps) {
               />
 
               <Sparkles
-                className="h-5 w-5 relative transition-transform group-hover:rotate-12"
+                className="relative h-5 w-5 transition-transform group-hover:rotate-12"
                 style={{ color: COLORS.GOLD_LIGHT }}
               />
               <span
@@ -473,7 +385,7 @@ function UserInfoSection({ userData, user, progress }: ProfileHeroProps) {
                 Complete Your Profile
               </span>
               <ArrowRight
-                className="h-5 w-5 relative group-hover:translate-x-1 transition-transform"
+                className="relative h-5 w-5 transition-transform group-hover:translate-x-1"
                 style={{ color: COLORS.GOLD_LIGHT }}
               />
             </button>

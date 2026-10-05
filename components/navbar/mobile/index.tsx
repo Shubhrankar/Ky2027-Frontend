@@ -50,12 +50,14 @@ export const NavbarMobile = memo(function NavbarMobile({
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="absolute top-[58%] right-[2%] z-20 flex h-8 w-8 -translate-y-1/2 flex-col items-center justify-center gap-1.5"
+        className="absolute right-[2%] z-20 flex h-8 w-8 -translate-y-1/2 flex-col items-center justify-center gap-1.5"
+        style={{ top: styles.hamburgerTop }}
       >
         <span
           className="block h-[3px] w-6 rounded-full transition-transform duration-300"
           style={{
             background: styles.hamburgerGradient,
+            boxShadow: styles.hamburgerShadow,
             transform: open ? "translateY(7px) rotate(45deg)" : "none",
           }}
         />
@@ -63,6 +65,7 @@ export const NavbarMobile = memo(function NavbarMobile({
           className="block h-[3px] w-6 rounded-full transition-opacity duration-300"
           style={{
             background: styles.hamburgerGradient,
+            boxShadow: styles.hamburgerShadow,
             opacity: open ? 0 : 1,
           }}
         />
@@ -70,6 +73,7 @@ export const NavbarMobile = memo(function NavbarMobile({
           className="block h-[3px] w-6 rounded-full transition-transform duration-300"
           style={{
             background: styles.hamburgerGradient,
+            boxShadow: styles.hamburgerShadow,
             transform: open ? "translateY(-7px) rotate(-45deg)" : "none",
           }}
         />
