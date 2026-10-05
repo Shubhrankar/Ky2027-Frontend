@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { FEST_DAYS, SCHEDULED_EVENTS, type ScheduledEvent } from "../config/campusMap.config";
-import styles from "./WhatsOnSidebar.module.css";
 
 // ═══════════════════════════════════════════════════════════════════
 // WHAT'S ON
@@ -49,9 +48,9 @@ export function WhatsOnSidebar({ className = "" }: { className?: string }) {
         What&apos;s On
       </h2>
 
-      <div className={`${styles.viewport} min-h-0 flex-1`} data-lenis-prevent>
+      <div className="whats-on-viewport min-h-0 flex-1" data-lenis-prevent>
         <div
-          className={styles.track}
+          className="whats-on-track"
           style={{ "--duration": `${FEED.length * 3.5}s` } as React.CSSProperties}
         >
           {FEED.map((item) => (
