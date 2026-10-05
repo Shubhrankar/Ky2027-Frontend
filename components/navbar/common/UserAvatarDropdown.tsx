@@ -75,19 +75,19 @@ const DROPDOWN_THEMES = {
   sponsor: {
     trigger: {
       background:
-        "linear-gradient(135deg, rgba(74,222,128,0.25) 0%, rgba(34,197,94,0.2) 50%, rgba(22,163,74,0.25) 100%)",
-      border: "2px solid rgba(134,239,172,0.6)",
+        "linear-gradient(135deg, rgba(15,60,30,0.9) 0%, rgba(20,80,40,0.85) 50%, rgba(15,60,30,0.9) 100%)",
+      border: "2px solid rgba(74,222,128,0.7)",
       boxShadow:
-        "0 0 15px rgba(74,222,128,0.4), 0 0 30px rgba(34,197,94,0.2), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(187,247,208,0.4)",
+        "0 0 15px rgba(74,222,128,0.5), 0 0 30px rgba(34,197,94,0.3), 0 2px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(187,247,208,0.2)",
     },
     avatarRing: {
       background: "linear-gradient(135deg, #86efac 0%, #4ade80 50%, #22c55e 100%)",
       boxShadow: "0 0 12px rgba(74,222,128,0.6), 0 0 20px rgba(34,197,94,0.3)",
     },
     avatarBg: "linear-gradient(135deg, #86efac 0%, #4ade80 50%, #22c55e 100%)",
-    textColor: "#052e05",
+    textColor: "#bbf7d0", // Light green text for visibility on dark bg
     initialsColor: "#052e05",
-    textShadow: "0 1px 1px rgba(187,247,208,0.5)",
+    textShadow: "0 1px 2px rgba(0,0,0,0.5)",
     dropdown: {
       background: "linear-gradient(145deg, #052e05 0%, #0a3d0a 50%, #052e05 100%)",
       border: "1px solid rgba(74,222,128,0.4)",

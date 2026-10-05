@@ -12,8 +12,8 @@ import { NavbarTheme, THEME_CONFIG } from "./index";
 const BADGE_STYLES = {
   main: {
     // Larger badge, more to the left to match the ornate frame
-    position: "left-[15.7%] top-[59%]",
-    size: "h-[145%] sm:h-[195%]",
+    position: "left-[15.7%] top-[65%]",
+    size: "h-[145%] sm:h-[190%]",
   },
   about: {
     position: "left-[16%] top-[52%]",

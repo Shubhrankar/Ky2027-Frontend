@@ -129,14 +129,14 @@ export { THEME_CONFIG };
 const THEME_ASPECT_RATIOS = {
   main: 2928 / 209, // ≈ 14.01
   about: 1408 / 237, // ≈ 5.94 - shorter strip
-  sponsor: 2928 / 209, // Use main ratio for consistent look
+  sponsor: 2928 / 160, // ≈ 18.3 - thinner strip for sponsor
 };
 
 // Theme-specific height constraints
 const THEME_HEIGHT_CONSTRAINTS = {
   main: { minHeight: 56, maxHeight: 85 },
   about: { minHeight: 50, maxHeight: 72 },
-  sponsor: { minHeight: 56, maxHeight: 80 },
+  sponsor: { minHeight: 50, maxHeight: 68 }, // Much shorter
 };
 
 // Theme-specific top offset adjustments
