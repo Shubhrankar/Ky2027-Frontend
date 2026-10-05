@@ -33,7 +33,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     // ═══════════════════════════════════════════════════════════════
     // GSAP + Lenis Synchronization (Simple approach)
-    // 
+    //
     // - GSAP ticker drives Lenis RAF (single animation clock)
     // - ScrollTrigger.update() called on every Lenis scroll event
     // - No scroller proxy (keeps native IntersectionObserver working)
@@ -67,10 +67,12 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
   // Reset scroll position on route change
   useEffect(() => {
+    // Scroll to top with Lenis if available
     if (lenisRef.current) {
-      // Instant scroll to top (no animation)
       lenisRef.current.scrollTo(0, { immediate: true });
     }
+    // Always also reset native scroll (fallback and for mobile)
+    window.scrollTo(0, 0);
     // Also refresh ScrollTrigger for new page content
     ScrollTrigger.refresh();
   }, [pathname]);

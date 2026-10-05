@@ -162,9 +162,18 @@ export function CampusMap({
           src="/schedule-map/campus-day.jpg"
           alt="Map of the IIT (BHU) campus"
           draggable={false}
+          loading="eager"
+          decoding="async"
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.nt} src="/schedule-map/campus-night.jpg" alt="" draggable={false} />
+        <img
+          className={styles.nt}
+          src="/schedule-map/campus-night.jpg"
+          alt=""
+          draggable={false}
+          loading="lazy"
+          decoding="async"
+        />
 
         {/* Twinkling lamps */}
         <div className={`${styles.layer} ${layers.lights ? "" : styles.off}`}>
@@ -193,6 +202,8 @@ export function CampusMap({
               className={styles.cloud}
               src={`/schedule-map/cloud-${(i % 3) + 1}.png`}
               alt=""
+              loading="lazy"
+              decoding="async"
               style={
                 {
                   top: `${top}%`,

@@ -5,16 +5,28 @@ import { LightNavbar } from "@/components/navbar/Navbar";
 
 export function PassesPageContent() {
   return (
-    <main className="min-h-screen">
+    <main
+      className="min-h-screen"
+      style={{
+        background: `linear-gradient(180deg,
+          #0a0510 0%,
+          #120818 10%,
+          #1a0c22 25%,
+          #22102c 40%,
+          #2a1435 50%,
+          #22102c 60%,
+          #1a0c22 75%,
+          #120818 90%,
+          #0a0510 100%
+        )`,
+      }}
+    >
       {/* Fixed navbar - always visible on passes page */}
       <div className="fixed inset-x-0 top-0 z-[200]">
         <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
-      {/* Add top padding to account for fixed navbar */}
-      <div className="pt-24 sm:pt-28">
-        <PassesSection />
-      </div>
+      <PassesSection />
     </main>
   );
 }

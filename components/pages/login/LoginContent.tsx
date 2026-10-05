@@ -58,16 +58,6 @@ export function LoginContent() {
           <MysticGateSection />
           <LoginCard onGoogleLogin={handleSignIn} />
         </div>
-
-        {/* Bottom decorative text - Desktop only */}
-        <div className="fixed bottom-6 left-1/2 hidden -translate-x-1/2 text-center sm:block">
-          <p
-            className="text-xs tracking-[0.3em] uppercase"
-            style={{ color: `${ROYAL_COLORS.GOLD}40` }}
-          >
-            14th–17th January 2027 • Varanasi
-          </p>
-        </div>
       </main>
     </>
   );

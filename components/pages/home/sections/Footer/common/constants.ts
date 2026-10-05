@@ -1,28 +1,28 @@
 /**
  * Gen-Z Concert Footer Constants
- * Funky neon vibes with glitch aesthetics
+ * Dark concert vibe with harmonious Gold/Saffron/Coral text colors
  */
 
 // ═══════════════════════════════════════════════════════════════════
-// COLOR PALETTE - Neon Concert Vibes
+// COLOR PALETTE - Harmonious warm tones (Analogous color scheme)
 // ═══════════════════════════════════════════════════════════════════
 
 export const FOOTER_COLORS = {
-  // Neon accents
-  NEON_CYAN: "#00FFFF",
-  NEON_PINK: "#FF1493",
-  NEON_PURPLE: "#9D4EDD",
-  NEON_LIME: "#ADFF2F",
-  NEON_ORANGE: "#FF6B35",
-  ELECTRIC_BLUE: "#7DF9FF",
-  HOT_MAGENTA: "#FF00FF",
-  
-  // Backgrounds
+  // Harmonious warm accents (Gold → Orange → Coral)
+  NEON_CYAN: "#FFD700", // Bright Gold (primary)
+  NEON_PINK: "#FF9933", // Saffron Orange (secondary)
+  NEON_PURPLE: "#FF6B6B", // Coral/Soft Red (tertiary)
+  NEON_LIME: "#FFEC8B", // Light Gold/Cream (highlight)
+  NEON_ORANGE: "#E07020", // Deep Saffron
+  ELECTRIC_BLUE: "#FFC04D", // Warm Yellow
+  HOT_MAGENTA: "#FF8C69", // Salmon/Light Coral
+
+  // Backgrounds - Keep dark concert vibe
   BG_DEEP: "#030308",
   BG_DARK: "#050510",
   BG_PURPLE: "#0a0815",
   BG_CARD: "rgba(15, 10, 25, 0.6)",
-  
+
   // Text
   TEXT_PRIMARY: "#FFFFFF",
   TEXT_SECONDARY: "rgba(255, 255, 255, 0.7)",
@@ -44,13 +44,13 @@ export const FOOTER_GRADIENTS = {
     #050510 85%,
     #030308 100%
   )`,
-  
+
   // Glassmorphism card background
   CARD_GLASS: `linear-gradient(135deg, 
     rgba(255, 255, 255, 0.05) 0%, 
     rgba(255, 255, 255, 0.02) 100%
   )`,
-  
+
   // Rotating border gradient (for cards)
   BORDER_ROTATE: `conic-gradient(
     from 0deg,
@@ -60,7 +60,7 @@ export const FOOTER_GRADIENTS = {
     ${FOOTER_COLORS.NEON_LIME},
     ${FOOTER_COLORS.NEON_CYAN}
   )`,
-  
+
   // Spotlight cone gradient
   SPOTLIGHT: `linear-gradient(
     180deg,
@@ -68,7 +68,7 @@ export const FOOTER_GRADIENTS = {
     rgba(255, 255, 255, 0.05) 50%,
     transparent 100%
   )`,
-  
+
   // Glitch line gradient
   GLITCH_LINE: `linear-gradient(90deg, 
     transparent 0%, 
@@ -100,18 +100,18 @@ export const ANIMATION_CONFIG = {
   // Glitch effect
   GLITCH_DURATION: 0.1,
   GLITCH_INTERVAL: 3000,
-  
+
   // Pulse rings
   PULSE_DURATION: 2,
   PULSE_DELAY: 0.5,
-  
+
   // Floating stickers
   FLOAT_DURATION: 6,
   FLOAT_AMPLITUDE: 20,
-  
+
   // Spotlight sweep
   SPOTLIGHT_DURATION: 8,
-  
+
   // Border rotation
   BORDER_ROTATION_DURATION: 4,
 } as const;

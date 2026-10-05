@@ -37,7 +37,7 @@ function BanarasiVibesContent() {
             end: "top 20%",
             scrub: 1.5,
           },
-        },
+        }
       );
 
       // Rickshaw continuous movement
@@ -79,7 +79,7 @@ function BanarasiVibesContent() {
     >
       {/* Background image */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage: `url('${IMAGES.vibes.backgroundDark}')`,
           backgroundSize: "cover",
@@ -89,27 +89,30 @@ function BanarasiVibesContent() {
       />
 
       {/* Top Text Content - simple and clean */}
-      <div className="absolute top-8 sm:top-5 md:top-6 left-0 right-0 z-[35] pointer-events-none">
-        <div className="text-center px-4">
+      <div className="pointer-events-none absolute top-8 right-0 left-0 z-[35] sm:top-5 md:top-6">
+        <div className="px-4 text-center">
           {/* Main heading - no box, just text with shadow */}
           <h2
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2"
+            className="mb-2 text-2xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
             style={{
               fontFamily: "'Cinzel Decorative', serif",
               color: "#FFD700",
-              textShadow: "0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.7), 0 0 40px rgba(255,215,0,0.3)",
+              textShadow:
+                "0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.7), 0 0 40px rgba(255,215,0,0.3)",
             }}
           >
             The Spirit of Banaras
           </h2>
-          
+
           {/* Simple divider */}
-          <div className="flex items-center justify-center gap-2 mb-3">
+          <div className="mb-3 flex items-center justify-center gap-2">
             <span
               className="h-[1px] w-10 sm:w-16"
               style={{ background: "linear-gradient(90deg, transparent, rgba(255,215,0,0.6))" }}
             />
-            <span className="text-xs sm:text-sm" style={{ color: "#FFD700" }}>✦</span>
+            <span className="text-xs sm:text-sm" style={{ color: "#FFD700" }}>
+              ✦
+            </span>
             <span
               className="h-[1px] w-10 sm:w-16"
               style={{ background: "linear-gradient(90deg, rgba(255,215,0,0.6), transparent)" }}
@@ -117,9 +120,9 @@ function BanarasiVibesContent() {
           </div>
 
           {/* Key highlights - inline */}
-          <div className="flex items-center justify-center gap-3 sm:gap-6 mb-3">
+          <div className="mb-3 flex items-center justify-center gap-3 sm:gap-6">
             <span
-              className="text-[10px] sm:text-xs tracking-wider"
+              className="text-[10px] tracking-wider sm:text-xs"
               style={{
                 color: "#FFD700",
                 textShadow: "0 1px 4px rgba(0,0,0,0.9)",
@@ -129,7 +132,7 @@ function BanarasiVibesContent() {
               ✦ Music
             </span>
             <span
-              className="text-[10px] sm:text-xs tracking-wider"
+              className="text-[10px] tracking-wider sm:text-xs"
               style={{
                 color: "#FFD700",
                 textShadow: "0 1px 4px rgba(0,0,0,0.9)",
@@ -139,7 +142,7 @@ function BanarasiVibesContent() {
               ✦ Dance
             </span>
             <span
-              className="text-[10px] sm:text-xs tracking-wider"
+              className="text-[10px] tracking-wider sm:text-xs"
               style={{
                 color: "#FFD700",
                 textShadow: "0 1px 4px rgba(0,0,0,0.9)",
@@ -149,7 +152,7 @@ function BanarasiVibesContent() {
               ✦ Art
             </span>
             <span
-              className="text-[10px] sm:text-xs tracking-wider"
+              className="text-[10px] tracking-wider sm:text-xs"
               style={{
                 color: "#FFD700",
                 textShadow: "0 1px 4px rgba(0,0,0,0.9)",
@@ -191,17 +194,14 @@ function BanarasiVibesContent() {
       {/* Common: Road */}
       <Road />
 
-      {/* Common: Lamp Post */}
-      <MotionZone
-        className="absolute left-[2%] sm:left-[20%] w-10 h-32 sm:w-30 sm:h-80"
-        style={{ bottom: "45px", zIndex: 28 }}
-      >
-        <LampPost className="w-full h-full" />
+      {/* Common: Lamp Post - on bottom left, partially hidden, high z-index */}
+      <MotionZone className="absolute -bottom-4 left-[2%] z-[40] h-32 w-10 sm:-bottom-6 sm:left-[20%] sm:h-80 sm:w-30">
+        <LampPost className="h-full w-full" />
       </MotionZone>
 
       {/* Bottom golden border */}
       <div
-        className="absolute bottom-0 left-0 right-0 z-[60] pointer-events-none"
+        className="pointer-events-none absolute right-0 bottom-0 left-0 z-[60]"
         style={{ height: "6px" }}
       >
         <div
@@ -212,7 +212,7 @@ function BanarasiVibesContent() {
           }}
         />
         <div
-          className="absolute top-0 left-0 right-0"
+          className="absolute top-0 right-0 left-0"
           style={{ height: "1px", background: "rgba(255,255,255,0.3)" }}
         />
       </div>

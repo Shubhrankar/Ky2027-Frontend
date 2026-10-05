@@ -835,7 +835,7 @@ function FestHighlightsContent() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen overflow-hidden py-8 sm:py-12"
+      className="relative min-h-screen overflow-hidden py-6 pb-16 sm:py-8 sm:pb-20 md:pb-24"
       style={{
         background: "linear-gradient(180deg, #0a0510 0%, #1a0a2e 30%, #0f0720 70%, #050208 100%)",
       }}
@@ -850,7 +850,7 @@ function FestHighlightsContent() {
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={contentRef} className="text-center">
           {/* 3D Disco Ball - Desktop only */}
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-4 sm:mb-6">
             <DiscoBall3D />
           </div>
 
@@ -882,12 +882,12 @@ function FestHighlightsContent() {
           )}
 
           {/* Subtitle - Static */}
-          <p className="mb-6 text-sm tracking-[0.4em] text-purple-300 uppercase sm:mb-8 sm:text-base">
+          <p className="mb-4 text-sm tracking-[0.4em] text-purple-300 uppercase sm:mb-6 sm:text-base">
             ⚡ 4 Days of Non-Stop Energy ⚡
           </p>
 
           {/* Description */}
-          <div className="mx-auto mb-8 max-w-3xl px-4 sm:mb-12">
+          <div className="mx-auto mb-6 max-w-3xl px-4 sm:mb-8">
             <p className="text-center text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
               Get ready for the{" "}
               <span
