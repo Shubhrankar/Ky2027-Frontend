@@ -116,13 +116,15 @@ export const THEME_LAYOUT: Record<NavbarTheme, DesktopLayoutConfig> = {
     primaryLeft: "22%",
     primaryRight: "26%",
     secondaryRight: "3%",
+    secondaryRightAuth: "0.5%",
   },
   about: {
-    navTranslateY: "8%",
-    secondaryTranslateY: "11%",
+    navTranslateY: "1%",
+    secondaryTranslateY: "1%",
     primaryLeft: "22%",
     primaryRight: "28%",
     secondaryRight: "4%",
+    secondaryRightAuth: "1%",
   },
   sponsor: {
     navTranslateY: "8%",
@@ -130,6 +132,7 @@ export const THEME_LAYOUT: Record<NavbarTheme, DesktopLayoutConfig> = {
     primaryLeft: "22%",
     primaryRight: "28%",
     secondaryRight: "5%",
+    secondaryRightAuth: "1%",
   },
 };
 

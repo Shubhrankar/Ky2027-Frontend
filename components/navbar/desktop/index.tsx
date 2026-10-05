@@ -69,7 +69,7 @@ export const NavbarDesktop = memo(function NavbarDesktop({
         className="absolute inset-y-0 z-10 hidden items-center gap-4 sm:flex"
         style={{
           transform: `translateY(${layout.secondaryTranslateY})`,
-          right: isAuthenticated ? "0.5%" : layout.secondaryRight,
+          right: isAuthenticated ? layout.secondaryRightAuth : layout.secondaryRight,
         }}
       >
         {secondaryLinks.map((link) => {

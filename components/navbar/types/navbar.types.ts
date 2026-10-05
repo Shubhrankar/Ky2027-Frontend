@@ -45,6 +45,7 @@ export type DesktopLayoutConfig = {
   primaryLeft: string;
   primaryRight: string;
   secondaryRight: string;
+  secondaryRightAuth: string; // Position when user is authenticated (avatar shown)
 };
 
 // Height constraints
