@@ -32,6 +32,7 @@ export type ThemeVisualConfig = {
   getBadge: () => string;
   badgeGlow: BadgeGlow;
   linkStyle: LinkStyle;
+  backgroundFilter?: string; // CSS filter for background image
   hamburgerGradient: string;
   mobileMenuBg: string;
   mobileMenuBorder: string;

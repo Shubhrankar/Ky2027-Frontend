@@ -92,6 +92,7 @@ export function ThemedNavbar({
               fill
               priority
               className="pointer-events-none object-fill select-none"
+              style={config.backgroundFilter ? { filter: config.backgroundFilter } : undefined}
             />
 
             {/* IIT BHU Badge */}

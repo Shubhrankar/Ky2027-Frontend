@@ -99,6 +99,7 @@ export const THEME_CONFIG: Record<NavbarTheme, ThemeVisualConfig> = {
       activeTextShadow: "0 1px 2px rgba(0,0,0,0.2), 0 0 8px rgba(34,197,94,0.4)",
       inactiveTextShadow: "0 1px 1px rgba(255,255,255,0.3)",
     },
+    backgroundFilter: "brightness(0.85) saturate(1.1)", // Reduce whiteness
     hamburgerGradient: "linear-gradient(90deg, #4ade80, #86efac)",
     mobileMenuBg:
       "radial-gradient(ellipse at 30% 20%, rgba(20,50,30,0.98) 0%, rgba(15,40,20,0.98) 45%, rgba(10,30,15,0.98) 100%)",
