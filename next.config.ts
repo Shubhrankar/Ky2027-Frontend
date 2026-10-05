@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Disable automatic scroll restoration - we handle it manually
+  experimental: {
+    scrollRestoration: false,
+  },
   images: {
     remotePatterns: [
       {

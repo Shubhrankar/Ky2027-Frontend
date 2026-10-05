@@ -78,7 +78,7 @@ export const THEME_CONFIG: Record<NavbarTheme, ThemeVisualConfig> = {
   },
   sponsor: {
     getBackground: () => IMAGES.navbar.sponsor.background,
-    getBadge: () => IMAGES.navbar.sponsor.badge,
+    getBadge: () => IMAGES.navbar.main.badge, // Use main badge (same as home/about)
     badgeGlow: {
       outer:
         "radial-gradient(circle, rgba(74,222,128,0.45) 0%, rgba(34,197,94,0.3) 45%, rgba(22,163,74,0) 72%)",

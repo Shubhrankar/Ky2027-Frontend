@@ -30,6 +30,8 @@ export function SchedulePageContent() {
             src="/schedule-map/campus-night.jpg"
             alt=""
             className="absolute inset-0 h-full w-full scale-125 object-cover blur-[26px] brightness-[.55]"
+            loading="lazy"
+            decoding="async"
           />
         </div>
 

@@ -24,7 +24,7 @@ export const ConcertBrandHeader = memo(function ConcertBrandHeader() {
         />
       </div>
 
-      {/* Main Title - KASHI YATRA with premium styling */}
+      {/* Main Title - KASHIYATRA with premium styling */}
       <h3
         className="mb-6 text-5xl font-bold tracking-wider sm:text-6xl md:text-8xl"
         style={{
@@ -34,7 +34,7 @@ export const ConcertBrandHeader = memo(function ConcertBrandHeader() {
           letterSpacing: "0.15em",
         }}
       >
-        KASHI YATRA
+        KASHIYATRA
       </h3>
 
       {/* Year with neon styling - bigger and bolder */}
@@ -158,10 +158,8 @@ export const ConcertBrandHeader = memo(function ConcertBrandHeader() {
           <span
             className="font-semibold not-italic"
             style={{
-              background: `linear-gradient(90deg, ${FOOTER_COLORS.NEON_LIME}, ${FOOTER_COLORS.NEON_CYAN})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              color: FOOTER_COLORS.NEON_CYAN,
+              textShadow: `0 0 20px ${FOOTER_COLORS.NEON_CYAN}60`,
             }}
           >
             tradition
@@ -170,10 +168,8 @@ export const ConcertBrandHeader = memo(function ConcertBrandHeader() {
           <span
             className="font-semibold not-italic"
             style={{
-              background: `linear-gradient(90deg, ${FOOTER_COLORS.NEON_PINK}, ${FOOTER_COLORS.NEON_PURPLE})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              color: "#FFFFFF",
+              textShadow: `0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.4)`,
             }}
           >
             future

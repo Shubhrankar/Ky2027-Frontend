@@ -358,7 +358,7 @@ export function HeroSection() {
                 "drop-shadow(0 4px 8px rgba(0,0,0,0.4)) drop-shadow(0 0 40px rgba(255,215,0,0.6))",
             }}
           >
-            KASHI YATRA
+            KASHIYATRA
           </div>
 
           {/* Decorative Divider with Lotus */}
