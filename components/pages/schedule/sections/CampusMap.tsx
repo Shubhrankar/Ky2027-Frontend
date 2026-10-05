@@ -89,6 +89,8 @@ export function MapControls({
   isNight?: boolean;
   className?: string;
 }) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const btnBase = isNight
     ? "bg-[rgba(20,25,45,0.85)] border-[rgba(100,120,180,0.3)] text-[rgba(180,195,230,0.9)] hover:bg-[rgba(30,40,70,0.9)] hover:border-[rgba(140,160,220,0.5)] hover:text-[rgba(210,220,250,1)]"
     : "bg-[rgba(35,28,45,0.9)] border-[rgba(255,180,100,0.3)] text-[rgba(255,220,180,0.85)] hover:bg-[rgba(45,35,58,0.95)] hover:border-[rgba(255,180,100,0.5)] hover:text-[rgba(255,230,200,1)]";
@@ -133,13 +135,20 @@ export function MapControls({
         </svg>
       </button>
 
-      {/* Layers dropdown */}
-      <nav className="group relative" aria-label="Map layers">
-        <div
-          className={`flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-lg border backdrop-blur-md transition-all duration-300 group-hover:rounded-b-none sm:h-[42px] sm:w-[42px] sm:rounded-[10px] ${btnBase}`}
+      {/* Layers dropdown - click on mobile, hover on desktop */}
+      <nav
+        className="group relative"
+        aria-label="Map layers"
+        onMouseEnter={() => setIsDropdownOpen(true)}
+        onMouseLeave={() => setIsDropdownOpen(false)}
+      >
+        <button
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className={`flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-lg border backdrop-blur-md transition-all duration-300 sm:h-[42px] sm:w-[42px] sm:rounded-[10px] ${isDropdownOpen ? "rounded-b-none" : ""} ${btnBase}`}
           style={{
             boxShadow: "0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
           }}
+          aria-expanded={isDropdownOpen}
         >
           <svg
             className="h-[18px] w-[18px] sm:h-5 sm:w-5"
@@ -154,10 +163,14 @@ export function MapControls({
             <polyline points="2 17 12 22 22 17" />
             <polyline points="2 12 12 17 22 12" />
           </svg>
-        </div>
+        </button>
 
         <div
-          className={`invisible absolute top-full right-0 flex -translate-y-2 flex-col gap-1 rounded-b-lg border border-t-0 p-1.5 opacity-0 backdrop-blur-xl transition-all duration-250 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 sm:rounded-b-[10px] sm:p-2 ${dropdownBase}`}
+          className={`absolute top-full right-0 flex flex-col gap-1 rounded-b-lg border border-t-0 p-1.5 backdrop-blur-xl transition-all duration-250 sm:rounded-b-[10px] sm:p-2 ${dropdownBase} ${
+            isDropdownOpen
+              ? "visible translate-y-0 opacity-100"
+              : "invisible -translate-y-2 opacity-0"
+          }`}
           style={{
             boxShadow: "0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(60,80,140,0.1)",
           }}
