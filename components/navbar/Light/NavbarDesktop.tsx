@@ -25,14 +25,14 @@ const THEME_LAYOUT = {
   about: {
     navTranslateY: "0%", // Center vertically
     secondaryTranslateY: "0%",
-    primaryLeft: "20%",
-    primaryRight: "22%",
+    primaryLeft: "18%",
+    primaryRight: "28%", // More space on right for avatar
   },
   sponsor: {
     navTranslateY: "8%",
     secondaryTranslateY: "11%",
-    primaryLeft: "22%",
-    primaryRight: "26%",
+    primaryLeft: "20%",
+    primaryRight: "28%", // More space on right for avatar
   },
 };
 
