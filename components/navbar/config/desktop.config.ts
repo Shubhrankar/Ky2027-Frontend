@@ -3,7 +3,7 @@ import type {
   NavbarTheme,
   ThemeVisualConfig,
   DesktopLayoutConfig,
-  HeightConstraints,
+  DimensionConstraints,
 } from "../types";
 
 // ═══════════════════════════════════════════════════════════════════
@@ -124,7 +124,7 @@ export const THEME_LAYOUT: Record<NavbarTheme, DesktopLayoutConfig> = {
     primaryLeft: "22%",
     primaryRight: "28%",
     secondaryRight: "4%",
-    secondaryRightAuth: "1%",
+    secondaryRightAuth: "2%",
   },
   sponsor: {
     navTranslateY: "8%",
@@ -143,11 +143,11 @@ export const THEME_ASPECT_RATIOS: Record<NavbarTheme, number> = {
   sponsor: 2928 / 160, // ≈ 18.3 - thinner strip for sponsor
 };
 
-// Theme-specific height constraints
-export const THEME_HEIGHT_CONSTRAINTS: Record<NavbarTheme, HeightConstraints> = {
-  main: { minHeight: 56, maxHeight: 85 },
-  about: { minHeight: 56, maxHeight: 85 },
-  sponsor: { minHeight: 50, maxHeight: 68 },
+// Theme-specific dimension constraints (height and width)
+export const THEME_DIMENSIONS: Record<NavbarTheme, DimensionConstraints> = {
+  main: { minHeight: 56, maxHeight: 85, maxWidth: 1600 },
+  about: { minHeight: 56, maxHeight: 85, maxWidth: 1600 },
+  sponsor: { minHeight: 50, maxHeight: 68, maxWidth: 1600 },
 };
 
 // Theme-specific top offset adjustments

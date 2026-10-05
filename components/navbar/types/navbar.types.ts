@@ -48,10 +48,11 @@ export type DesktopLayoutConfig = {
   secondaryRightAuth: string; // Position when user is authenticated (avatar shown)
 };
 
-// Height constraints
-export type HeightConstraints = {
+// Height and width constraints
+export type DimensionConstraints = {
   minHeight: number;
   maxHeight: number;
+  maxWidth: number; // Max width of navbar container
 };
 
 // Badge style configuration

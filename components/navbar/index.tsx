@@ -10,7 +10,7 @@ import type { NavbarTheme } from "./types";
 import {
   THEME_CONFIG,
   THEME_ASPECT_RATIOS,
-  THEME_HEIGHT_CONSTRAINTS,
+  THEME_DIMENSIONS,
   THEME_TOP_OFFSETS,
 } from "./config/desktop.config";
 
@@ -42,7 +42,7 @@ export function ThemedNavbar({
   const [scrolled, setScrolled] = useState(false);
   const config = THEME_CONFIG[theme];
   const aspectRatio = THEME_ASPECT_RATIOS[theme];
-  const heightConstraints = THEME_HEIGHT_CONSTRAINTS[theme];
+  const dimensions = THEME_DIMENSIONS[theme];
   const themeOffset = THEME_TOP_OFFSETS[theme];
   const finalTopOffset = topOffset + themeOffset;
 
@@ -69,14 +69,17 @@ export function ThemedNavbar({
         }}
       >
         {/* Wrapper keeps the bar centered and constrained on large screens */}
-        <div className="relative mx-auto w-full max-w-[1600px] px-2 pt-2 sm:px-3">
+        <div
+          className="relative mx-auto w-full px-2 pt-2 sm:px-3"
+          style={{ maxWidth: dimensions.maxWidth }}
+        >
           {/* The ornate bar — its height is driven by width to preserve aspect */}
           <div
             className="relative w-full"
             style={{
               aspectRatio: `${aspectRatio}`,
-              minHeight: heightConstraints.minHeight,
-              maxHeight: heightConstraints.maxHeight,
+              minHeight: dimensions.minHeight,
+              maxHeight: dimensions.maxHeight,
             }}
           >
             {/* Background carved bar */}
