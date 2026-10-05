@@ -2,12 +2,9 @@
 
 import { memo } from "react";
 import Link from "next/link";
-import {
-  EventCategory,
-  SubEvent,
-} from "@/components/pages/events/config/events.config";
+import { EventCategory, SubEvent } from "@/components/pages/events/config/events.config";
 import { COLORS, JAZZ_COLORS } from "@/components/pages/home/constants/palette";
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Navbar";
 
 // ═══════════════════════════════════════════════════════════════════
 // SUB-EVENT CARD COMPONENT
@@ -33,13 +30,10 @@ const SubEventCard = memo(function SubEventCard({
   const typeConfig = typeColors[event.type] || typeColors.individual;
 
   return (
-    <div
-      className="group relative"
-      style={{ animationDelay: `${index * 0.1}s` }}
-    >
+    <div className="group relative" style={{ animationDelay: `${index * 0.1}s` }}>
       {/* Card Container */}
       <div
-        className="relative h-full rounded-xl overflow-hidden transition-all duration-300 sm:hover:scale-[1.02] sm:hover:-translate-y-1"
+        className="relative h-full overflow-hidden rounded-xl transition-all duration-300 sm:hover:-translate-y-1 sm:hover:scale-[1.02]"
         style={{
           background: `linear-gradient(160deg, 
             ${categoryColor}08 0%, 
@@ -52,7 +46,7 @@ const SubEventCard = memo(function SubEventCard({
       >
         {/* Top accent line */}
         <div
-          className="absolute top-0 left-0 right-0 h-0.5"
+          className="absolute top-0 right-0 left-0 h-0.5"
           style={{
             background: `linear-gradient(90deg, transparent, ${categoryColor}80, transparent)`,
           }}
@@ -61,9 +55,9 @@ const SubEventCard = memo(function SubEventCard({
         {/* Content */}
         <div className="p-5 sm:p-6">
           {/* Header with type badge */}
-          <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="mb-4 flex items-start justify-between gap-3">
             <h3
-              className="text-lg sm:text-xl font-bold"
+              className="text-lg font-bold sm:text-xl"
               style={{
                 color: COLORS.CREAM,
                 fontFamily: "Georgia, serif",
@@ -74,7 +68,7 @@ const SubEventCard = memo(function SubEventCard({
 
             {/* Type badge */}
             <span
-              className="flex-shrink-0 px-2 py-1 rounded-full text-xs font-semibold uppercase tracking-wider"
+              className="flex-shrink-0 rounded-full px-2 py-1 text-xs font-semibold tracking-wider uppercase"
               style={{
                 background: typeConfig.bg,
                 color: typeConfig.text,
@@ -86,16 +80,13 @@ const SubEventCard = memo(function SubEventCard({
           </div>
 
           {/* Tagline */}
-          <p
-            className="text-sm font-medium mb-3"
-            style={{ color: categoryColor }}
-          >
+          <p className="mb-3 text-sm font-medium" style={{ color: categoryColor }}>
             {event.tagline}
           </p>
 
           {/* Description */}
           <p
-            className="text-sm leading-relaxed line-clamp-3 sm:line-clamp-4"
+            className="line-clamp-3 text-sm leading-relaxed sm:line-clamp-4"
             style={{ color: "rgba(255,255,255,0.65)" }}
           >
             {event.description}
@@ -107,12 +98,7 @@ const SubEventCard = memo(function SubEventCard({
               className="mt-4 inline-flex items-center gap-2 text-xs"
               style={{ color: "rgba(255,255,255,0.5)" }}
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -127,14 +113,12 @@ const SubEventCard = memo(function SubEventCard({
           {/* Register button */}
           <div className="mt-6">
             <button
-              className="w-full py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 sm:hover:scale-[1.02]"
+              className="w-full rounded-lg py-2.5 text-sm font-semibold transition-all duration-300 sm:hover:scale-[1.02]"
               style={{
                 background: event.registrationOpen
                   ? `linear-gradient(135deg, ${categoryColor}90 0%, ${categoryColor}70 100%)`
                   : "rgba(255,255,255,0.1)",
-                color: event.registrationOpen
-                  ? COLORS.CREAM
-                  : "rgba(255,255,255,0.4)",
+                color: event.registrationOpen ? COLORS.CREAM : "rgba(255,255,255,0.4)",
                 border: `1px solid ${event.registrationOpen ? categoryColor : "rgba(255,255,255,0.2)"}`,
                 cursor: event.registrationOpen ? "pointer" : "not-allowed",
               }}
@@ -147,7 +131,7 @@ const SubEventCard = memo(function SubEventCard({
 
         {/* Hover glow - desktop only */}
         <div
-          className="hidden sm:block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:block"
           style={{
             background: `radial-gradient(ellipse at center, ${categoryColor}10 0%, transparent 70%)`,
           }}
@@ -160,39 +144,25 @@ const SubEventCard = memo(function SubEventCard({
 // ═══════════════════════════════════════════════════════════════════
 // CATEGORY HEADER COMPONENT
 // ═══════════════════════════════════════════════════════════════════
-const CategoryHeader = memo(function CategoryHeader({
-  category,
-}: {
-  category: EventCategory;
-}) {
+const CategoryHeader = memo(function CategoryHeader({ category }: { category: EventCategory }) {
   return (
     <div className="mb-12 sm:mb-16">
       {/* Back button */}
       <Link
         href="/events"
-        className="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors hover:opacity-80"
+        className="mb-8 inline-flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
         style={{ color: "rgba(255,255,255,0.6)" }}
       >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
         All Categories
       </Link>
 
       {/* Category icon and title */}
-      <div className="flex items-center gap-4 sm:gap-6 mb-6">
+      <div className="mb-6 flex items-center gap-4 sm:gap-6">
         <div
-          className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-4xl sm:text-5xl"
+          className="flex h-16 w-16 items-center justify-center rounded-2xl text-4xl sm:h-20 sm:w-20 sm:text-5xl"
           style={{
             background: `linear-gradient(135deg, ${category.color}20 0%, ${category.color}10 100%)`,
             border: `2px solid ${category.color}40`,
@@ -203,7 +173,7 @@ const CategoryHeader = memo(function CategoryHeader({
 
         <div>
           <h1
-            className="text-3xl sm:text-4xl font-black italic"
+            className="text-3xl font-black italic sm:text-4xl"
             style={{
               fontFamily: "Georgia, serif",
               color: COLORS.CREAM,
@@ -212,10 +182,7 @@ const CategoryHeader = memo(function CategoryHeader({
           >
             {category.name}
           </h1>
-          <p
-            className="text-sm sm:text-base mt-1"
-            style={{ color: category.color }}
-          >
+          <p className="mt-1 text-sm sm:text-base" style={{ color: category.color }}>
             {category.tagline}
           </p>
         </div>
@@ -223,7 +190,7 @@ const CategoryHeader = memo(function CategoryHeader({
 
       {/* Description */}
       <p
-        className="max-w-3xl text-base sm:text-lg leading-relaxed"
+        className="max-w-3xl text-base leading-relaxed sm:text-lg"
         style={{ color: "rgba(255,255,255,0.7)" }}
       >
         {category.description}
@@ -232,43 +199,31 @@ const CategoryHeader = memo(function CategoryHeader({
       {/* Stats bar */}
       <div className="mt-8 flex flex-wrap gap-4 sm:gap-6">
         <div
-          className="px-4 py-2 rounded-lg"
+          className="rounded-lg px-4 py-2"
           style={{
             background: `${category.color}15`,
             border: `1px solid ${category.color}30`,
           }}
         >
-          <span
-            className="text-2xl font-bold"
-            style={{ color: category.color }}
-          >
+          <span className="text-2xl font-bold" style={{ color: category.color }}>
             {category.subEvents.length}
           </span>
-          <span
-            className="ml-2 text-sm"
-            style={{ color: "rgba(255,255,255,0.6)" }}
-          >
+          <span className="ml-2 text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
             Events
           </span>
         </div>
 
         <div
-          className="px-4 py-2 rounded-lg"
+          className="rounded-lg px-4 py-2"
           style={{
             background: `${JAZZ_COLORS.ELECTRIC_BLUE}15`,
             border: `1px solid ${JAZZ_COLORS.ELECTRIC_BLUE}30`,
           }}
         >
-          <span
-            className="text-2xl font-bold"
-            style={{ color: JAZZ_COLORS.ELECTRIC_BLUE }}
-          >
+          <span className="text-2xl font-bold" style={{ color: JAZZ_COLORS.ELECTRIC_BLUE }}>
             {category.subEvents.filter((e) => e.registrationOpen).length}
           </span>
-          <span
-            className="ml-2 text-sm"
-            style={{ color: "rgba(255,255,255,0.6)" }}
-          >
+          <span className="ml-2 text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
             Open for Registration
           </span>
         </div>
@@ -285,11 +240,11 @@ export function CategoryPageContent({ category }: { category: EventCategory }) {
     <>
       {/* Fixed navbar - always visible */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
       <main
-        className="min-h-screen pt-28 sm:pt-32 pb-20 px-4 sm:px-6"
+        className="min-h-screen px-4 pt-28 pb-20 sm:px-6 sm:pt-32"
         style={{
           background: `linear-gradient(180deg, 
             ${JAZZ_COLORS.BG_DEEP} 0%, 
@@ -302,7 +257,7 @@ export function CategoryPageContent({ category }: { category: EventCategory }) {
       >
         {/* Background decorative elements */}
         <div
-          className="fixed inset-0 pointer-events-none opacity-[0.03]"
+          className="pointer-events-none fixed inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `
             radial-gradient(circle at 20% 30%, ${category.color} 0%, transparent 50%),
@@ -311,11 +266,11 @@ export function CategoryPageContent({ category }: { category: EventCategory }) {
           }}
         />
 
-        <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="relative z-10 mx-auto max-w-6xl">
           <CategoryHeader category={category} />
 
           {/* Events Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {category.subEvents.map((event, index) => (
               <SubEventCard
                 key={event.id}
@@ -327,10 +282,10 @@ export function CategoryPageContent({ category }: { category: EventCategory }) {
           </div>
 
           {/* Bottom navigation */}
-          <div className="mt-16 sm:mt-20 text-center">
+          <div className="mt-16 text-center sm:mt-20">
             <Link
               href="/events"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 hover:scale-105"
               style={{
                 background: `linear-gradient(135deg, ${JAZZ_COLORS.HOT_PINK}80 0%, ${JAZZ_COLORS.ROYAL_PURPLE}80 100%)`,
                 color: COLORS.CREAM,
@@ -338,12 +293,7 @@ export function CategoryPageContent({ category }: { category: EventCategory }) {
                 boxShadow: `0 4px 20px ${JAZZ_COLORS.HOT_PINK}30`,
               }}
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

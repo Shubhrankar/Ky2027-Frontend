@@ -1,6 +1,6 @@
 "use client";
 
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Navbar";
 import { ProfileLoader } from "./loader";
 import { useMyAccount, useSignOut } from "@/lib/api/hooks";
 import { ProfileHero, DetailedInfo, ProfileFooter } from "./sections";
@@ -18,24 +18,19 @@ interface ProfilePageContentProps {
 
 export function ProfilePageContent({ user }: ProfilePageContentProps) {
   const { isSigningOut, handleSignOut } = useSignOut();
-  
+
   // Fetch account data via GraphQL - returns profile + progress
-  const {
-    profile: userData,
-    progress,
-    isLoading,
-    isError,
-  } = useMyAccount();
+  const { profile: userData, progress, isLoading, isError } = useMyAccount();
 
   return (
     <>
       {/* Fixed navbar */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
       <main
-        className="min-h-screen pt-28 sm:pt-32 pb-12 px-4"
+        className="min-h-screen px-4 pt-28 pb-12 sm:pt-32"
         style={{
           background: `
             radial-gradient(ellipse at 20% 0%, rgba(212,168,83,0.08) 0%, transparent 50%),
@@ -44,7 +39,7 @@ export function ProfilePageContent({ user }: ProfilePageContentProps) {
           `,
         }}
       >
-        <div className="max-w-5xl mx-auto">
+        <div className="mx-auto max-w-5xl">
           {isLoading ? (
             <ProfileLoader />
           ) : isError ? (
@@ -52,24 +47,13 @@ export function ProfilePageContent({ user }: ProfilePageContentProps) {
           ) : (
             <>
               {/* Hero Section - Avatar, Name, Status */}
-              <ProfileHero 
-                userData={userData} 
-                user={user} 
-                progress={progress} 
-              />
+              <ProfileHero userData={userData} user={user} progress={progress} />
 
               {/* Detailed Info Section - Cards & Verification */}
-              <DetailedInfo 
-                userData={userData} 
-                user={user} 
-                progress={progress} 
-              />
+              <DetailedInfo userData={userData} user={user} progress={progress} />
 
               {/* Footer Section - Sign Out & Decorative */}
-              <ProfileFooter 
-                isSigningOut={isSigningOut} 
-                handleSignOut={handleSignOut} 
-              />
+              <ProfileFooter isSigningOut={isSigningOut} handleSignOut={handleSignOut} />
             </>
           )}
         </div>

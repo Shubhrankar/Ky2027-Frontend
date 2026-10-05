@@ -5,7 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { EVENT_CATEGORIES } from "@/components/pages/events/config/events.config";
 import { COLORS, JAZZ_COLORS } from "@/components/pages/home/constants/palette";
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Navbar";
 
 // ═══════════════════════════════════════════════════════════════════
 // CATEGORY CARD COMPONENT
@@ -25,7 +25,7 @@ const CategoryCard = memo(function CategoryCard({
     >
       {/* Card Container */}
       <div
-        className="relative h-[320px] sm:h-[380px] rounded-2xl overflow-hidden transition-all duration-500 sm:group-hover:scale-[1.03] sm:group-hover:-translate-y-2"
+        className="relative h-[320px] overflow-hidden rounded-2xl transition-all duration-500 sm:h-[380px] sm:group-hover:-translate-y-2 sm:group-hover:scale-[1.03]"
         style={{
           background: `linear-gradient(180deg, 
             ${category.color}15 0%, 
@@ -39,7 +39,7 @@ const CategoryCard = memo(function CategoryCard({
       >
         {/* Ornate top border */}
         <div
-          className="absolute top-0 left-0 right-0 h-1"
+          className="absolute top-0 right-0 left-0 h-1"
           style={{
             background: `linear-gradient(90deg, transparent, ${category.color}, transparent)`,
           }}
@@ -47,7 +47,7 @@ const CategoryCard = memo(function CategoryCard({
 
         {/* Glow effect on hover - desktop only */}
         <div
-          className="hidden sm:block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:block"
           style={{
             background: `radial-gradient(ellipse at center, ${category.color}20 0%, transparent 70%)`,
           }}
@@ -62,7 +62,7 @@ const CategoryCard = memo(function CategoryCard({
         <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
           {/* Category name */}
           <h3
-            className="text-2xl sm:text-3xl font-black italic mb-2"
+            className="mb-2 text-2xl font-black italic sm:text-3xl"
             style={{
               fontFamily: "Georgia, serif",
               color: COLORS.CREAM,
@@ -74,7 +74,7 @@ const CategoryCard = memo(function CategoryCard({
 
           {/* Tagline */}
           <p
-            className="text-sm sm:text-base opacity-80 line-clamp-2"
+            className="line-clamp-2 text-sm opacity-80 sm:text-base"
             style={{ color: category.color }}
           >
             {category.tagline}
@@ -82,7 +82,7 @@ const CategoryCard = memo(function CategoryCard({
 
           {/* Event count badge */}
           <div
-            className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold w-fit"
+            className="mt-3 inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold"
             style={{
               background: `${category.color}20`,
               border: `1px solid ${category.color}40`,
@@ -91,36 +91,31 @@ const CategoryCard = memo(function CategoryCard({
           >
             <span>{category.subEvents.length} Events</span>
             <svg
-              className="w-3 h-3 transition-transform sm:group-hover:translate-x-1"
+              className="h-3 w-3 transition-transform sm:group-hover:translate-x-1"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </div>
         </div>
 
         {/* Ornate corner accents */}
         <div
-          className="absolute top-3 left-3 w-6 h-6 border-l-2 border-t-2"
+          className="absolute top-3 left-3 h-6 w-6 border-t-2 border-l-2"
           style={{ borderColor: `${category.color}50` }}
         />
         <div
-          className="absolute top-3 right-3 w-6 h-6 border-r-2 border-t-2"
+          className="absolute top-3 right-3 h-6 w-6 border-t-2 border-r-2"
           style={{ borderColor: `${category.color}50` }}
         />
         <div
-          className="absolute bottom-3 left-3 w-6 h-6 border-l-2 border-b-2"
+          className="absolute bottom-3 left-3 h-6 w-6 border-b-2 border-l-2"
           style={{ borderColor: `${category.color}50` }}
         />
         <div
-          className="absolute bottom-3 right-3 w-6 h-6 border-r-2 border-b-2"
+          className="absolute right-3 bottom-3 h-6 w-6 border-r-2 border-b-2"
           style={{ borderColor: `${category.color}50` }}
         />
       </div>
@@ -133,9 +128,9 @@ const CategoryCard = memo(function CategoryCard({
 // ═══════════════════════════════════════════════════════════════════
 const PageTitle = memo(function PageTitle() {
   return (
-    <div className="text-center mb-12 sm:mb-16">
+    <div className="mb-12 text-center sm:mb-16">
       {/* Decorative line */}
-      <div className="flex items-center justify-center gap-4 mb-6">
+      <div className="mb-6 flex items-center justify-center gap-4">
         <div
           className="h-px w-16 sm:w-24"
           style={{
@@ -143,7 +138,7 @@ const PageTitle = memo(function PageTitle() {
           }}
         />
         <span
-          className="text-xs sm:text-sm uppercase tracking-[0.3em] font-semibold"
+          className="text-xs font-semibold tracking-[0.3em] uppercase sm:text-sm"
           style={{ color: COLORS.BRIGHT_GOLD }}
         >
           Kashi Yatra 2027
@@ -158,7 +153,7 @@ const PageTitle = memo(function PageTitle() {
 
       {/* Main title */}
       <h1
-        className="text-4xl sm:text-5xl md:text-6xl font-black italic mb-4"
+        className="mb-4 text-4xl font-black italic sm:text-5xl md:text-6xl"
         style={{
           fontFamily: "Georgia, serif",
           background: `linear-gradient(135deg, ${COLORS.CREAM} 0%, ${COLORS.BRIGHT_GOLD} 50%, ${COLORS.CREAM} 100%)`,
@@ -172,7 +167,7 @@ const PageTitle = memo(function PageTitle() {
 
       {/* Subtitle */}
       <p
-        className="text-base sm:text-lg max-w-2xl mx-auto"
+        className="mx-auto max-w-2xl text-base sm:text-lg"
         style={{ color: "rgba(255,255,255,0.6)" }}
       >
         Nine spectacular categories. Countless opportunities to shine.
@@ -187,7 +182,7 @@ const PageTitle = memo(function PageTitle() {
             e.preventDefault();
             toast.info("PDF will be available soon!");
           }}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105"
+          className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 hover:scale-105"
           style={{
             background: `linear-gradient(135deg, ${JAZZ_COLORS.HOT_PINK}80 0%, ${JAZZ_COLORS.ROYAL_PURPLE}80 100%)`,
             color: COLORS.CREAM,
@@ -195,12 +190,7 @@ const PageTitle = memo(function PageTitle() {
             boxShadow: `0 4px 20px ${JAZZ_COLORS.HOT_PINK}30`,
           }}
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -223,11 +213,11 @@ export function EventsPageContent() {
     <>
       {/* Fixed navbar - always visible */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
       <main
-        className="min-h-screen pt-28 sm:pt-32 pb-20 px-4 sm:px-6"
+        className="min-h-screen px-4 pt-28 pb-20 sm:px-6 sm:pt-32"
         style={{
           background: `linear-gradient(180deg, 
             ${JAZZ_COLORS.BG_DEEP} 0%, 
@@ -240,7 +230,7 @@ export function EventsPageContent() {
       >
         {/* Background decorative elements */}
         <div
-          className="fixed inset-0 pointer-events-none opacity-[0.03]"
+          className="pointer-events-none fixed inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `
             radial-gradient(circle at 20% 30%, ${JAZZ_COLORS.HOT_PINK} 0%, transparent 50%),
@@ -249,24 +239,20 @@ export function EventsPageContent() {
           }}
         />
 
-        <div className="relative z-10 max-w-7xl mx-auto">
+        <div className="relative z-10 mx-auto max-w-7xl">
           <PageTitle />
 
           {/* Categories Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5">
             {EVENT_CATEGORIES.map((category, index) => (
-              <CategoryCard
-                key={category.id}
-                category={category}
-                index={index}
-              />
+              <CategoryCard key={category.id} category={category} index={index} />
             ))}
           </div>
 
           {/* Bottom decorative element */}
-          <div className="mt-16 sm:mt-20 text-center">
+          <div className="mt-16 text-center sm:mt-20">
             <div
-              className="inline-block px-6 py-3 rounded-full text-sm"
+              className="inline-block rounded-full px-6 py-3 text-sm"
               style={{
                 background: `${COLORS.BRIGHT_GOLD}10`,
                 border: `1px solid ${COLORS.BRIGHT_GOLD}30`,

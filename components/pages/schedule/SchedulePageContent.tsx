@@ -1,7 +1,7 @@
 "use client";
 
 import { JAZZ_COLORS } from "@/components/pages/home/constants/palette";
-import { NavbarDesign as Navbar } from "@/components/navbar/Design";
+import { LightNavbar } from "@/components/navbar/Navbar";
 import { ScheduleHero, SchedulePlaceholder } from ".";
 
 // ═══════════════════════════════════════════════════════════════════
@@ -14,11 +14,11 @@ export function SchedulePageContent() {
     <>
       {/* Fixed navbar - always visible (matches events/passes/about/contact internal pages) */}
       <div className="fixed inset-x-0 top-0 z-[200]">
-        <Navbar position="relative" topOffset={18} />
+        <LightNavbar position="relative" topOffset={18} theme="main" />
       </div>
 
       <main
-        className="relative min-h-screen pt-20 sm:pt-24 overflow-hidden"
+        className="relative min-h-screen overflow-hidden pt-20 sm:pt-24"
         style={{
           background: `linear-gradient(180deg, 
             ${JAZZ_COLORS.BG_DEEP} 0%, 
