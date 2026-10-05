@@ -1,19 +1,21 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 /**
  * PageLoader - Minimal overlay loader with blur + scroll lock
+ * Uses diya spinner for all routes
  */
 export function PageLoader() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const prevPathRef = useRef(pathname);
 
   // Handle route change start
-  const handleRouteChangeStart = useCallback(() => {
+  const handleRouteChangeStart = useCallback((href: string) => {
     setIsLoading(true);
     setIsVisible(true);
     // Lock scroll
@@ -26,7 +28,9 @@ export function PageLoader() {
       setIsLoading(false);
       // Unlock scroll
       document.body.style.overflow = "";
-      setTimeout(() => setIsVisible(false), 400);
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 400);
     }, 200);
   }, []);
 
@@ -46,13 +50,23 @@ export function PageLoader() {
           !link.hasAttribute("download") &&
           link.target !== "_blank"
         ) {
-          handleRouteChangeStart();
+          handleRouteChangeStart(href);
         }
       }
     };
 
+    // Listen for browser back/forward
+    const handlePopState = () => {
+      handleRouteChangeStart(window.location.pathname);
+    };
+
     document.addEventListener("click", handleClick, true);
-    return () => document.removeEventListener("click", handleClick, true);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      document.removeEventListener("click", handleClick, true);
+      window.removeEventListener("popstate", handlePopState);
+    };
   }, [pathname, handleRouteChangeStart]);
 
   // Complete loading when pathname changes
@@ -60,6 +74,7 @@ export function PageLoader() {
     if (isLoading) {
       handleRouteChangeComplete();
     }
+    prevPathRef.current = pathname;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, searchParams]);
 
@@ -86,7 +101,7 @@ export function PageLoader() {
       {/* Centered loader */}
       <div className="flex flex-col items-center gap-5">
         {/* Spinning diya ring */}
-        <div className="relative w-20 h-20">
+        <div className="relative h-20 w-20">
           {/* Outer spinning ring */}
           <div
             className="absolute inset-0 rounded-full border-2 border-transparent"
@@ -108,7 +123,7 @@ export function PageLoader() {
           {/* Center diya flame */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className="w-4 h-6 rounded-full"
+              className="h-6 w-4 rounded-full"
               style={{
                 background: "linear-gradient(to top, #FF6B00, #FFD700, #FFF8DC)",
                 boxShadow: "0 0 20px rgba(255,180,0,0.8), 0 0 40px rgba(255,107,0,0.5)",

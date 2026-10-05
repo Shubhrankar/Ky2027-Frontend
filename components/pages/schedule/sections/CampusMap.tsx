@@ -1,14 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import {
-  VENUES,
-  LAMPS,
-  MAIN_BUILDING_OUTLINE,
-  SCHEDULED_EVENTS,
-  type Venue,
-} from "../config/campusMap.config";
+import Link from "next/link";
+import { VENUES, LAMPS, SCHEDULED_EVENTS, type Venue } from "../config/campusMap.config";
 import styles from "./CampusMap.module.css";
 
 // ═══════════════════════════════════════════════════════════════════
@@ -74,15 +68,79 @@ export const DEFAULT_LAYERS: MapLayers = {
   labels: true,
 };
 
-const LAYERS: { key: Layer; label: string }[] = [
-  { key: "night", label: "Night" },
-  { key: "lights", label: "Lights" },
-  { key: "clouds", label: "Clouds" },
-  { key: "birds", label: "Birds" },
-  { key: "labels", label: "Labels" },
+const LAYERS: { key: Layer; label: string; icon: string }[] = [
+  { key: "night", label: "Night", icon: "🌙" },
+  { key: "lights", label: "Lights", icon: "💡" },
+  { key: "clouds", label: "Clouds", icon: "☁️" },
+  { key: "birds", label: "Birds", icon: "🐦" },
+  { key: "labels", label: "Labels", icon: "🏷️" },
 ];
 
-/** Night / Lights / Clouds / Birds / Labels toggles. */
+/** Combined map controls: Search button + Layer toggles in a vertical stack */
+export function MapControls({
+  layers,
+  onToggle,
+  onSearchClick,
+  className = "",
+}: {
+  layers: MapLayers;
+  onToggle: (key: Layer) => void;
+  onSearchClick: () => void;
+  className?: string;
+}) {
+  return (
+    <div className={`${styles.controls} ${className}`}>
+      {/* Search button */}
+      <button className={styles.searchBtn} onClick={onSearchClick} aria-label="Search events">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+      </button>
+
+      {/* Layers dropdown */}
+      <nav className={styles.bar} aria-label="Map layers">
+        <div className={styles.trigger}>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+            <polyline points="2 17 12 22 22 17" />
+            <polyline points="2 12 12 17 22 12" />
+          </svg>
+        </div>
+
+        <div className={styles.dropdown}>
+          {LAYERS.map(({ key, label, icon }) => (
+            <button
+              key={key}
+              type="button"
+              aria-pressed={layers[key]}
+              onClick={() => onToggle(key)}
+            >
+              <span className={styles.icon}>{icon}</span>
+              <span className={styles.label}>{label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+    </div>
+  );
+}
+
+/** Night / Lights / Clouds / Birds / Labels toggles - vertical hover menu. */
 export function MapLayerControls({
   layers,
   onToggle,
@@ -94,11 +152,31 @@ export function MapLayerControls({
 }) {
   return (
     <nav className={`${styles.bar} ${className}`} aria-label="Map layers">
-      {LAYERS.map(({ key, label }) => (
-        <button key={key} type="button" aria-pressed={layers[key]} onClick={() => onToggle(key)}>
-          {label}
-        </button>
-      ))}
+      {/* Trigger icon - stacked layers */}
+      <div className={styles.trigger}>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+          <polyline points="2 17 12 22 22 17" />
+          <polyline points="2 12 12 17 22 12" />
+        </svg>
+      </div>
+
+      {/* Dropdown options */}
+      <div className={styles.dropdown}>
+        {LAYERS.map(({ key, label, icon }) => (
+          <button key={key} type="button" aria-pressed={layers[key]} onClick={() => onToggle(key)}>
+            <span className={styles.icon}>{icon}</span>
+            <span className={styles.label}>{label}</span>
+          </button>
+        ))}
+      </div>
     </nav>
   );
 }
@@ -115,6 +193,8 @@ interface CampusMapProps {
   fill?: boolean;
   /** Controlled layer visibility (the toggles are then rendered by the parent). */
   layers?: MapLayers;
+  /** Callback when search button is clicked */
+  onSearchClick?: () => void;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -126,6 +206,7 @@ export function CampusMap({
   edgeFade = false,
   fill = false,
   layers: controlledLayers,
+  onSearchClick,
   className = "",
   style,
 }: CampusMapProps) {
@@ -135,8 +216,26 @@ export function CampusMap({
 
   const focused = VENUES.find((v) => v.slug === focusSlug);
 
+  // Handle hover - just set the venue directly, CSS transition handles the smooth pan
+  const handleHover = (venue: Venue | null) => {
+    setHovered(venue);
+  };
+
+  // Clamp translation to prevent showing too much empty space outside the map
+  // Allow some overflow but not too much - keeps the label visible while preventing extreme panning
+  const clampTranslate = (pos: number, scale: number) => {
+    // Allow the view center to go a bit beyond the normal bounds for edge labels
+    // This keeps them visible without panning too far off the map
+    const margin = 15; // Allow 15% beyond normal bounds
+    const visiblePercent = 100 / scale;
+    const minCenter = visiblePercent / 2 - margin;
+    const maxCenter = 100 - visiblePercent / 2 + margin;
+    const clampedPos = Math.max(minCenter, Math.min(maxCenter, pos));
+    return 50 - clampedPos;
+  };
+
   // Walk-in view: zoom around the venue and move it to the centre.
-  // Hover view: zoom around the label so it stays under the cursor.
+  // Hover view: translate the map so the hovered label moves to center, then scale.
   let transform = "none";
   let origin = "50% 50%";
   if (focused) {
@@ -144,8 +243,15 @@ export function CampusMap({
     origin = `${fx}% ${fy}%`;
     transform = `translate(${50 - fx}%, ${50 - fy}%) scale(2.2)`;
   } else if (hoverZoom && hovered) {
-    origin = `${hovered.x}% ${hovered.y}%`;
-    transform = "scale(1.5)";
+    // Use translate to pan the view, keeping transform-origin at center
+    // Clamp translations to prevent showing empty space at edges
+    const scale = 1.5;
+    const hx = hovered.x;
+    const hy = hovered.y;
+    const tx = clampTranslate(hx, scale);
+    const ty = clampTranslate(hy, scale);
+    origin = "50% 50%";
+    transform = `translate(${tx}%, ${ty}%) scale(${scale})`;
   }
 
   const toggle = (key: Layer) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -154,7 +260,7 @@ export function CampusMap({
     <div
       className={`${styles.map} ${layers.night ? styles.night : ""} ${edgeFade ? styles.fade : ""} ${fill ? styles.fill : ""} ${className}`}
       style={style}
-      onMouseLeave={() => setHovered(null)}
+      onMouseLeave={() => handleHover(null)}
     >
       <div className={styles.stage} style={{ transform, transformOrigin: origin }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -253,13 +359,23 @@ export function CampusMap({
         {/* Venue labels */}
         <div className={`${styles.layer} ${styles.labels} ${layers.labels ? "" : styles.off}`}>
           <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polygon points={MAIN_BUILDING_OUTLINE} />
             {VENUES.map((v) =>
               v.anchor ? (
                 <line key={v.slug} x1={v.x} y1={v.y} x2={v.anchor[0]} y2={v.anchor[1]} />
               ) : null
             )}
           </svg>
+
+          {/* Building glow effect on hover */}
+          {hovered && hovered.anchor && (
+            <div
+              className={`${styles.buildingGlow} ${TONE_CLASS[hovered.tone]}`}
+              style={{
+                left: `${hovered.anchor[0]}%`,
+                top: `${hovered.anchor[1]}%`,
+              }}
+            />
+          )}
 
           {VENUES.map((v) => {
             const className = `${styles.lb} ${TONE_CLASS[v.tone]} ${v.large ? styles.xl : ""} ${
@@ -286,9 +402,9 @@ export function CampusMap({
                     className={className}
                     style={position}
                     aria-label={`${v.name} — ${count} ${count === 1 ? "event" : "events"}`}
-                    onMouseEnter={() => setHovered(v)}
-                    onFocus={() => setHovered(v)}
-                    onBlur={() => setHovered(null)}
+                    onMouseEnter={() => handleHover(v)}
+                    onFocus={() => handleHover(v)}
+                    onBlur={() => handleHover(null)}
                   >
                     {v.label}
                     {count > 0 && <span className={styles.count}>{count}</span>}
@@ -300,7 +416,13 @@ export function CampusMap({
         </div>
       </div>
 
-      {showControls && !controlledLayers && <MapLayerControls layers={layers} onToggle={toggle} />}
+      {showControls && !controlledLayers && (
+        <MapControls
+          layers={layers}
+          onToggle={toggle}
+          onSearchClick={onSearchClick || (() => {})}
+        />
+      )}
     </div>
   );
 }

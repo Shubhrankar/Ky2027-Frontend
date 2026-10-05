@@ -2251,3 +2251,140 @@ body {
 .animate-marquee-right {
   animation: marquee-right 45s linear infinite;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCHEDULE PAGE - MAP CONTROLS ANIMATION
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes controlsSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE LOADER - CLOUD PATCH ANIMATIONS
+   Individual cloud patches moving across the screen
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes cloudPatchIn {
+  0% {
+    left: -30%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    left: 110%;
+    opacity: 0;
+  }
+}
+
+@keyframes cloudPatchOut {
+  0% {
+    left: 50%;
+    opacity: 1;
+  }
+  100% {
+    left: 130%;
+    opacity: 0;
+  }
+}
+
+@keyframes cloudPatchInReverse {
+  0% {
+    left: 130%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    left: -30%;
+    opacity: 0;
+  }
+}
+
+@keyframes cloudPatchOutReverse {
+  0% {
+    left: 50%;
+    opacity: 1;
+  }
+  100% {
+    left: -30%;
+    opacity: 0;
+  }
+}
+
+/* Legacy cloud sweep animations (keeping for compatibility) */
+@keyframes cloudSweepIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes cloudSweepOut {
+  0% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+}
+
+@keyframes cloudSweepInReverse {
+  0% {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes cloudSweepOutReverse {
+  0% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0.8;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE LOADER - DIYA SPINNER ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes loaderSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes flameFlicker {
+  0% {
+    transform: scaleY(1) scaleX(1);
+  }
+  100% {
+    transform: scaleY(1.1) scaleX(0.95);
+  }
+}

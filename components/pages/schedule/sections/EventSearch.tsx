@@ -6,14 +6,19 @@ import { Search, X } from "lucide-react";
 import { SCHEDULED_EVENTS } from "../config/campusMap.config";
 
 // ═══════════════════════════════════════════════════════════════════
-// EVENT SEARCH
-// Matches event, category or venue names; results open the venue page.
+// EVENT SEARCH OVERLAY
+// Full-screen search overlay with auto-suggestions
+// Opened via search button in the map controls
 // ═══════════════════════════════════════════════════════════════════
 
-export function EventSearch({ className = "" }: { className?: string }) {
+interface EventSearchOverlayProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function EventSearchOverlay({ isOpen, onClose }: EventSearchOverlayProps) {
   const [query, setQuery] = useState("");
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const q = query.trim().toLowerCase();
   const results = q
@@ -22,73 +27,164 @@ export function EventSearch({ className = "" }: { className?: string }) {
       ).slice(0, 8)
     : [];
 
-  // Close the dropdown when clicking outside
+  // Focus input when overlay opens
   useEffect(() => {
-    const onPointerDown = (e: PointerEvent) => {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    if (isOpen && inputRef.current) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [isOpen]);
+
+  // Close on escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+        setQuery("");
+      }
     };
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, []);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Prevent body scroll when open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // Reset query when closed
+  useEffect(() => {
+    if (!isOpen) {
+      setQuery("");
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   return (
-    <div ref={rootRef} className={`relative ${className}`}>
-      <label className="flex items-center gap-3 rounded-md border border-[#D4A853]/30 bg-[#0d1124]/90 px-4 py-2.5 backdrop-blur focus-within:border-[#D4A853]/70">
-        <Search className="h-4 w-4 shrink-0 text-[#D4A853]" aria-hidden />
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setOpen(true);
-          }}
-          onFocus={() => setOpen(true)}
-          onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
-          placeholder="Search an Event"
-          aria-label="Search an event"
-          className="w-full bg-transparent text-sm text-[#f3e6c8] placeholder:text-white/40 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
-        />
-        {query && (
-          <button
-            type="button"
-            onClick={() => setQuery("")}
-            aria-label="Clear search"
-            className="text-white/50 hover:text-white"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
-      </label>
+    <div
+      className="fixed inset-0 z-[400] flex flex-col"
+      style={{
+        animation: "fadeIn 0.2s ease-out",
+      }}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
 
-      {open && q && (
-        <ul
-          className="absolute inset-x-0 top-full z-30 mt-1 max-h-[60vh] overflow-y-auto rounded-md border border-white/10 bg-[#0d1124]/95 py-1 shadow-2xl backdrop-blur"
-          data-lenis-prevent
+      {/* Search container - slides up from bottom */}
+      <div
+        className="relative mt-auto flex w-full flex-col items-center px-4 pb-8"
+        style={{
+          animation: "slideUp 0.3s ease-out",
+        }}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="mb-6 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
+          aria-label="Close search"
         >
-          {results.length === 0 && (
-            <li className="px-4 py-3 text-sm text-white/50">
-              No events match &ldquo;{query}&rdquo;
-            </li>
-          )}
-          {results.map(({ event, venue, day }) => (
-            <li key={event.id}>
-              <Link
-                href={`/schedule/${venue.slug}`}
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-between gap-4 px-4 py-2 hover:bg-white/5 focus:bg-white/5 focus:outline-none"
+          <X className="h-5 w-5" />
+        </button>
+
+        {/* Search input */}
+        <div className="w-full max-w-2xl">
+          <label className="flex items-center gap-4 rounded-2xl border-2 border-[#D4A853]/60 bg-gradient-to-r from-[#0d1124]/98 to-[#1a1530]/98 px-6 py-4 shadow-2xl backdrop-blur-md transition-all focus-within:border-[#D4A853] focus-within:shadow-[0_0_30px_rgba(212,168,83,0.3)]">
+            <Search className="h-6 w-6 shrink-0 text-[#D4A853]" aria-hidden />
+            <input
+              ref={inputRef}
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search events, venues, categories..."
+              aria-label="Search events"
+              className="w-full bg-transparent text-lg text-[#f3e6c8] placeholder:text-[#D4A853]/40 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="Clear search"
+                className="text-[#D4A853]/60 transition-colors hover:text-[#D4A853]"
               >
-                <span>
-                  <span className="block text-sm text-[#f3e6c8]">{event.name}</span>
-                  <span className="block text-[11px] text-white/50">{venue.name}</span>
-                </span>
-                <span className="shrink-0 text-[10px] font-semibold tracking-[0.18em] text-[#D4A853] uppercase">
-                  Day {day}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+                <X className="h-5 w-5" />
+              </button>
+            )}
+          </label>
+
+          {/* Auto-suggestions */}
+          {q && (
+            <div
+              className="mt-3 max-h-[50vh] overflow-y-auto rounded-2xl border-2 border-[#D4A853]/30 bg-[#0d1124]/98 py-2 shadow-2xl backdrop-blur-md"
+              data-lenis-prevent
+            >
+              {results.length === 0 ? (
+                <div className="px-6 py-4 text-center text-white/50">
+                  No events match &ldquo;{query}&rdquo;
+                </div>
+              ) : (
+                results.map(({ event, venue, day, category }) => (
+                  <Link
+                    key={event.id}
+                    href={`/schedule/${venue.slug}`}
+                    onClick={onClose}
+                    className="flex items-center justify-between gap-4 px-6 py-3 transition-colors hover:bg-[#D4A853]/10 focus:bg-[#D4A853]/10 focus:outline-none"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-base font-medium text-[#f3e6c8]">
+                        {event.name}
+                      </div>
+                      <div className="mt-0.5 flex items-center gap-2 text-sm text-white/50">
+                        <span>{venue.name}</span>
+                        <span className="text-[#D4A853]/50">•</span>
+                        <span>{category.name}</span>
+                      </div>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-[#D4A853]/20 px-3 py-1 text-xs font-semibold tracking-wider text-[#D4A853] uppercase">
+                      Day {day}
+                    </span>
+                  </Link>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* Hint text */}
+          {!q && (
+            <p className="mt-4 text-center text-sm text-white/40">
+              Start typing to search events, venues, or categories
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* CSS Animations */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }
