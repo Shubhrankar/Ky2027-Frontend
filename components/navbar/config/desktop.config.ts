@@ -86,17 +86,17 @@ export const THEME_CONFIG: Record<NavbarTheme, ThemeVisualConfig> = {
         "radial-gradient(circle, rgba(187,247,208,0.6) 0%, rgba(74,222,128,0.35) 50%, transparent 75%)",
     },
     linkStyle: {
-      color: "#1a3a1a",
-      activeColor: "#052e05",
+      color: "#1a3a1a", // Inactive: dark green
+      activeColor: "#022c02", // Active: very dark green
       activeBg:
-        "linear-gradient(135deg, rgba(134,239,172,0.95) 0%, rgba(74,222,128,0.9) 50%, rgba(134,239,172,0.95) 100%)",
+        "linear-gradient(135deg, rgba(34,197,94,0.95) 0%, rgba(22,163,74,0.9) 50%, rgba(34,197,94,0.95) 100%)",
       inactiveBg: "rgba(74,222,128,0.2)",
-      activeBorder: "2px solid rgba(187,247,208,1)",
+      activeBorder: "2px solid rgba(134,239,172,1)",
       inactiveBorder: "1px solid rgba(74,222,128,0.4)",
       activeShadow:
         "0 0 20px rgba(74,222,128,0.8), 0 0 40px rgba(34,197,94,0.5), inset 0 0 10px rgba(255,255,255,0.3)",
       inactiveShadow: "0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)",
-      activeTextShadow: "0 1px 2px rgba(0,0,0,0.15)",
+      activeTextShadow: "0 1px 2px rgba(0,0,0,0.2), 0 0 8px rgba(34,197,94,0.4)",
       inactiveTextShadow: "0 1px 1px rgba(255,255,255,0.3)",
     },
     hamburgerGradient: "linear-gradient(90deg, #4ade80, #86efac)",
@@ -120,7 +120,7 @@ export const THEME_LAYOUT: Record<NavbarTheme, DesktopLayoutConfig> = {
     secondaryRightAuth: "0.5%",
   },
   about: {
-    navbarOffsetY: "0px",
+    navbarOffsetY: "5px",
     primaryLinksY: "1%",
     secondaryLinksY: "1%",
     primaryLeft: "22%",
@@ -129,9 +129,9 @@ export const THEME_LAYOUT: Record<NavbarTheme, DesktopLayoutConfig> = {
     secondaryRightAuth: "2%",
   },
   sponsor: {
-    navbarOffsetY: "0px",
-    primaryLinksY: "8%",
-    secondaryLinksY: "11%",
+    navbarOffsetY: "7px",
+    primaryLinksY: "1%",
+    secondaryLinksY: "1%",
     primaryLeft: "22%",
     primaryRight: "28%",
     secondaryRight: "5%",

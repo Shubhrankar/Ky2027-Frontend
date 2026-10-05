@@ -16,6 +16,6 @@ export const BADGE_STYLES: Record<NavbarTheme, BadgeStyleConfig> = {
   },
   sponsor: {
     position: "left-[16%] top-[52%]",
-    size: "h-[116%] sm:h-[180%]",
+    size: "h-[116%] sm:h-[230%]",
   },
 };
