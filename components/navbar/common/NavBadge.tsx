@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { type NavbarTheme, THEME_CONFIG, BADGE_STYLES } from "../config/theme.config";
+import type { NavbarTheme } from "../types";
+import { THEME_CONFIG } from "../config/desktop.config";
+import { BADGE_STYLES } from "../config/badge.config";
 
 /**
  * Theme-aware IIT BHU Badge with dynamic glow

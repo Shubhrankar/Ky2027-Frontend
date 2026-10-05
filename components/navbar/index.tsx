@@ -6,13 +6,13 @@ import { NavbarDesktop } from "./desktop";
 import { NavbarMobile } from "./mobile";
 import { NavBadge } from "./common/NavBadge";
 import { NavbarProvider } from "./config/NavbarContext";
+import type { NavbarTheme } from "./types";
 import {
-  type NavbarTheme,
   THEME_CONFIG,
   THEME_ASPECT_RATIOS,
   THEME_HEIGHT_CONSTRAINTS,
   THEME_TOP_OFFSETS,
-} from "./config/theme.config";
+} from "./config/desktop.config";
 
 export type { NavbarTheme };
 

@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Spinner } from "@/components/ui/spinner";
 import { useNavbar } from "../config/NavbarContext";
-import { type NavbarTheme, MOBILE_THEME_STYLES } from "../config/theme.config";
+import type { NavbarTheme } from "../types";
+import { MOBILE_THEME_STYLES } from "../config/mobile.config";
 
 /**
  * Theme-aware Mobile Navbar

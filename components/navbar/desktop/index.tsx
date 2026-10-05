@@ -7,7 +7,8 @@ import { useNavbar } from "../config/NavbarContext";
 import { SpiritualIcon } from "./SpiritualIcon";
 import { ShineIcon } from "./ShineIcon";
 import { UserAvatarDropdown } from "../common/UserAvatarDropdown";
-import { type NavbarTheme, THEME_CONFIG, THEME_LAYOUT } from "../config/theme.config";
+import type { NavbarTheme } from "../types";
+import { THEME_CONFIG, THEME_LAYOUT } from "../config/desktop.config";
 
 /**
  * Theme-aware Desktop Navbar
