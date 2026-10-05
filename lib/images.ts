@@ -10,7 +10,8 @@
  * - mobile/ = mobile-only (hidden on desktop)
  */
 
-const IMAGEKIT_BASE = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
+const IMAGEKIT_BASE =
+  process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || "https://ik.imagekit.io/bi3ktgt58";
 
 export const IMAGES = {
   // ============================================

@@ -1,3 +1,2 @@
-export { MysticDivider } from "./decors";
-export { ScheduleHero, SchedulePlaceholder } from "./sections";
+export { CampusMap, EventSearch, WhatsOnSidebar, VenuePageContent } from "./sections";
 export { SchedulePageContent } from "./SchedulePageContent";

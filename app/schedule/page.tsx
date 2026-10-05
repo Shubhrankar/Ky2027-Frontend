@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import { SchedulePageContent } from "@/components/pages/schedule/SchedulePageContent";
 
 export const metadata: Metadata = {
-  title: "Schedule | Kashi Yatra 2027",
+  title: "Schedule",
   description:
-    "The full day-by-day schedule for Kashi Yatra 2027 — IIT (BHU) Varanasi's grandest cultural festival, 14th–17th January 2027. Detailed timings coming soon.",
+    "Events map for Kashi Yatra 2027 — every venue at IIT (BHU) Varanasi and what's on there, 14th–17th January 2027.",
 };
 
 export default function SchedulePage() {

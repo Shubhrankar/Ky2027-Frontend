@@ -353,8 +353,9 @@ export function EnterButton() {
       {[0, 60, 120, 180, 240, 300].map((angle) => {
         const radian = (angle * Math.PI) / 180;
         const radius = 80;
-        const x = Math.cos(radian) * radius;
-        const y = Math.sin(radian) * radius;
+        // Round so server (Node) and client trig results serialize identically
+        const x = Math.round(Math.cos(radian) * radius * 100) / 100;
+        const y = Math.round(Math.sin(radian) * radius * 100) / 100;
 
         return (
           <motion.div

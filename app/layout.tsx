@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { Geist, Geist_Mono, Cinzel_Decorative, Cinzel } from "next/font/google";
+import { Geist, Geist_Mono, Cinzel_Decorative, Cinzel, Cormorant_Garamond } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -30,6 +30,13 @@ const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+// Elegant small-caps serif for the schedule map labels and event cards.
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 const siteUrl = "https://kashiyatra.in";
@@ -186,7 +193,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${cinzelDecorative.variable} ${cinzel.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cinzelDecorative.variable} ${cinzel.variable} ${cormorant.variable} h-full antialiased`}
     >
       <head>
         <script

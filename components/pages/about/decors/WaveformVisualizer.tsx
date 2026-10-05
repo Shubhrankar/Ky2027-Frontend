@@ -32,25 +32,22 @@ export const WaveformVisualizer = memo(function WaveformVisualizer({
   interactive = true,
 }: WaveformVisualizerProps) {
   const [isActive, setIsActive] = useState(true);
-  const [heights, setHeights] = useState<number[]>(() => 
-    Array.from({ length: bars }, () => Math.random() * 0.8 + 0.2)
-  );
+  // Deterministic initial heights so SSR and client match; the interval randomizes after mount
+  const [heights, setHeights] = useState<number[]>(() => Array.from({ length: bars }, () => 0.6));
 
   // Animate heights
   useEffect(() => {
     if (!isActive) return;
-    
+
     const interval = setInterval(() => {
-      setHeights(prev => 
-        prev.map(() => Math.random() * 0.8 + 0.2)
-      );
+      setHeights((prev) => prev.map(() => Math.random() * 0.8 + 0.2));
     }, 150);
-    
+
     return () => clearInterval(interval);
   }, [isActive, bars]);
 
   const barWidth = (width - (bars - 1) * 2) / bars;
-  
+
   const colors = {
     cyan: NEON.CYAN,
     magenta: NEON.MAGENTA,
@@ -75,7 +72,7 @@ export const WaveformVisualizer = memo(function WaveformVisualizer({
           <stop offset="50%" stopColor={NEON.MAGENTA} />
           <stop offset="100%" stopColor={NEON.LIME} />
         </linearGradient>
-        
+
         <filter id="waveGlow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2" result="blur" />
           <feMerge>
@@ -90,7 +87,7 @@ export const WaveformVisualizer = memo(function WaveformVisualizer({
         const barHeight = h * height * 0.9;
         const x = i * (barWidth + 2);
         const y = (height - barHeight) / 2;
-        
+
         return (
           <motion.rect
             key={i}
@@ -144,15 +141,13 @@ export const CircularWaveform = memo(function CircularWaveform({
   color?: "cyan" | "magenta" | "lime" | "gradient";
   className?: string;
 }) {
-  const [heights, setHeights] = useState<number[]>(() => 
+  const [heights, setHeights] = useState<number[]>(() =>
     Array.from({ length: bars }, () => Math.random() * 0.5 + 0.5)
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setHeights(prev => 
-        prev.map(() => Math.random() * 0.5 + 0.5)
-      );
+      setHeights((prev) => prev.map(() => Math.random() * 0.5 + 0.5));
     }, 100);
     return () => clearInterval(interval);
   }, [bars]);
@@ -169,19 +164,14 @@ export const CircularWaveform = memo(function CircularWaveform({
   };
 
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      className={className}
-    >
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className={className}>
       <defs>
         <linearGradient id="circleWaveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor={NEON.CYAN} />
           <stop offset="50%" stopColor={NEON.MAGENTA} />
           <stop offset="100%" stopColor={NEON.LIME} />
         </linearGradient>
-        
+
         <filter id="circleWaveGlow">
           <feGaussianBlur stdDeviation="1.5" />
           <feMerge>
@@ -195,12 +185,12 @@ export const CircularWaveform = memo(function CircularWaveform({
         const angle = (i * 360) / bars - 90;
         const rad = (angle * Math.PI) / 180;
         const barLength = h * maxBarLength;
-        
+
         const x1 = center + Math.cos(rad) * innerRadius;
         const y1 = center + Math.sin(rad) * innerRadius;
         const x2 = center + Math.cos(rad) * (innerRadius + barLength);
         const y2 = center + Math.sin(rad) * (innerRadius + barLength);
-        
+
         return (
           <motion.line
             key={i}
