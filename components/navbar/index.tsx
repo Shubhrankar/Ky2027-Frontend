@@ -2,39 +2,49 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { IMAGES } from "@/lib/images";
 import { NavbarDesktop } from "./desktop";
 import { NavbarMobile } from "./mobile";
-import { NAV_ASPECT } from "./config/links.config";
 import { NavBadge } from "./common/NavBadge";
 import { NavbarProvider } from "./config/NavbarContext";
+import {
+  type NavbarTheme,
+  THEME_CONFIG,
+  THEME_ASPECT_RATIOS,
+  THEME_HEIGHT_CONSTRAINTS,
+  THEME_TOP_OFFSETS,
+} from "./config/theme.config";
 
-/**
- * Kashi Yatra ornate Navbar.
- *
- * Visual composition:
- *   - `Nav.png`      → the carved sandstone bar background
- *   - `NavBadge.png` → the round IIT BHU bronze crest
- *
- * Split into:
- *   - NavbarDesktop (md+) - Primary nav links and secondary links
- *   - NavbarMobile (< md) - Hamburger menu with dropdown
- */
+export type { NavbarTheme };
 
 type NavPositionType = "fixed" | "sticky" | "relative" | "absolute";
 
-type NavbarDesignProps = {
+type ThemedNavbarProps = {
   className?: string;
   position?: NavPositionType;
   topOffset?: number;
+  theme?: NavbarTheme;
 };
 
-export function NavbarDesign({
+/**
+ * ThemedNavbar - Main navbar component with theme support
+ *
+ * Themes:
+ *   - main: Golden/cream theme (default, for home and most pages)
+ *   - about: Purple theme with gold links
+ *   - sponsor: Green/nature theme
+ */
+export function ThemedNavbar({
   className = "",
   position = "fixed",
   topOffset = 0,
-}: NavbarDesignProps) {
+  theme = "main",
+}: ThemedNavbarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const config = THEME_CONFIG[theme];
+  const aspectRatio = THEME_ASPECT_RATIOS[theme];
+  const heightConstraints = THEME_HEIGHT_CONSTRAINTS[theme];
+  const themeOffset = THEME_TOP_OFFSETS[theme];
+  const finalTopOffset = topOffset + themeOffset;
 
   useEffect(() => {
     if (position !== "fixed") return;
@@ -47,48 +57,51 @@ export function NavbarDesign({
   const edgePinned = position === "fixed" || position === "absolute";
 
   return (
-    <NavbarProvider>
+    <NavbarProvider theme={theme}>
       <header
-        className={`${position} ${edgePinned ? "left-0 right-0" : ""} z-[200] transition-all duration-500 ${className}`}
+        className={`${position} ${edgePinned ? "right-0 left-0" : ""} z-[200] transition-all duration-500 ${className}`}
         style={{
-          top: position === "relative" ? undefined : topOffset,
-          marginTop: position === "relative" ? topOffset : undefined,
+          top: position === "relative" ? undefined : finalTopOffset,
+          marginTop: position === "relative" ? finalTopOffset : undefined,
           filter: scrolled
             ? "drop-shadow(0 8px 24px rgba(0,0,0,0.55))"
             : "drop-shadow(0 4px 16px rgba(0,0,0,0.35))",
         }}
       >
         {/* Wrapper keeps the bar centered and constrained on large screens */}
-        <div className="relative mx-auto w-full max-w-[1600px] px-2 sm:px-3 pt-2">
+        <div className="relative mx-auto w-full max-w-[1600px] px-2 pt-2 sm:px-3">
           {/* The ornate bar — its height is driven by width to preserve aspect */}
           <div
             className="relative w-full"
             style={{
-              aspectRatio: `${NAV_ASPECT}`,
-              minHeight: 56,
-              maxHeight: 85,
+              aspectRatio: `${aspectRatio}`,
+              minHeight: heightConstraints.minHeight,
+              maxHeight: heightConstraints.maxHeight,
             }}
           >
             {/* Background carved bar */}
             <Image
-              src={IMAGES.navbar.background}
+              src={config.getBackground()}
               alt=""
               fill
               priority
-              className="object-fill pointer-events-none select-none"
+              className="pointer-events-none object-fill select-none"
             />
 
             {/* IIT BHU Badge */}
-            <NavBadge />
+            <NavBadge theme={theme} />
 
             {/* Desktop Navigation */}
-            <NavbarDesktop />
+            <NavbarDesktop theme={theme} />
 
             {/* Mobile Navigation */}
-            <NavbarMobile />
+            <NavbarMobile theme={theme} />
           </div>
         </div>
       </header>
     </NavbarProvider>
   );
 }
+
+// Legacy alias for backwards compatibility
+export const LightNavbar = ThemedNavbar;

@@ -1,4 +1,4 @@
-import type { NavbarTheme } from "../Light/index";
+import type { NavbarTheme } from "../config/theme.config";
 
 /**
  * Theme-aware four-point sparkle that shines beside each nav link.
