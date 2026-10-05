@@ -74,8 +74,9 @@ export function Navigation({ isOpen, onOpenChange }: NavigationProps) {
       </div>
 
       {/* Dropdown nav menu - ethereal style */}
+      {/* pt-3 creates visual gap but stays inside hover area (no mouse-leave gap) */}
       <nav
-        className="absolute top-full left-0 mt-3 flex flex-col gap-2 overflow-hidden transition-all duration-300"
+        className="absolute top-full left-0 flex flex-col gap-2 overflow-hidden pt-3 transition-all duration-300"
         style={{
           opacity: isOpen ? 1 : 0,
           transform: isOpen ? "translateY(0)" : "translateY(-10px)",
