@@ -111,6 +111,8 @@ interface CampusMapProps {
   showControls?: boolean;
   /** Fade the map's edges into the page background. */
   edgeFade?: boolean;
+  /** Stretch the map to fill its container instead of keeping its aspect ratio. */
+  fill?: boolean;
   /** Controlled layer visibility (the toggles are then rendered by the parent). */
   layers?: MapLayers;
   className?: string;
@@ -122,6 +124,7 @@ export function CampusMap({
   hoverZoom = false,
   showControls = true,
   edgeFade = false,
+  fill = false,
   layers: controlledLayers,
   className = "",
   style,
@@ -149,7 +152,7 @@ export function CampusMap({
 
   return (
     <div
-      className={`${styles.map} ${layers.night ? styles.night : ""} ${edgeFade ? styles.fade : ""} ${className}`}
+      className={`${styles.map} ${layers.night ? styles.night : ""} ${edgeFade ? styles.fade : ""} ${fill ? styles.fill : ""} ${className}`}
       style={style}
       onMouseLeave={() => setHovered(null)}
     >

@@ -156,7 +156,7 @@ export const VENUES: Venue[] = [
     label: "Way towards\nB-09 and B-10\nand\nVishwanath Temple →",
     tone: "text",
     x: 7.5,
-    y: 48.5,
+    y: 46.5,
     clickable: false,
   },
   {
@@ -173,8 +173,8 @@ export const VENUES: Venue[] = [
     name: "Rajputana Crossing",
     label: "Rajputana\nCrossing",
     tone: "white",
-    x: 21,
-    y: 77,
+    x: 21.5,
+    y: 78.5,
   },
   {
     slug: "pc-ray-satish-dhawan-hostels",
@@ -193,16 +193,6 @@ export const VENUES: Venue[] = [
     x: 47,
     y: 77.5,
     anchor: [37, 82],
-  },
-  {
-    slug: "hyderabad-gate",
-    name: "Hyderabad Gate",
-    label: "Hyderabad Gate",
-    tone: "blue",
-    large: true,
-    x: 47,
-    y: 92.5,
-    anchor: [35.8, 97.5],
   },
   {
     slug: "chiron-hyderabad-gate",
