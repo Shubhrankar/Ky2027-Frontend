@@ -21,18 +21,21 @@ const THEME_LAYOUT = {
     secondaryTranslateY: "11%",
     primaryLeft: "22%",
     primaryRight: "26%",
+    secondaryRight: "3%", // Default for main
   },
   about: {
     navTranslateY: "0%", // Center vertically
     secondaryTranslateY: "0%",
-    primaryLeft: "18%",
-    primaryRight: "28%", // More space on right for avatar
+    primaryLeft: "20%",
+    primaryRight: "22%", // Reverted to original
+    secondaryRight: "5%", // Move secondary section more to the left
   },
   sponsor: {
     navTranslateY: "8%",
     secondaryTranslateY: "11%",
-    primaryLeft: "20%",
-    primaryRight: "28%", // More space on right for avatar
+    primaryLeft: "22%",
+    primaryRight: "26%", // Reverted to original
+    secondaryRight: "5%", // Move secondary section more to the left
   },
 };
 
@@ -88,8 +91,11 @@ export const NavbarDesktopLight = memo(function NavbarDesktopLight({
 
       {/* SECONDARY LINKS (CONTACT + LOGIN/Avatar) with spiritual icons */}
       <div
-        className={`absolute inset-y-0 z-10 hidden items-center gap-4 sm:flex ${isAuthenticated ? "right-[0.5%]" : "right-[3%]"}`}
-        style={{ transform: `translateY(${layout.secondaryTranslateY})` }}
+        className="absolute inset-y-0 z-10 hidden items-center gap-4 sm:flex"
+        style={{
+          transform: `translateY(${layout.secondaryTranslateY})`,
+          right: isAuthenticated ? "0.5%" : layout.secondaryRight,
+        }}
       >
         {secondaryLinks.map((link) => {
           const active = isActive(link.href);
