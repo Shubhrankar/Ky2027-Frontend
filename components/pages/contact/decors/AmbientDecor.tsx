@@ -22,38 +22,33 @@ export const AmbientDecor = memo(function AmbientDecor() {
 
   return (
     <div
-      className="hidden lg:block absolute inset-0 overflow-hidden pointer-events-none"
+      className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block"
       aria-hidden
     >
       {/* Slowly rotating mandala - top right */}
-      <div className="absolute -top-40 -right-40 w-[520px] h-[520px] opacity-[0.12]">
+      <div className="absolute -top-40 -right-40 h-[520px] w-[520px] opacity-[0.12]">
         <Image
           src={IMAGES.contact.mandalaOrnament}
           alt=""
           fill
-          className="object-contain animate-spin"
+          className="animate-spin object-contain"
           style={{ animationDuration: "140s", animationPlayState: play }}
         />
       </div>
 
       {/* Slowly rotating mandala - bottom left (reverse) */}
       <div
-        className="absolute -bottom-48 -left-48 w-[600px] h-[600px] opacity-[0.10]"
+        className="absolute -bottom-48 -left-48 h-[600px] w-[600px] opacity-[0.10]"
         style={{
           animation: `spin 160s linear infinite reverse`,
           animationPlayState: play,
         }}
       >
-        <Image
-          src={IMAGES.contact.mandalaOrnament}
-          alt=""
-          fill
-          className="object-contain"
-        />
+        <Image src={IMAGES.contact.mandalaOrnament} alt="" fill className="object-contain" />
       </div>
 
       {/* Peacock - right edge with teal/gold glow */}
-      <div className="absolute -right-24 top-1/3 -translate-y-1/2 w-[440px] h-[560px]">
+      <div className="absolute top-1/3 -right-8 h-[420px] w-[320px] -translate-y-1/2 md:-right-12 md:h-[500px] md:w-[380px] lg:-right-16 lg:h-[560px] lg:w-[440px]">
         <div
           className="absolute inset-0"
           style={{
