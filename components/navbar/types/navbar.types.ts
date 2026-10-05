@@ -40,8 +40,9 @@ export type ThemeVisualConfig = {
 
 // Desktop layout configuration
 export type DesktopLayoutConfig = {
-  navTranslateY: string;
-  secondaryTranslateY: string;
+  navbarOffsetY: string; // Translate entire navbar vertically
+  primaryLinksY: string; // Translate primary links vertically
+  secondaryLinksY: string; // Translate secondary links vertically
   primaryLeft: string;
   primaryRight: string;
   secondaryRight: string;

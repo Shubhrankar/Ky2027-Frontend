@@ -33,7 +33,7 @@ export const NavbarDesktop = memo(function NavbarDesktop({
         className="absolute inset-y-0 z-10 hidden items-center justify-center gap-4 sm:flex"
         aria-label="Primary"
         style={{
-          transform: `translateY(${layout.navTranslateY})`,
+          transform: `translateY(${layout.primaryLinksY})`,
           left: layout.primaryLeft,
           right: layout.primaryRight,
         }}
@@ -68,7 +68,7 @@ export const NavbarDesktop = memo(function NavbarDesktop({
       <div
         className="absolute inset-y-0 z-10 hidden items-center gap-4 sm:flex"
         style={{
-          transform: `translateY(${layout.secondaryTranslateY})`,
+          transform: `translateY(${layout.secondaryLinksY})`,
           right: isAuthenticated ? layout.secondaryRightAuth : layout.secondaryRight,
         }}
       >

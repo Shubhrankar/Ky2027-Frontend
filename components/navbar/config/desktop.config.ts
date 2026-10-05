@@ -111,24 +111,27 @@ export const THEME_CONFIG: Record<NavbarTheme, ThemeVisualConfig> = {
 // Theme-specific layout adjustments for desktop
 export const THEME_LAYOUT: Record<NavbarTheme, DesktopLayoutConfig> = {
   main: {
-    navTranslateY: "8%",
-    secondaryTranslateY: "11%",
+    navbarOffsetY: "0px", // Entire navbar offset
+    primaryLinksY: "8%", // Primary links offset
+    secondaryLinksY: "11%", // Secondary links offset
     primaryLeft: "22%",
     primaryRight: "26%",
     secondaryRight: "3%",
     secondaryRightAuth: "0.5%",
   },
   about: {
-    navTranslateY: "1%",
-    secondaryTranslateY: "1%",
+    navbarOffsetY: "0px",
+    primaryLinksY: "1%",
+    secondaryLinksY: "1%",
     primaryLeft: "22%",
     primaryRight: "28%",
     secondaryRight: "4%",
     secondaryRightAuth: "2%",
   },
   sponsor: {
-    navTranslateY: "8%",
-    secondaryTranslateY: "11%",
+    navbarOffsetY: "0px",
+    primaryLinksY: "8%",
+    secondaryLinksY: "11%",
     primaryLeft: "22%",
     primaryRight: "28%",
     secondaryRight: "5%",
@@ -146,8 +149,8 @@ export const THEME_ASPECT_RATIOS: Record<NavbarTheme, number> = {
 // Theme-specific dimension constraints (height and width)
 export const THEME_DIMENSIONS: Record<NavbarTheme, DimensionConstraints> = {
   main: { minHeight: 56, maxHeight: 85, maxWidth: 1600 },
-  about: { minHeight: 56, maxHeight: 85, maxWidth: 1600 },
-  sponsor: { minHeight: 50, maxHeight: 68, maxWidth: 1600 },
+  about: { minHeight: 46, maxHeight: 79, maxWidth: 1600 },
+  sponsor: { minHeight: 50, maxHeight: 58, maxWidth: 1600 },
 };
 
 // Theme-specific top offset adjustments

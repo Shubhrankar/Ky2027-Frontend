@@ -12,6 +12,7 @@ import {
   THEME_ASPECT_RATIOS,
   THEME_DIMENSIONS,
   THEME_TOP_OFFSETS,
+  THEME_LAYOUT,
 } from "./config/desktop.config";
 
 export type { NavbarTheme };
@@ -43,6 +44,7 @@ export function ThemedNavbar({
   const config = THEME_CONFIG[theme];
   const aspectRatio = THEME_ASPECT_RATIOS[theme];
   const dimensions = THEME_DIMENSIONS[theme];
+  const layout = THEME_LAYOUT[theme];
   const themeOffset = THEME_TOP_OFFSETS[theme];
   const finalTopOffset = topOffset + themeOffset;
 
@@ -80,6 +82,7 @@ export function ThemedNavbar({
               aspectRatio: `${aspectRatio}`,
               minHeight: dimensions.minHeight,
               maxHeight: dimensions.maxHeight,
+              transform: `translateY(${layout.navbarOffsetY})`,
             }}
           >
             {/* Background carved bar */}

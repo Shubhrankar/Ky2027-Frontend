@@ -12,10 +12,10 @@ export const BADGE_STYLES: Record<NavbarTheme, BadgeStyleConfig> = {
   },
   about: {
     position: "left-[16%] top-[52%]",
-    size: "h-[116%] sm:h-[124%]",
+    size: "h-[116%] sm:h-[180%]",
   },
   sponsor: {
     position: "left-[16%] top-[52%]",
-    size: "h-[116%] sm:h-[124%]",
+    size: "h-[116%] sm:h-[180%]",
   },
 };
