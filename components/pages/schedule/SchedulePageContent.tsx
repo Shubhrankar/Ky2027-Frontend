@@ -28,9 +28,9 @@ export function SchedulePageContent() {
 
   return (
     <>
-      {/* Navigation trigger - ethereal glowing button */}
+      {/* Navigation trigger - ethereal glowing button (desktop only) */}
       <div
-        className="fixed top-4 left-4 z-[250]"
+        className="fixed top-4 left-4 z-[250] hidden lg:block"
         onMouseEnter={() => setNavOpen(true)}
         onMouseLeave={() => setNavOpen(false)}
       >
@@ -153,22 +153,17 @@ export function SchedulePageContent() {
       {/* Mobile: Simple floating logo */}
       <Link
         href="/"
-        className="fixed top-3 left-3 z-[200] flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#D4A853]/40 bg-[#10132a]/95 shadow-xl backdrop-blur-md lg:hidden"
+        className="fixed top-3 left-3 z-[200] flex h-10 w-10 items-center justify-center rounded-full border border-[#D4A853]/30 bg-[#10132a]/90 shadow-lg backdrop-blur-md lg:hidden"
       >
-        <Image
-          src="/intro/introLogo.png"
-          alt="Kashi Yatra"
-          width={32}
-          height={32}
-          className="h-8 w-8 object-contain"
-        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/favicon.ico" alt="Kashi Yatra" className="h-6 w-6 object-contain" />
       </Link>
 
-      {/* Dark navy background - matches map edge colors */}
+      {/* Background - matches map edge colors exactly */}
       <div
         className="fixed inset-0 -z-10"
         style={{
-          background: "#0d1525",
+          background: "#0c1220",
         }}
       />
 

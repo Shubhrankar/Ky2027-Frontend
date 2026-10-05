@@ -54,11 +54,11 @@ export function EnterButton() {
     cancelLoading();
   }, [phase, cancelLoading]);
 
-  // Mobile: Direct click to enter (skip intro entirely)
+  // Mobile: Direct click triggers blast (no hold required)
   const handleMobileClick = useCallback(() => {
     if (phase !== "idle") return;
-    skipIntro();
-  }, [phase, skipIntro]);
+    startBlast();
+  }, [phase, startBlast]);
 
   useEffect(() => {
     return () => {

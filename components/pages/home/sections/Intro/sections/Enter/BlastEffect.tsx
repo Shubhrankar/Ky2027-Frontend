@@ -50,7 +50,7 @@ export function BlastEffect() {
 
   if (phase !== "blasting") return null;
 
-  // MOBILE: Ultra-minimal - just flash and fade, no particles
+  // MOBILE: Enhanced blast effect - still optimized but more impactful
   if (isMobile) {
     return (
       <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden">
@@ -59,27 +59,81 @@ export function BlastEffect() {
           className="absolute inset-0 bg-white"
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 0] }}
-          transition={{ duration: 0.4, times: [0, 0.15, 1], ease: "easeOut" }}
+          transition={{ duration: 0.3, times: [0, 0.15, 1], ease: "easeOut" }}
         />
 
-        {/* Golden glow that fades */}
+        {/* Core explosion - expanding golden fireball */}
         <motion.div
-          className="absolute inset-0"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
             background:
-              "radial-gradient(circle at center, #FFD700 0%, #FF8C00 30%, transparent 60%)",
+              "radial-gradient(circle, #FFFFFF 0%, #FFD700 35%, #FF8C00 65%, transparent 100%)",
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.9, 0] }}
-          transition={{ duration: 0.7, times: [0, 0.2, 1], ease: "easeOut" }}
+          initial={{ width: 0, height: 0, opacity: 1 }}
+          animate={{
+            width: ["0vw", "100vw", "350vw"],
+            height: ["0vw", "100vw", "350vw"],
+            opacity: [1, 1, 0],
+          }}
+          transition={{ duration: 0.8, times: [0, 0.3, 1], ease: "easeOut" }}
         />
 
-        {/* Single expanding ring - no box-shadow */}
+        {/* Two shockwave rings */}
+        {[0, 0.12].map((delay, i) => (
+          <motion.div
+            key={`ring-${i}`}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              border: `${2.5 - i * 0.5}px solid ${i === 0 ? "#FFD700" : "#FF8C00"}`,
+              boxShadow: i === 0 ? "0 0 30px 10px rgba(255, 200, 100, 0.4)" : undefined,
+            }}
+            initial={{ width: 0, height: 0, opacity: 1 }}
+            animate={{
+              width: `${250 - i * 50}vmax`,
+              height: `${250 - i * 50}vmax`,
+              opacity: 0,
+            }}
+            transition={{ duration: 0.7, ease: "easeOut", delay }}
+          />
+        ))}
+
+        {/* Light rays - 8 rays for mobile */}
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+          <motion.div
+            key={`ray-${angle}`}
+            className="absolute top-1/2 left-1/2 origin-bottom"
+            style={{
+              width: "4px",
+              height: "120vh",
+              background:
+                "linear-gradient(to top, transparent 0%, rgba(255, 215, 0, 0.7) 30%, rgba(255, 215, 0, 0.7) 70%, transparent 100%)",
+              transform: `translate(-50%, -100%) rotate(${angle}deg)`,
+            }}
+            initial={{ scaleY: 0, opacity: 0 }}
+            animate={{
+              scaleY: [0, 1.2, 1],
+              opacity: [0, 1, 0],
+            }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          />
+        ))}
+
+        {/* Center glow pulse */}
         <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-400"
-          initial={{ width: 0, height: 0, opacity: 1 }}
-          animate={{ width: "200vmax", height: "200vmax", opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            width: "40vw",
+            height: "40vw",
+            background:
+              "radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,215,0,0.6) 40%, transparent 70%)",
+            filter: "blur(10px)",
+          }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{
+            scale: [0, 1.8, 2.2],
+            opacity: [0, 1, 0],
+          }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         />
       </div>
     );
