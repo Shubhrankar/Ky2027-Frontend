@@ -67,7 +67,7 @@ export const SacredGeometryOverlay = memo(function SacredGeometryOverlay({
   }, []);
 
   // Don't render animated sacred geometry if animations should be reduced
-  if (shouldAnimate) return null;
+  if (!shouldAnimate) return null;
 
   const positionClasses = {
     center: "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",

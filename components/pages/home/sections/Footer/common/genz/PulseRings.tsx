@@ -9,7 +9,7 @@ export const PulseRings = memo(function PulseRings() {
   const { shouldAnimate } = useAnimationPolicy();
 
   // Don't render pulse rings if animations should be reduced
-  if (shouldAnimate) return null;
+  if (!shouldAnimate) return null;
 
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">

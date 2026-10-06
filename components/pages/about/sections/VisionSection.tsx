@@ -22,7 +22,7 @@ export const VisionSection = memo(function VisionSection() {
 
   useEffect(() => {
     // Skip animation on mobile or reduced motion
-    if (shouldAnimate) return;
+    if (!shouldAnimate) return;
     if (!sectionRef.current || !cardsContainerRef.current) return;
 
     const ctx = gsap.context(() => {

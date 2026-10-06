@@ -153,7 +153,7 @@ export const FloatingShapes = memo(function FloatingShapes({
   const shapes = generateShapes(count);
 
   // Don't render floating shapes if animations should be reduced
-  if (shouldAnimate) return null;
+  if (!shouldAnimate) return null;
 
   return (
     <div className={`pointer-events-none fixed inset-0 z-[1] overflow-hidden ${className}`}>
