@@ -4,7 +4,7 @@ import Image from "next/image";
 import { memo } from "react";
 import { IMAGES } from "@/lib/images";
 import { COLORS } from "@/components/pages/home/constants/palette";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useAnimationPolicy } from "@/hooks";
 
 /**
  * AmbientDecor
@@ -17,8 +17,8 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
  * `animation-play-state: paused` while the decorations stay visible.
  */
 export const AmbientDecor = memo(function AmbientDecor() {
-  const reduced = usePrefersReducedMotion();
-  const play = reduced ? "paused" : "running";
+  const { shouldAnimate } = useAnimationPolicy();
+  const play = shouldAnimate ? "running" : "paused";
 
   return (
     <div

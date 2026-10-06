@@ -4,7 +4,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { IMAGES } from "@/lib/images";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // STATS SECTION - Bold GenZ Concert Vibes with Custom SVG Icons
@@ -152,7 +152,7 @@ const stamps = [
 ];
 
 export const StatsSection = memo(function StatsSection() {
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   return (
     <section className="relative overflow-visible px-4 py-16 sm:px-6 sm:py-28">

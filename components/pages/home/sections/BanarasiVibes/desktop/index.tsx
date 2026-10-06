@@ -8,7 +8,7 @@ import { Rickshaw } from "./Rickshaw";
 
 interface BanarasiVibesDesktopProps {
   isAnimating: boolean;
-  prefersReducedMotion: boolean;
+  shouldAnimate: boolean;
   rickshawRef?: RefObject<HTMLDivElement | null>;
 }
 
@@ -19,13 +19,13 @@ interface BanarasiVibesDesktopProps {
  */
 export const BanarasiVibesDesktop = memo(function BanarasiVibesDesktop({
   isAnimating,
-  prefersReducedMotion,
+  shouldAnimate,
   rickshawRef,
 }: BanarasiVibesDesktopProps) {
   return (
     <>
       {/* Rotating Mandala backdrop */}
-      <RotatingMandala isAnimating={isAnimating} prefersReducedMotion={prefersReducedMotion} />
+      <RotatingMandala isAnimating={isAnimating} shouldAnimate={shouldAnimate} />
 
       {/* Ganga Aarti Saint - left side */}
       <GangaAartiSaint />

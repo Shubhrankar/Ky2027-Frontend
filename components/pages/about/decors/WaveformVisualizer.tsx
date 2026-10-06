@@ -2,6 +2,7 @@
 
 import { memo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // WAVEFORM VISUALIZER - Animated audio waveform SVG
@@ -31,7 +32,8 @@ export const WaveformVisualizer = memo(function WaveformVisualizer({
   className = "",
   interactive = true,
 }: WaveformVisualizerProps) {
-  const [isActive, setIsActive] = useState(true);
+  const { shouldAnimate } = useAnimationPolicy();
+  const [isActive, setIsActive] = useState(!shouldAnimate);
   // Deterministic initial heights so SSR and client match; the interval randomizes after mount
   const [heights, setHeights] = useState<number[]>(() => Array.from({ length: bars }, () => 0.6));
 

@@ -3,6 +3,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { COLORS } from "@/components/pages/home/constants/palette";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // GANGA WAVES - Flowing river animation for sections
@@ -17,6 +18,11 @@ export const GangaWaves = memo(function GangaWaves({
   position?: "top" | "bottom";
   color?: "gold" | "cyan" | "mixed";
 }) {
+  const { shouldAnimate } = useAnimationPolicy();
+
+  // Don't render animated waves if animations should be reduced
+  if (shouldAnimate) return null;
+
   const colors = {
     gold: {
       primary: COLORS.BRIGHT_GOLD,
@@ -34,14 +40,14 @@ export const GangaWaves = memo(function GangaWaves({
 
   const { primary, secondary } = colors[color];
 
-  const positionStyles = position === "bottom" 
-    ? "bottom-0 left-0" 
-    : "top-0 left-0 rotate-180";
+  const positionStyles = position === "bottom" ? "bottom-0 left-0" : "top-0 left-0 rotate-180";
 
   return (
-    <div className={`absolute ${positionStyles} w-full h-32 overflow-hidden pointer-events-none ${className}`}>
+    <div
+      className={`absolute ${positionStyles} pointer-events-none h-32 w-full overflow-hidden ${className}`}
+    >
       <svg
-        className="absolute bottom-0 w-[200%] h-full"
+        className="absolute bottom-0 h-full w-[200%]"
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
       >
@@ -51,7 +57,7 @@ export const GangaWaves = memo(function GangaWaves({
             <stop offset="50%" stopColor={secondary} stopOpacity="0.3" />
             <stop offset="100%" stopColor={primary} stopOpacity="0.2" />
           </linearGradient>
-          
+
           <linearGradient id={`waveGradient2-${color}`} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor={secondary} stopOpacity="0.15" />
             <stop offset="50%" stopColor={primary} stopOpacity="0.25" />
@@ -126,8 +132,8 @@ export const GangaWaves = memo(function GangaWaves({
       </svg>
 
       {/* Glow effect at the edge */}
-      <div 
-        className="absolute bottom-0 left-0 w-full h-16"
+      <div
+        className="absolute bottom-0 left-0 h-16 w-full"
         style={{
           background: `linear-gradient(to top, ${primary}15 0%, transparent 100%)`,
         }}
@@ -144,11 +150,7 @@ export const GangaFlowLine = memo(function GangaFlowLine({
 }) {
   return (
     <div className={`relative h-8 w-full overflow-hidden ${className}`}>
-      <svg
-        className="absolute w-[200%] h-full"
-        viewBox="0 0 200 20"
-        preserveAspectRatio="none"
-      >
+      <svg className="absolute h-full w-[200%]" viewBox="0 0 200 20" preserveAspectRatio="none">
         <defs>
           <linearGradient id="flowLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor={COLORS.BRIGHT_GOLD} stopOpacity="0" />
@@ -157,7 +159,7 @@ export const GangaFlowLine = memo(function GangaFlowLine({
             <stop offset="80%" stopColor={COLORS.BRIGHT_GOLD} stopOpacity="0.6" />
             <stop offset="100%" stopColor={COLORS.BRIGHT_GOLD} stopOpacity="0" />
           </linearGradient>
-          
+
           <filter id="flowGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="1" result="blur" />
             <feMerge>

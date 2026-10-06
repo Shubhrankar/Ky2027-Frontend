@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 import { useIntro } from "./context/IntroContext";
 import {
   StageBackground,

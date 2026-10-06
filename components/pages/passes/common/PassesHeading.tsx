@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 import {
   COLORS,
   GRADIENT_TEXT_GOLD,
@@ -24,22 +25,12 @@ const headingVariants = {
 // ============================================
 // Passes Heading
 // ============================================
-export const PassesHeading = memo(function PassesHeading({
-  isMobile,
-}: {
-  isMobile: boolean;
-}) {
+export const PassesHeading = memo(function PassesHeading({ isMobile }: { isMobile: boolean }) {
   return (
-    <motion.div
-      className="text-center mb-8 md:mb-12"
-      variants={headingVariants}
-    >
+    <motion.div className="mb-8 text-center md:mb-12" variants={headingVariants}>
       {/* Decorative top element */}
-      <div className="flex items-center justify-center gap-3 mb-4">
-        <span
-          className="w-16 h-[1px]"
-          style={{ background: GRADIENT_LINE_GOLD_LEFT }}
-        />
+      <div className="mb-4 flex items-center justify-center gap-3">
+        <span className="h-[1px] w-16" style={{ background: GRADIENT_LINE_GOLD_LEFT }} />
         {isMobile ? (
           <span className="text-2xl" style={{ color: COLORS.BRIGHT_GOLD }}>
             ✦
@@ -54,14 +45,11 @@ export const PassesHeading = memo(function PassesHeading({
             ✦
           </motion.span>
         )}
-        <span
-          className="w-16 h-[1px]"
-          style={{ background: GRADIENT_LINE_GOLD_RIGHT }}
-        />
+        <span className="h-[1px] w-16" style={{ background: GRADIENT_LINE_GOLD_RIGHT }} />
       </div>
 
       <h2
-        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3"
+        className="mb-3 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
         style={{
           fontFamily: "var(--font-ethereal), serif",
           ...GRADIENT_TEXT_GOLD,
@@ -70,25 +58,19 @@ export const PassesHeading = memo(function PassesHeading({
       >
         KASHIYATRA&apos;26 - Pass Selection
       </h2>
-      <p
-        className="text-base md:text-lg max-w-2xl mx-auto"
-        style={{ color: COLORS.LAVENDER }}
-      >
+      <p className="mx-auto max-w-2xl text-base md:text-lg" style={{ color: COLORS.LAVENDER }}>
         Choose your journey to the cultural extravaganza
       </p>
 
       {/* Decorative bottom element */}
-      <div className="flex items-center justify-center gap-2 mt-4">
+      <div className="mt-4 flex items-center justify-center gap-2">
         <span
-          className="w-6 h-6 rotate-45 opacity-40"
+          className="h-6 w-6 rotate-45 opacity-40"
           style={{ border: `1px solid ${COLORS.GOLD}` }}
         />
+        <span className="h-3 w-3 rotate-45 opacity-60" style={{ background: COLORS.GOLD }} />
         <span
-          className="w-3 h-3 rotate-45 opacity-60"
-          style={{ background: COLORS.GOLD }}
-        />
-        <span
-          className="w-6 h-6 rotate-45 opacity-40"
+          className="h-6 w-6 rotate-45 opacity-40"
           style={{ border: `1px solid ${COLORS.GOLD}` }}
         />
       </div>

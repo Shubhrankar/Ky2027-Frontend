@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 
 const COLORS = {
   BG_DEEP: "#0a0612",
@@ -12,10 +13,10 @@ const COLORS = {
 
 export function CollegeLoader() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh]">
+    <div className="flex min-h-[50vh] flex-col items-center justify-center">
       <div className="relative flex flex-col items-center">
         {/* Main loader */}
-        <div className="relative w-24 h-24">
+        <div className="relative h-24 w-24">
           {/* Outer spinning ring */}
           <motion.div
             className="absolute inset-0 rounded-full"
@@ -99,12 +100,7 @@ export function CollegeLoader() {
                 strokeLinejoin="round"
                 fill="none"
               />
-              <path
-                d="M12 15V21"
-                stroke="url(#capGrad)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
+              <path d="M12 15V21" stroke="url(#capGrad)" strokeWidth="1.5" strokeLinecap="round" />
               <path
                 d="M5 11V17C5 17 8 20 12 20C16 20 19 17 19 17V11"
                 stroke="url(#capGrad)"
@@ -149,7 +145,7 @@ export function CollegeLoader() {
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className="absolute w-1.5 h-1.5 rounded-full"
+              className="absolute h-1.5 w-1.5 rounded-full"
               style={{
                 background: COLORS.GOLD_LIGHT,
                 boxShadow: `0 0 6px ${COLORS.GOLD}`,
@@ -195,7 +191,7 @@ export function CollegeLoader() {
 
           {/* Progress bar */}
           <div
-            className="mt-4 w-36 h-0.5 rounded-full overflow-hidden mx-auto"
+            className="mx-auto mt-4 h-0.5 w-36 overflow-hidden rounded-full"
             style={{ background: `${COLORS.GOLD}20` }}
           >
             <motion.div

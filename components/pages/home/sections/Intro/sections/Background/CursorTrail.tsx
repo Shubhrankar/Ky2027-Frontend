@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 interface TrailPoint {
   id: number;
@@ -12,19 +12,19 @@ interface TrailPoint {
 
 /**
  * Magical cursor trail effect for intro section
- * DISABLED on mobile/touch devices
+ * DISABLED on mobile/touch devices or if user prefers reduced motion
  */
 export function CursorTrail() {
   const [trails, setTrails] = useState<TrailPoint[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
-  const isMobile = useIsMobile();
+  const { shouldAnimate } = useAnimationPolicy();
 
   useEffect(() => {
     // Detect touch device - no cursor trail needed
     const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    setIsTouchDevice(hasTouch || isMobile);
-  }, [isMobile]);
+    setIsTouchDevice(hasTouch || shouldAnimate);
+  }, [shouldAnimate]);
 
   useEffect(() => {
     // Don't add listeners on touch devices

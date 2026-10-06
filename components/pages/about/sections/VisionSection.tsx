@@ -3,7 +3,7 @@
 import { memo, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { usePrefersReducedMotion, useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 import { CardBack, CardFront, cards } from "./cards/VisionCards";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -13,22 +13,21 @@ gsap.registerPlugin(ScrollTrigger);
 // Section pins while cards flip from back to front one by one
 // ═══════════════════════════════════════════════════════════════════
 
-
 export const VisionSection = memo(function VisionSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const isMobile = useIsMobile();
+  const { shouldAnimate } = useAnimationPolicy();
+  const { isMobile } = useAnimationPolicy();
 
   useEffect(() => {
     // Skip animation on mobile or reduced motion
-    if (prefersReducedMotion || isMobile) return;
+    if (shouldAnimate) return;
     if (!sectionRef.current || !cardsContainerRef.current) return;
 
     const ctx = gsap.context(() => {
       const cardElements = cardRefs.current.filter(Boolean) as HTMLDivElement[];
-      
+
       // Initial state: all cards stacked lower, showing backs
       cardElements.forEach((card, i) => {
         gsap.set(card, {
@@ -57,50 +56,51 @@ export const VisionSection = memo(function VisionSection() {
       cardElements.forEach((card, i) => {
         const xOffset = (i - 1) * 200; // -200, 0, 200 for wider spread
         const zRotation = (i - 1) * -8; // 8, 0, -8 degrees tilt when revealed
-        
+
         // Each card animation sequence
-        tl.to(card, {
-          y: 60, // Move cards down to prevent cut-off
-          x: xOffset, // Spread horizontally
-          rotateY: 180, // Flip to show front
-          rotateZ: zRotation, // Final tilt
-          scale: 1,
-          zIndex: i + 10, // Bring to front as it reveals
-          duration: 1,
-          ease: "power2.inOut",
-        }, i * 0.3); // Stagger start times
+        tl.to(
+          card,
+          {
+            y: 60, // Move cards down to prevent cut-off
+            x: xOffset, // Spread horizontally
+            rotateY: 180, // Flip to show front
+            rotateZ: zRotation, // Final tilt
+            scale: 1,
+            zIndex: i + 10, // Bring to front as it reveals
+            duration: 1,
+            ease: "power2.inOut",
+          },
+          i * 0.3
+        ); // Stagger start times
       });
 
       // Hold at the end briefly
       tl.to({}, { duration: 0.5 });
-
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion, isMobile]);
+  }, [shouldAnimate]);
 
   // Mobile fallback: static cards
   if (isMobile) {
     return (
-      <section className="relative py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-[0.3em] text-[#D4A853] font-bold mb-3">
+      <section className="relative px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-sm font-bold tracking-[0.3em] text-[#D4A853] uppercase">
               What We&apos;re About
             </p>
-            <h2 className="text-3xl font-black text-white uppercase">
-              The Vision
-            </h2>
+            <h2 className="text-3xl font-black text-white uppercase">The Vision</h2>
           </div>
-          
-          <div className="flex flex-col gap-6 items-center">
+
+          <div className="flex flex-col items-center gap-6">
             {cards.map((card, index) => (
-              <div 
+              <div
                 key={index}
-                className="relative w-[260px] h-[360px]"
+                className="relative h-[360px] w-[260px]"
                 style={{ perspective: "1000px" }}
               >
-                <div className="relative w-full h-full" style={{ transformStyle: "preserve-3d" }}>
+                <div className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
                   <CardFront card={card} />
                 </div>
               </div>
@@ -112,25 +112,26 @@ export const VisionSection = memo(function VisionSection() {
   }
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="relative h-screen overflow-hidden"
       style={{
-        background: "linear-gradient(180deg, transparent 0%, rgba(124, 45, 18, 0.05) 50%, transparent 100%)",
+        background:
+          "linear-gradient(180deg, transparent 0%, rgba(124, 45, 18, 0.05) 50%, transparent 100%)",
       }}
     >
-      <div className="h-full flex flex-col max-w-6xl mx-auto w-full px-4 sm:px-6 pt-28 sm:pt-32 pb-8">
+      <div className="mx-auto flex h-full w-full max-w-6xl flex-col px-4 pt-28 pb-8 sm:px-6 sm:pt-32">
         {/* Section header - improved UI */}
-        <div className="text-center mb-4">
+        <div className="mb-4 text-center">
           {/* Decorative line above */}
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="h-px w-16 sm:w-24 bg-gradient-to-r from-transparent to-[#D4A853]/60" />
-            <div className="w-2 h-2 rotate-45 bg-[#D4A853]" />
-            <div className="h-px w-16 sm:w-24 bg-gradient-to-l from-transparent to-[#D4A853]/60" />
+          <div className="mb-4 flex items-center justify-center gap-4">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#D4A853]/60 sm:w-24" />
+            <div className="h-2 w-2 rotate-45 bg-[#D4A853]" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#D4A853]/60 sm:w-24" />
           </div>
-          
-          <p 
-            className="text-sm uppercase tracking-[0.3em] font-bold mb-3"
+
+          <p
+            className="mb-3 text-sm font-bold tracking-[0.3em] uppercase"
             style={{
               background: "linear-gradient(90deg, #D4A853, #F5DEB3, #D4A853)",
               WebkitBackgroundClip: "text",
@@ -140,9 +141,9 @@ export const VisionSection = memo(function VisionSection() {
           >
             What We&apos;re About
           </p>
-          
-          <h2 
-            className="text-4xl sm:text-5xl md:text-6xl font-black uppercase"
+
+          <h2
+            className="text-4xl font-black uppercase sm:text-5xl md:text-6xl"
             style={{
               background: "linear-gradient(180deg, #FFFFFF 0%, #E8E8E8 50%, #CCCCCC 100%)",
               WebkitBackgroundClip: "text",
@@ -152,28 +153,30 @@ export const VisionSection = memo(function VisionSection() {
           >
             The Vision
           </h2>
-          
+
           {/* Decorative line below */}
-          <div className="flex items-center justify-center gap-3 mt-4">
-            <div className="h-px w-12 sm:w-20 bg-gradient-to-r from-transparent via-[#D4A853]/40 to-[#D4A853]/60" />
-            <span className="text-[#D4A853] text-lg">✦</span>
-            <div className="h-[2px] w-20 sm:w-32 bg-gradient-to-r from-[#D4A853] via-[#F5DEB3] to-[#D4A853] rounded-full" />
-            <span className="text-[#D4A853] text-lg">✦</span>
-            <div className="h-px w-12 sm:w-20 bg-gradient-to-l from-transparent via-[#D4A853]/40 to-[#D4A853]/60" />
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <div className="h-px w-12 bg-gradient-to-r from-transparent via-[#D4A853]/40 to-[#D4A853]/60 sm:w-20" />
+            <span className="text-lg text-[#D4A853]">✦</span>
+            <div className="h-[2px] w-20 rounded-full bg-gradient-to-r from-[#D4A853] via-[#F5DEB3] to-[#D4A853] sm:w-32" />
+            <span className="text-lg text-[#D4A853]">✦</span>
+            <div className="h-px w-12 bg-gradient-to-l from-transparent via-[#D4A853]/40 to-[#D4A853]/60 sm:w-20" />
           </div>
         </div>
 
         {/* Cards container - positioned lower */}
-        <div 
+        <div
           ref={cardsContainerRef}
-          className="relative flex-1 flex items-end justify-center pb-20"
+          className="relative flex flex-1 items-end justify-center pb-20"
           style={{ perspective: "1200px" }}
         >
           {cards.map((card, index) => (
             <div
               key={index}
-              ref={el => { cardRefs.current[index] = el; }}
-              className="absolute w-[240px] sm:w-[280px] h-[340px] sm:h-[400px] cursor-pointer"
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              className="absolute h-[340px] w-[240px] cursor-pointer sm:h-[400px] sm:w-[280px]"
               style={{
                 transformStyle: "preserve-3d",
                 transformOrigin: "center center",
@@ -181,7 +184,7 @@ export const VisionSection = memo(function VisionSection() {
             >
               {/* Card Back */}
               <CardBack />
-              
+
               {/* Card Front */}
               <CardFront card={card} />
             </div>

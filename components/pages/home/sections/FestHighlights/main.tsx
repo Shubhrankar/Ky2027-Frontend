@@ -8,7 +8,7 @@ import { useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 import { MotionZone, useMotionZone } from "@/lib/motion";
 import { IMAGES } from "@/lib/images";
-import { usePrefersReducedMotion, useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 import { HighlightIcon } from "./sections/icons";
 
 const highlights = [
@@ -57,7 +57,7 @@ function DiscoBallModel() {
 
 // 3D Disco Ball with Canvas - skips rendering on mobile for performance
 function DiscoBall3D() {
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
   const { isAnimating } = useMotionZone();
 
   // Don't render the heavy 3D canvas on mobile at all
@@ -217,7 +217,7 @@ useGLTF.preload("/home/discoBall.glb");
 // Animated Laser Beams - Only 2 (extreme left and extreme right) - Desktop only
 function LaserBeams() {
   const { isAnimating } = useMotionZone();
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   if (!isAnimating || isMobile) return null;
 
@@ -258,7 +258,7 @@ function LaserBeams() {
 // Floating Music Notes - Desktop only
 function FloatingNotes() {
   const { isAnimating } = useMotionZone();
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
   const notes = ["♪", "♫", "♬"];
 
   if (!isAnimating || isMobile) return null;
@@ -318,7 +318,7 @@ function SilhouetteImage() {
 // Spotlight Cones - Desktop only
 function Spotlights() {
   const { isAnimating } = useMotionZone();
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   if (!isAnimating || isMobile) return null;
 
@@ -374,7 +374,7 @@ function Spotlights() {
 // Neon Side Borders - Desktop only
 function NeonSideBorders() {
   const { isAnimating } = useMotionZone();
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   if (!isAnimating || isMobile) return null;
 
@@ -784,13 +784,12 @@ function AnimatedHighlightCard({ item, index }: { item: (typeof highlights)[0]; 
 }
 
 function FestHighlightsContent() {
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const isMobile = useIsMobile();
+  const { shouldAnimate, isMobile } = useAnimationPolicy();
   const sectionRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion || isMobile) return;
+    if (!shouldAnimate) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -830,7 +829,7 @@ function FestHighlightsContent() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion, isMobile]);
+  }, [shouldAnimate]);
 
   return (
     <section

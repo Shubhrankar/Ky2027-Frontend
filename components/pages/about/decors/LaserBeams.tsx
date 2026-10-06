@@ -2,15 +2,15 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 // LASER BEAMS - Top to bottom diagonal lasers across the About page
 
 export const LaserBeams = memo(function LaserBeams() {
-  const isMobile = useIsMobile();
+  const { shouldAnimate } = useAnimationPolicy();
 
-  // Don't render on mobile
-  if (isMobile) return null;
+  // Don't render on mobile or if user prefers reduced motion
+  if (shouldAnimate) return null;
 
   const lasers = [
     { startX: "5%", delay: 0, duration: 4, opacity: 0.15 },

@@ -4,7 +4,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { IMAGES } from "@/lib/images";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // HERO SECTION - Bold GenZ Concert Vibes
@@ -184,7 +184,7 @@ const GlowingOrb = ({
 );
 
 export const HeroSection = memo(function HeroSection() {
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   return (
     <section className="relative flex min-h-[70vh] items-center overflow-hidden px-4 sm:min-h-screen sm:px-6">

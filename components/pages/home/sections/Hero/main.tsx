@@ -10,7 +10,7 @@ import { CinematicSky } from "@/components/pages/home/sections/Hero/Sky/Cinemati
 import { FlyingBirds } from "@/components/pages/home/sections/Hero/Sky/Birds";
 import { River } from "@/components/pages/home/sections/Hero/River";
 import { useTimeOfDay } from "@/hooks/useTimeOfDay";
-import { useIsMobile, usePrefersReducedMotion } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 import { MotionZone } from "@/lib/motion";
 import { Z_HERO } from "@/components/pages/home/constants";
 import { IMAGES } from "@/lib/images";
@@ -34,8 +34,7 @@ export function HeroSection() {
 
   // Get current time-based sky configuration
   const { gradient, showMoon, showStars, starsOpacity, timeOfDay } = useTimeOfDay();
-  const isMobile = useIsMobile();
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const { isMobile, shouldAnimate } = useAnimationPolicy();
 
   // Entry animation: Celestial body (Moon or Sun)
   useEffect(() => {
@@ -144,7 +143,7 @@ export function HeroSection() {
 
   // Continuous glow: Temple & Ghats (related visual effect)
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (!shouldAnimate) return;
 
     const ctx = gsap.context(() => {
       gsap.to(templeRef.current, {
@@ -167,13 +166,13 @@ export function HeroSection() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion]);
+  }, [shouldAnimate]);
 
   // Parallax scroll: Celestial body & Temple (related scroll behavior) - Desktop only
   useEffect(() => {
     // Skip parallax on mobile for performance
     if (isMobile) return;
-    if (prefersReducedMotion) return;
+    if (!shouldAnimate) return;
 
     const ctx = gsap.context(() => {
       // Use quickTo for performant scroll-driven animations
@@ -206,7 +205,7 @@ export function HeroSection() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion, isMobile]);
+  }, [shouldAnimate]);
 
   return (
     <section

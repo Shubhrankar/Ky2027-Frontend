@@ -6,16 +6,16 @@ import { IMAGES } from "@/lib/images";
 
 interface RotatingMandalaProps {
   isAnimating: boolean;
-  prefersReducedMotion: boolean;
+  shouldAnimate: boolean;
 }
 
 export const RotatingMandala = memo(function RotatingMandala({
   isAnimating,
-  prefersReducedMotion,
+  shouldAnimate,
 }: RotatingMandalaProps) {
   return (
     <div
-      className="pointer-events-none hidden sm:block absolute left-1/2 -translate-x-1/2 top-[12%] w-[380px] h-[380px] md:w-[480px] md:h-[480px] lg:w-[550px] lg:h-[550px] opacity-35"
+      className="pointer-events-none absolute top-[12%] left-1/2 hidden h-[380px] w-[380px] -translate-x-1/2 opacity-35 sm:block md:h-[480px] md:w-[480px] lg:h-[550px] lg:w-[550px]"
       style={{ zIndex: 5 }}
     >
       <Image
@@ -25,7 +25,7 @@ export const RotatingMandala = memo(function RotatingMandala({
         className="object-contain"
         style={{
           animation: "spin 40s linear infinite",
-          animationPlayState: prefersReducedMotion || !isAnimating ? "paused" : "running",
+          animationPlayState: shouldAnimate && isAnimating ? "running" : "paused",
           filter: "drop-shadow(0 0 30px rgba(255,180,50,0.35))",
         }}
       />

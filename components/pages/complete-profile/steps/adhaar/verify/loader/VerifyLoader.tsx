@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 
 const COLORS = {
   BG_DEEP: "#0a0612",
@@ -12,10 +13,10 @@ const COLORS = {
 
 export function VerifyLoader() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh]">
+    <div className="flex min-h-[50vh] flex-col items-center justify-center">
       <div className="relative flex flex-col items-center">
         {/* Main loader */}
-        <div className="relative w-24 h-24">
+        <div className="relative h-24 w-24">
           {/* Outer spinning ring */}
           <motion.div
             className="absolute inset-0 rounded-full"
@@ -31,7 +32,7 @@ export function VerifyLoader() {
               ease: "linear",
             }}
           />
-          
+
           {/* Middle ring */}
           <motion.div
             className="absolute inset-3 rounded-full"
@@ -47,7 +48,7 @@ export function VerifyLoader() {
               ease: "linear",
             }}
           />
-          
+
           {/* Inner pulsing circle */}
           <motion.div
             className="absolute inset-6 rounded-full"
@@ -65,7 +66,7 @@ export function VerifyLoader() {
               ease: "easeInOut",
             }}
           />
-          
+
           {/* Shield/verify icon */}
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.svg
@@ -123,10 +124,10 @@ export function VerifyLoader() {
           >
             Verifying
           </motion.p>
-          
+
           {/* Progress bar */}
-          <div 
-            className="mt-4 w-32 h-0.5 rounded-full overflow-hidden mx-auto"
+          <div
+            className="mx-auto mt-4 h-0.5 w-32 overflow-hidden rounded-full"
             style={{ background: `${COLORS.GOLD}20` }}
           >
             <motion.div
@@ -144,11 +145,8 @@ export function VerifyLoader() {
               }}
             />
           </div>
-          
-          <p 
-            className="mt-3 text-xs"
-            style={{ color: `${COLORS.CREAM}50` }}
-          >
+
+          <p className="mt-3 text-xs" style={{ color: `${COLORS.CREAM}50` }}>
             Extracting details from your Aadhaar
           </p>
         </div>

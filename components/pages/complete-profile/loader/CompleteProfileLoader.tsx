@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // COMPLETE PROFILE PAGE LOADER
@@ -18,13 +19,11 @@ const COLORS = {
 
 export function CompleteProfileLoader() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh]">
+    <div className="flex min-h-[70vh] flex-col items-center justify-center">
       {/* Loader Container */}
       <div className="relative flex flex-col items-center">
-        
         {/* Main loader - Stepper style rings */}
-        <div className="relative w-28 h-28">
-          
+        <div className="relative h-28 w-28">
           {/* Outer spinning ring */}
           <motion.div
             className="absolute inset-0 rounded-full"
@@ -40,7 +39,7 @@ export function CompleteProfileLoader() {
               ease: "linear",
             }}
           />
-          
+
           {/* Middle ring - counter rotate */}
           <motion.div
             className="absolute inset-3 rounded-full"
@@ -56,7 +55,7 @@ export function CompleteProfileLoader() {
               ease: "linear",
             }}
           />
-          
+
           {/* Inner pulsing circle */}
           <motion.div
             className="absolute inset-6 rounded-full"
@@ -74,7 +73,7 @@ export function CompleteProfileLoader() {
               ease: "easeInOut",
             }}
           />
-          
+
           {/* Center checkmark icon */}
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.svg
@@ -132,7 +131,7 @@ export function CompleteProfileLoader() {
           {[0, 1, 2, 3].map((i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 rounded-full"
+              className="absolute h-2 w-2 rounded-full"
               style={{
                 background: COLORS.GOLD_LIGHT,
                 boxShadow: `0 0 8px ${COLORS.GOLD}`,
@@ -177,10 +176,10 @@ export function CompleteProfileLoader() {
           >
             Loading Steps
           </motion.p>
-          
+
           {/* Animated progress bar */}
-          <div 
-            className="mt-4 w-32 h-0.5 rounded-full overflow-hidden mx-auto"
+          <div
+            className="mx-auto mt-4 h-0.5 w-32 overflow-hidden rounded-full"
             style={{ background: `${COLORS.GOLD}20` }}
           >
             <motion.div

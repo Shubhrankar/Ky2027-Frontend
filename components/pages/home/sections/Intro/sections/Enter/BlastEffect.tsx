@@ -3,12 +3,12 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useMemo } from "react";
 import { useIntro } from "../../context/IntroContext";
-import { useIsMobile } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 
 export function BlastEffect() {
   const { phase, startVideo } = useIntro();
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const isMobile = useIsMobile();
+  const { isMobile } = useAnimationPolicy();
 
   useEffect(() => {
     if (typeof window !== "undefined") {

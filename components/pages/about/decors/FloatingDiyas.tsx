@@ -3,6 +3,7 @@
 import { memo, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "@/components/pages/home/constants/palette";
+import { useAnimationPolicy } from "@/hooks";
 
 // ═══════════════════════════════════════════════════════════════════
 // FLOATING DIYAS - Click to light, interactive spiritual element
@@ -18,20 +19,9 @@ interface DiyaState {
 }
 
 // SVG Diya component
-const DiyaSVG = memo(function DiyaSVG({ 
-  isLit, 
-  size = 40 
-}: { 
-  isLit: boolean; 
-  size?: number;
-}) {
+const DiyaSVG = memo(function DiyaSVG({ isLit, size = 40 }: { isLit: boolean; size?: number }) {
   return (
-    <svg 
-      viewBox="0 0 60 50" 
-      width={size} 
-      height={size * 0.83}
-      className="overflow-visible"
-    >
+    <svg viewBox="0 0 60 50" width={size} height={size * 0.83} className="overflow-visible">
       <defs>
         <filter id="flameGlow" x="-100%" y="-100%" width="300%" height="300%">
           <feGaussianBlur stdDeviation="2" result="blur" />
@@ -41,18 +31,18 @@ const DiyaSVG = memo(function DiyaSVG({
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        
+
         <linearGradient id="diyaBody" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#D4A574" />
           <stop offset="50%" stopColor="#B8860B" />
           <stop offset="100%" stopColor="#8B6914" />
         </linearGradient>
-        
+
         <linearGradient id="oilGradient" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#FFD700" stopOpacity="0.8" />
           <stop offset="100%" stopColor="#B8860B" stopOpacity="0.6" />
         </linearGradient>
-        
+
         <radialGradient id="flameGradient" cx="50%" cy="80%" r="60%">
           <stop offset="0%" stopColor="#FFFFFF" />
           <stop offset="20%" stopColor="#FFD700" />
@@ -60,37 +50,24 @@ const DiyaSVG = memo(function DiyaSVG({
           <stop offset="100%" stopColor="#FF4500" stopOpacity="0" />
         </radialGradient>
       </defs>
-      
+
       {/* Diya bowl */}
-      <ellipse 
-        cx="30" 
-        cy="38" 
-        rx="20" 
-        ry="8" 
+      <ellipse
+        cx="30"
+        cy="38"
+        rx="20"
+        ry="8"
         fill="url(#diyaBody)"
         stroke="#8B6914"
         strokeWidth="1"
       />
-      
+
       {/* Oil surface */}
-      <ellipse 
-        cx="30" 
-        cy="35" 
-        rx="16" 
-        ry="5" 
-        fill="url(#oilGradient)"
-      />
-      
+      <ellipse cx="30" cy="35" rx="16" ry="5" fill="url(#oilGradient)" />
+
       {/* Wick */}
-      <rect 
-        x="28" 
-        y="28" 
-        width="4" 
-        height="8" 
-        fill="#4A3728"
-        rx="1"
-      />
-      
+      <rect x="28" y="28" width="4" height="8" fill="#4A3728" rx="1" />
+
       {/* Flame (only when lit) */}
       <AnimatePresence>
         {isLit && (
@@ -111,7 +88,7 @@ const DiyaSVG = memo(function DiyaSVG({
               filter="url(#flameGlow)"
               className="animate-flameFlicker"
             />
-            
+
             {/* Main flame */}
             <motion.path
               d="M30,5 Q35,12 33,20 Q31,25 30,28 Q29,25 27,20 Q25,12 30,5"
@@ -131,7 +108,7 @@ const DiyaSVG = memo(function DiyaSVG({
                 ease: "easeInOut",
               }}
             />
-            
+
             {/* Inner flame core */}
             <motion.ellipse
               cx="30"
@@ -153,7 +130,7 @@ const DiyaSVG = memo(function DiyaSVG({
           </motion.g>
         )}
       </AnimatePresence>
-      
+
       {/* Decorative base pattern */}
       <path
         d="M15,42 Q20,46 30,46 Q40,46 45,42"
@@ -170,9 +147,11 @@ const DiyaSVG = memo(function DiyaSVG({
 const FloatingDiya = memo(function FloatingDiya({
   diya,
   onToggle,
+  prefersReducedMotion,
 }: {
   diya: DiyaState;
   onToggle: (id: number) => void;
+  prefersReducedMotion: boolean;
 }) {
   return (
     <motion.div
@@ -182,9 +161,13 @@ const FloatingDiya = memo(function FloatingDiya({
         top: `${diya.y}%`,
         transform: `translate(-50%, -50%) scale(${diya.scale})`,
       }}
-      animate={{
-        y: [0, -10, 0],
-      }}
+      animate={
+        prefersReducedMotion
+          ? {}
+          : {
+              y: [0, -10, 0],
+            }
+      }
       transition={{
         duration: 4 + diya.floatOffset,
         repeat: Infinity,
@@ -199,7 +182,7 @@ const FloatingDiya = memo(function FloatingDiya({
       <AnimatePresence>
         {diya.isLit && (
           <motion.div
-            className="absolute -inset-8 rounded-full pointer-events-none"
+            className="pointer-events-none absolute -inset-8 rounded-full"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
@@ -209,12 +192,12 @@ const FloatingDiya = memo(function FloatingDiya({
           />
         )}
       </AnimatePresence>
-      
+
       <DiyaSVG isLit={diya.isLit} size={45} />
-      
+
       {/* Tooltip */}
       <motion.span
-        className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] whitespace-nowrap pointer-events-none"
+        className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] whitespace-nowrap"
         initial={{ opacity: 0 }}
         whileHover={{ opacity: 1 }}
         style={{ color: `${COLORS.BRIGHT_GOLD}80` }}
@@ -231,6 +214,7 @@ export const FloatingDiyas = memo(function FloatingDiyas({
 }: {
   className?: string;
 }) {
+  const { shouldAnimate } = useAnimationPolicy();
   const [diyas, setDiyas] = useState<DiyaState[]>([
     { id: 1, x: 10, y: 20, isLit: false, scale: 0.8, floatOffset: 0 },
     { id: 2, x: 90, y: 25, isLit: false, scale: 0.9, floatOffset: 1.5 },
@@ -243,28 +227,26 @@ export const FloatingDiyas = memo(function FloatingDiyas({
   const [allLitMessage, setAllLitMessage] = useState(false);
 
   const toggleDiya = useCallback((id: number) => {
-    setDiyas(prev => {
-      const updated = prev.map(d => 
-        d.id === id ? { ...d, isLit: !d.isLit } : d
-      );
-      
+    setDiyas((prev) => {
+      const updated = prev.map((d) => (d.id === id ? { ...d, isLit: !d.isLit } : d));
+
       // Check if all diyas are lit
-      if (updated.every(d => d.isLit)) {
+      if (updated.every((d) => d.isLit)) {
         setAllLitMessage(true);
         setTimeout(() => setAllLitMessage(false), 3000);
       }
-      
+
       return updated;
     });
   }, []);
 
-  const litCount = diyas.filter(d => d.isLit).length;
+  const litCount = diyas.filter((d) => d.isLit).length;
 
   return (
-    <div className={`fixed inset-0 pointer-events-none z-[5] ${className}`}>
+    <div className={`pointer-events-none fixed inset-0 z-[5] ${className}`}>
       {/* Counter */}
       <motion.div
-        className="fixed bottom-4 left-4 px-4 py-2 rounded-full pointer-events-auto"
+        className="pointer-events-auto fixed bottom-4 left-4 rounded-full px-4 py-2"
         style={{
           background: `${COLORS.BG_DEEP}dd`,
           border: `1px solid ${COLORS.BRIGHT_GOLD}40`,
@@ -273,10 +255,7 @@ export const FloatingDiyas = memo(function FloatingDiyas({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
       >
-        <span 
-          className="text-sm font-medium"
-          style={{ color: COLORS.BRIGHT_GOLD }}
-        >
+        <span className="text-sm font-medium" style={{ color: COLORS.BRIGHT_GOLD }}>
           🪔 {litCount}/{diyas.length} Diyas Lit
         </span>
       </motion.div>
@@ -285,7 +264,7 @@ export const FloatingDiyas = memo(function FloatingDiyas({
       <AnimatePresence>
         {allLitMessage && (
           <motion.div
-            className="fixed top-1/3 left-1/2 -translate-x-1/2 px-8 py-4 rounded-lg text-center pointer-events-none"
+            className="pointer-events-none fixed top-1/3 left-1/2 -translate-x-1/2 rounded-lg px-8 py-4 text-center"
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20 }}
@@ -295,16 +274,10 @@ export const FloatingDiyas = memo(function FloatingDiyas({
               boxShadow: `0 0 40px ${COLORS.BRIGHT_GOLD}40`,
             }}
           >
-            <p 
-              className="text-xl font-bold mb-1"
-              style={{ color: COLORS.BRIGHT_GOLD }}
-            >
+            <p className="mb-1 text-xl font-bold" style={{ color: COLORS.BRIGHT_GOLD }}>
               ✨ शुभ दीपावली ✨
             </p>
-            <p 
-              className="text-sm"
-              style={{ color: COLORS.CREAM }}
-            >
+            <p className="text-sm" style={{ color: COLORS.CREAM }}>
               All diyas illuminated. May light guide your path.
             </p>
           </motion.div>
@@ -314,7 +287,7 @@ export const FloatingDiyas = memo(function FloatingDiyas({
       {/* Floating diyas */}
       {diyas.map((diya) => (
         <div key={diya.id} className="pointer-events-auto">
-          <FloatingDiya diya={diya} onToggle={toggleDiya} />
+          <FloatingDiya diya={diya} onToggle={toggleDiya} prefersReducedMotion={shouldAnimate} />
         </div>
       ))}
     </div>

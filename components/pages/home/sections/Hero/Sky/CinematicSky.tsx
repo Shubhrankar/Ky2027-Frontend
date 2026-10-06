@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useEffect, useRef, useState } from "react";
+import { useAnimationPolicy } from "@/hooks";
 
 interface ShootingStar {
   id: number;
@@ -14,20 +15,12 @@ interface ShootingStar {
 
 export const CinematicSky = memo(function CinematicSky({ className = "" }: { className?: string }) {
   const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { shouldAnimate, isMobile } = useAnimationPolicy();
 
-  // Check if mobile on mount
+  // Generate shooting stars randomly - Desktop only, respects animation policy
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 640);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Generate shooting stars randomly - Desktop only
-  useEffect(() => {
-    if (isMobile) return; // Skip on mobile
+    if (!shouldAnimate) return; // Skip on mobile or reduced motion
 
     const createShootingStar = () => {
       const star: ShootingStar = {
@@ -39,20 +32,26 @@ export const CinematicSky = memo(function CinematicSky({ className = "" }: { cla
         length: Math.random() * 60 + 80,
         delay: 0,
       };
-      setShootingStars(prev => [...prev, star]);
-      
-      setTimeout(() => {
-        setShootingStars(prev => prev.filter(s => s.id !== star.id));
-      }, (star.speed * 1000) + 500);
+      setShootingStars((prev) => [...prev, star]);
+
+      setTimeout(
+        () => {
+          setShootingStars((prev) => prev.filter((s) => s.id !== star.id));
+        },
+        star.speed * 1000 + 500
+      );
     };
 
     const initialTimeout = setTimeout(() => {
       createShootingStar();
     }, 3000);
 
-    const interval = setInterval(() => {
-      if (Math.random() > 0.5) createShootingStar();
-    }, 6000 + Math.random() * 4000);
+    const interval = setInterval(
+      () => {
+        if (Math.random() > 0.5) createShootingStar();
+      },
+      6000 + Math.random() * 4000
+    );
 
     return () => {
       clearTimeout(initialTimeout);
@@ -86,14 +85,16 @@ export const CinematicSky = memo(function CinematicSky({ className = "" }: { cla
       for (let i = 0; i < 3; i++) {
         const y = canvas.height * (0.2 + i * 0.25);
         const offset = Math.sin(time + i) * 50;
-        
+
         ctx.beginPath();
         ctx.ellipse(
           canvas.width * 0.3 + offset + i * 100,
           y,
           200 + i * 50,
           30 + i * 10,
-          0, 0, Math.PI * 2
+          0,
+          0,
+          Math.PI * 2
         );
         ctx.fillStyle = `rgba(100, 100, 140, ${0.03 - i * 0.008})`;
         ctx.fill();
@@ -104,7 +105,9 @@ export const CinematicSky = memo(function CinematicSky({ className = "" }: { cla
           y + 30,
           180 + i * 40,
           25 + i * 8,
-          0, 0, Math.PI * 2
+          0,
+          0,
+          Math.PI * 2
         );
         ctx.fillStyle = `rgba(80, 80, 120, ${0.025 - i * 0.006})`;
         ctx.fill();
@@ -123,8 +126,10 @@ export const CinematicSky = memo(function CinematicSky({ className = "" }: { cla
   // Generate varied stars - fewer on mobile
   const starCount = isMobile ? 40 : 120;
   const stars = Array.from({ length: starCount }, (_, i) => {
-    const size = i < 10 ? 2.5 + Math.random() * 1.5 : i < 30 ? 1.5 + Math.random() : 0.8 + Math.random() * 0.8;
-    const brightness = i < 10 ? 0.9 : i < 30 ? 0.6 + Math.random() * 0.3 : 0.3 + Math.random() * 0.4;
+    const size =
+      i < 10 ? 2.5 + Math.random() * 1.5 : i < 30 ? 1.5 + Math.random() : 0.8 + Math.random() * 0.8;
+    const brightness =
+      i < 10 ? 0.9 : i < 30 ? 0.6 + Math.random() * 0.3 : 0.3 + Math.random() * 0.4;
     return {
       id: i,
       x: Math.random() * 100,
@@ -138,9 +143,9 @@ export const CinematicSky = memo(function CinematicSky({ className = "" }: { cla
   });
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
+    <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
       {/* Atmospheric gradient overlay */}
-      <div 
+      <div
         className="absolute inset-0"
         style={{
           background: `
@@ -152,9 +157,7 @@ export const CinematicSky = memo(function CinematicSky({ className = "" }: { cla
       />
 
       {/* Subtle cloud canvas - Desktop only */}
-      {!isMobile && (
-        <canvas ref={canvasRef} className="absolute inset-0 w-full opacity-60" />
-      )}
+      {!isMobile && <canvas ref={canvasRef} className="absolute inset-0 w-full opacity-60" />}
 
       {/* Stars with varied sizes and twinkle */}
       {stars.map((star) => (
@@ -166,55 +169,58 @@ export const CinematicSky = memo(function CinematicSky({ className = "" }: { cla
             height: `${star.size}px`,
             left: `${star.x}%`,
             top: `${star.y}%`,
-            background: star.isBright 
+            background: star.isBright
               ? `radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(200,220,255,0.8) 40%, transparent 70%)`
-              : 'white',
-            boxShadow: star.isBright 
+              : "white",
+            boxShadow: star.isBright
               ? `0 0 ${star.size * 3}px rgba(200,220,255,0.6), 0 0 ${star.size * 6}px rgba(150,180,255,0.3)`
-              : 'none',
+              : "none",
             // Disable animation on mobile for performance
-            animation: isMobile ? 'none' : `starTwinkle${star.isBright ? 'Bright' : ''} ${star.duration}s ease-in-out infinite`,
-            animationDelay: isMobile ? '0s' : `${star.delay}s`,
+            animation: isMobile
+              ? "none"
+              : `starTwinkle${star.isBright ? "Bright" : ""} ${star.duration}s ease-in-out infinite`,
+            animationDelay: isMobile ? "0s" : `${star.delay}s`,
             opacity: star.brightness,
           }}
         />
       ))}
 
       {/* Shooting stars - Desktop only */}
-      {!isMobile && shootingStars.map((star) => (
-        <div
-          key={star.id}
-          className="absolute shooting-star"
-          style={{
-            left: `${star.startX}%`,
-            top: `${star.startY}%`,
-            width: `${star.length}px`,
-            height: '2px',
-            transform: `rotate(${star.angle}deg)`,
-            opacity: 0,
-            ['--travel-distance' as string]: `${150 + star.length}px`,
-            animation: `shootingStarMove ${star.speed}s ease-out forwards`,
-          }}
-        >
+      {!isMobile &&
+        shootingStars.map((star) => (
           <div
-            className="absolute inset-0"
+            key={star.id}
+            className="shooting-star absolute"
             style={{
-              background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 10%, rgba(200,220,255,0.3) 50%, rgba(255,255,255,0.9) 100%)`,
-              borderRadius: '2px',
+              left: `${star.startX}%`,
+              top: `${star.startY}%`,
+              width: `${star.length}px`,
+              height: "2px",
+              transform: `rotate(${star.angle}deg)`,
+              opacity: 0,
+              ["--travel-distance" as string]: `${150 + star.length}px`,
+              animation: `shootingStarMove ${star.speed}s ease-out forwards`,
             }}
-          />
-          <div
-            className="absolute right-0 top-1/2 -translate-y-1/2"
-            style={{
-              width: '4px',
-              height: '4px',
-              background: 'white',
-              borderRadius: '50%',
-              boxShadow: '0 0 6px 2px rgba(255,255,255,0.9), 0 0 12px 4px rgba(200,220,255,0.6)',
-            }}
-          />
-        </div>
-      ))}
+          >
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 10%, rgba(200,220,255,0.3) 50%, rgba(255,255,255,0.9) 100%)`,
+                borderRadius: "2px",
+              }}
+            />
+            <div
+              className="absolute top-1/2 right-0 -translate-y-1/2"
+              style={{
+                width: "4px",
+                height: "4px",
+                background: "white",
+                borderRadius: "50%",
+                boxShadow: "0 0 6px 2px rgba(255,255,255,0.9), 0 0 12px 4px rgba(200,220,255,0.6)",
+              }}
+            />
+          </div>
+        ))}
     </div>
   );
 });

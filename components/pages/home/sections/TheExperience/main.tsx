@@ -8,7 +8,7 @@ import { EXPERIENCES } from "./data/experiences.config";
 import { JazzTile } from "./tiles";
 import { SectionTitle } from "./decorations";
 import { MotionZone } from "@/lib/motion";
-import { useIsMobile, usePrefersReducedMotion } from "@/hooks";
+import { useAnimationPolicy } from "@/hooks";
 import { BackgroundDecor, BottomBorder } from "./desktop/BackgroundDecor";
 import { FloatingOrbs } from "./desktop/FloatingOrbs";
 import { SareeDrape } from "./desktop/SareeDrape";
@@ -28,14 +28,11 @@ export const TheExperience = memo(function TheExperience() {
   const tilesRef = useRef<HTMLDivElement>(null);
   const djRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const isMobile = useIsMobile(640);
+  const { shouldAnimate, isMobile } = useAnimationPolicy();
 
   // GSAP ScrollTrigger animations - Desktop only
   useEffect(() => {
-    if (prefersReducedMotion) return;
-    // Skip scroll animations on mobile for performance
-    if (isMobile) return;
+    if (!shouldAnimate) return;
 
     const ctx = gsap.context(() => {
       // Title fade in and slide up
@@ -114,7 +111,7 @@ export const TheExperience = memo(function TheExperience() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion, isMobile]);
+  }, [shouldAnimate]);
 
   return (
     <MotionZone>
