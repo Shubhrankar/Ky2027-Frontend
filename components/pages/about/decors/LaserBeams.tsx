@@ -10,7 +10,7 @@ export const LaserBeams = memo(function LaserBeams() {
   const { shouldAnimate } = useAnimationPolicy();
 
   // Don't render on mobile or if user prefers reduced motion
-  if (shouldAnimate) return null;
+  if (!shouldAnimate) return null;
 
   const lasers = [
     { startX: "5%", delay: 0, duration: 4, opacity: 0.15 },

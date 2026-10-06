@@ -26,7 +26,7 @@ export const InteractiveMandala = memo(function InteractiveMandala({
   const [isHovered, setIsHovered] = useState(false);
   const [ripples, setRipples] = useState<RippleState[]>([]);
   const [rippleCounter, setRippleCounter] = useState(0);
-  const [rotationSpeed, setRotationSpeed] = useState(shouldAnimate ? 0 : 120);
+  const [rotationSpeed, setRotationSpeed] = useState(shouldAnimate ? 120 : 0);
 
   const handleClick = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {

@@ -21,7 +21,7 @@ export const GangaWaves = memo(function GangaWaves({
   const { shouldAnimate } = useAnimationPolicy();
 
   // Don't render animated waves if animations should be reduced
-  if (shouldAnimate) return null;
+  if (!shouldAnimate) return null;
 
   const colors = {
     gold: {

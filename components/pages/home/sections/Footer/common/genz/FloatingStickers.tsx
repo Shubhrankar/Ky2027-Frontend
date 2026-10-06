@@ -9,7 +9,7 @@ export const FloatingStickers = memo(function FloatingStickers() {
   const { shouldAnimate } = useAnimationPolicy();
 
   // Don't render floating stickers if animations should be reduced
-  if (shouldAnimate) return null;
+  if (!shouldAnimate) return null;
 
   const positions = [
     { top: "15%", left: "5%" },
