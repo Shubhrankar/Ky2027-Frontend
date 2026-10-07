@@ -11,6 +11,58 @@ Whenever creating new components, hooks, pages, or any code - follow this struct
 
 ---
 
+## Hooks Folder Structure
+
+There are TWO hooks folders in the project with different purposes:
+
+### 1. Root `/hooks/` - Global UI Hooks
+
+Location: `/hooks/`
+
+These are **globally reusable UI/utility hooks** that can be used anywhere in the app.
+
+- Animation hooks (useAnimationPolicy, usePrefersReducedMotion)
+- Scroll/viewport hooks (useScrollPosition, useIsMobile)
+- Time-based hooks (useTimeOfDay)
+
+```tsx
+// ✅ Use for: Hooks that ANY component might need
+import { useIsMobile } from "@/hooks";
+import { useScrollPosition } from "@/hooks";
+```
+
+### 2. `/lib/api/hooks/` - API & Data Hooks
+
+Location: `/lib/api/hooks/`
+
+These are **API-related hooks** for data fetching, mutations, and authentication.
+
+- GraphQL query hooks (useFullAccount, useProfileCompletionStatus)
+- REST API hooks (usePasses, useContact)
+- Auth hooks (useSignIn, useSignOut)
+- Profile/data mutation hooks (useAadhaarUpload, useUpdatePhone)
+
+```tsx
+// ✅ Use for: Hooks that fetch/mutate data from backend
+import { useFullAccount, usePasses } from "@/lib/api/hooks";
+```
+
+### Decision Guide: Where to put a new hook?
+
+| Hook Type          | Location          | Example                                                   |
+| ------------------ | ----------------- | --------------------------------------------------------- |
+| UI state/behavior  | `/hooks/`         | useMediaQuery, useLocalStorage, useDebounce               |
+| Window/DOM related | `/hooks/`         | useScrollPosition, useWindowSize, useIntersectionObserver |
+| Animation/motion   | `/hooks/`         | useAnimationPolicy, usePrefersReducedMotion               |
+| API data fetching  | `/lib/api/hooks/` | usePasses, useEvents, useSponsors                         |
+| GraphQL queries    | `/lib/api/hooks/` | useFullAccount, useProfileCompletionStatus                |
+| Authentication     | `/lib/api/hooks/` | useSignIn, useSignOut                                     |
+| Form mutations     | `/lib/api/hooks/` | useUpdatePhone, useAadhaarUpload, useContact              |
+
+**Rule of thumb:** If it talks to the backend → `/lib/api/hooks/`. If it's pure frontend utility → `/hooks/`.
+
+---
+
 ## Helper Functions & Types
 
 ### Location: `lib/api/helper/`
