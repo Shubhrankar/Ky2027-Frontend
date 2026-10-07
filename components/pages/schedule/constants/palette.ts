@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════
-// EVENTS PAGE COLOR PALETTE
+// SCHEDULE PAGE COLOR PALETTE
 // ═══════════════════════════════════════════════════════════════════
 
 // Base colors (kept in sync with the home palette for app-wide consistency)
@@ -66,20 +66,11 @@ export const JAZZ_COLORS = {
   IVORY: "#FFFFF0",
 } as const;
 
-// Event type colors
-export const EVENT_TYPE_COLORS = {
-  individual: {
-    bg: "rgba(255,20,147,0.2)", // HOT_PINK
-    text: "#ff1493",
-  },
-  duo: {
-    bg: "rgba(0,191,255,0.2)", // ELECTRIC_BLUE
-    text: "#00bfff",
-  },
-  team: {
-    bg: "rgba(138,43,226,0.2)", // ROYAL_PURPLE
-    text: "#e6e6fa", // LAVENDER
-  },
-} as const;
-
-export type EventType = keyof typeof EVENT_TYPE_COLORS;
+// Schedule-specific tone colors used by the campus map / event feed
+export const TONE_COLORS: Record<string, string> = {
+  blue: "#8b93ff",
+  red: "#ff4d5e",
+  green: "#3fe08a",
+  white: "#f3ead6",
+  text: "#efe4cc",
+};
