@@ -31,7 +31,7 @@ export function useSignOut(options: UseSignOutOptions = {}) {
           ? `${destination}&signout=success`
           : destination === "/"
             ? "/?signout=success"
-            : destination,
+            : destination
       );
       router.refresh();
     } catch (_) {

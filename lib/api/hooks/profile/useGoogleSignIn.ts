@@ -12,11 +12,11 @@ interface UseSignInOptions {
 
 /**
  * Hook for handling OAuth sign in with loading state.
- * 
- * For OAuth providers (Google, etc.), the browser MUST redirect to the 
+ *
+ * For OAuth providers (Google, etc.), the browser MUST redirect to the
  * provider's auth page. The loader shows briefly before the redirect happens,
  * giving visual feedback that the sign-in process has started.
- * 
+ *
  * On success: NextAuth redirects to callbackUrl (/?auth=success)
  * On error: NextAuth redirects to /?error=<code>
  */
@@ -32,7 +32,7 @@ export function useSignIn(options: UseSignInOptions = {}) {
     // For OAuth, this will redirect the browser to the provider's auth page.
     // The loader stays visible until the browser navigates away.
     await signIn(provider, { callbackUrl });
-    
+
     // This line is only reached if signIn somehow fails without redirecting
     setIsSigningIn(false);
   }, [isSigningIn, provider, callbackUrl]);

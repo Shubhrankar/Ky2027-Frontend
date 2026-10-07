@@ -1,35 +1,33 @@
-// Apollo Client
-export { apolloClient } from "./apollo";
+"use client";
 
-// ═══════════════════════════════════════════════════════════════════
-// QUERIES
-// ═══════════════════════════════════════════════════════════════════
-
-export {
-  FULL_ACCOUNT_QUERY,
-  ACCOUNT_PROGRESS_WITH_STEPS_QUERY,
-  USER_NAVBAR_DISPLAY_QUERY,
-  ACCOUNT_ACCESS_STATUS_QUERY,
-} from "./queries/user.queries";
+import { useMemo } from "react";
+import type { College } from "@/components/pages/complete-profile/steps/college/data";
+import { smartSearch } from "@/lib/api/helper/functions/college.functions";
 
 // ═══════════════════════════════════════════════════════════════════
 // TYPES
 // ═══════════════════════════════════════════════════════════════════
 
-export type {
-  // Full Account
-  FullAccountQueryResponse,
-  FullAccountData,
-  UserProfile,
-  UserAccountProgress,
-  // Account Progress With Steps
-  AccountProgressWithStepsQueryResponse,
-  AccountProgressWithStepsData,
-  ProgressSteps,
-  // User Navbar Display
-  UserNavbarDisplayQueryResponse,
-  UserNavbarDisplayData,
-  // Account Access Status
-  AccountAccessStatusQueryResponse,
-  AccountAccessStatusData,
-} from "./queries/user.queries";
+export type { College };
+
+// ═══════════════════════════════════════════════════════════════════
+// HOOK
+// ═══════════════════════════════════════════════════════════════════
+
+/**
+ * Hook for searching colleges using smart search on local JSON data
+ * @param search - Search query (min 2 characters to trigger search)
+ * @param limit - Max results to return (default 15)
+ */
+export function useCollegeSearch(search: string, limit: number = 15) {
+  const colleges = useMemo(() => {
+    if (search.length < 2) return [];
+    return smartSearch(search, limit);
+  }, [search, limit]);
+
+  return {
+    colleges,
+    count: colleges.length,
+    isLoading: false,
+  };
+}
