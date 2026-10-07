@@ -1,19 +1,24 @@
+/**
+ * Color Palette Constants for the About page
+ *
+ * Self-contained color definitions used by the About page decor components.
+ * These values are owned by the About page and are intentionally not shared
+ * with the Home page palette.
+ */
+
 // ═══════════════════════════════════════════════════════════════════
-// PROFILE PAGE - SHARED COLOR CONSTANTS
+// BASE COLORS
 // ═══════════════════════════════════════════════════════════════════
 
 export const COLORS = {
+  // Primary palette
+  SAFFRON: "#FF6B00",
+  BRIGHT_GOLD: "#FFD700",
+  MAROON: "#8B1538",
+
+  // Neutrals
+  CREAM: "#FDF6E3",
+
+  // Background colors
   BG_DEEP: "#0a0612",
-  BG_ROYAL: "#1a0a20",
-  BG_WINE: "#2a1020",
-  GOLD: "#d4a853",
-  GOLD_LIGHT: "#f0d890",
-  GOLD_DARK: "#8b6914",
-  GOLD_SHIMMER: "#ffd700",
-  CREAM: "#fdf6e3",
-  SUCCESS: "#22c55e",
-  ERROR: "#ef4444",
-  WARNING: "#f59e0b",
-  MAROON: "#5c1a1a",
-  PURPLE_DEEP: "#2d1b4e",
 } as const;
