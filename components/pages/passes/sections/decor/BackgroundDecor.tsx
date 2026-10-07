@@ -2,8 +2,7 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { useAnimationPolicy } from "@/hooks";
-import { COLORS } from "@/components/pages/home/constants/palette";
+import { COLORS } from "@/components/pages/passes/constants/palette";
 
 // ============================================
 // Animated Geometric Pattern

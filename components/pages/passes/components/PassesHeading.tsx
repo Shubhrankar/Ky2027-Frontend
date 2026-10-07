@@ -8,7 +8,7 @@ import {
   GRADIENT_TEXT_GOLD,
   GRADIENT_LINE_GOLD_LEFT,
   GRADIENT_LINE_GOLD_RIGHT,
-} from "@/components/pages/home/constants/palette";
+} from "@/components/pages/passes/constants/palette";
 
 // ============================================
 // Heading Animation Variants

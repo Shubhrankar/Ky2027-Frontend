@@ -2,8 +2,7 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { useAnimationPolicy } from "@/hooks";
-import { Z_INDEX } from "../constants/theme";
+import { Z_INDEX } from "@/components/pages/passes/constants/palette";
 
 // ============================================
 // Floating Particles with Glow

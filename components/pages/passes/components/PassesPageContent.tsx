@@ -1,6 +1,6 @@
 "use client";
 
-import { PassesSection } from "@/components/pages/home/sections";
+import { PassesSection } from "@/components/pages/passes/sections/main";
 import { LightNavbar } from "@/components/navbar/Navbar";
 
 export function PassesPageContent() {
